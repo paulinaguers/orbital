@@ -1,0 +1,6 @@
+{
+  "name": "ORBITAL",
+  "description": "Onboard astronaut health-monitoring application for long-duration space missions (simulated offline prototype).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

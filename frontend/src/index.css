@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: #070b14;
+    color: #e6edf7;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .font-mono-tabular {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes orbi-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes orbi-blink {
+  0%,
+  44%,
+  48%,
+  92%,
+  96%,
+  100% {
+    transform: scaleY(1);
+  }
+  46%,
+  94% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes orbi-antenna-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.28);
+  }
+}
+
+@keyframes orbi-bubble-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-orbi-float {
+  animation: orbi-float 4.2s ease-in-out infinite;
+}
+
+.animate-orbi-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbi-blink 6.5s ease-in-out infinite;
+}
+
+.animate-orbi-antenna-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbi-antenna-pulse 1.15s ease-in-out infinite;
+}
+
+.animate-orbi-bubble-pop {
+  transform-origin: left center;
+  animation: orbi-bubble-pop 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-orbi-float,
+  .animate-orbi-blink,
+  .animate-orbi-antenna-pulse,
+  .animate-orbi-bubble-pop {
+    animation: none;
+  }
+}
