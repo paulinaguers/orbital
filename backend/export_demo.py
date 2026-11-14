@@ -20,7 +20,7 @@ from pathlib import Path
 from backend.core.alert_texts import read_texts
 from backend.core.baseline import baseline_band, calculate_baseline, is_baseline_day
 from backend.core.escalation import escalation_for, evaluate_timeline, latest_levels
-from backend.core.levels import GREEN, highest
+from backend.core.levels import GREEN, NOT_EVALUABLE, highest
 from backend.core.thresholds import THRESHOLDS
 from backend.simulator.demo_scenarios import ASTRONAUT
 from backend.storage import list_scenarios, load_scenario
@@ -40,7 +40,8 @@ BLOCKS = [
      ["CSA: Insulin resistance in spaceflight"]),
     ("environment", "Environment, Radiation & Vision", ["cabin_co2", "radiation_dose", "vision_amsler"],
      ["NASA-STD-3001: Closed environment (CO₂)", "NASA HRP: Radiation", "NASA HRP: SANS"]),
-    ("mental_health", "Mental Health", ["mood_score"], ["NASA HRP: Behavioral Conditions"]),
+    ("mental_health", "Mental Health", ["mood_score", "fatigue_score", "stress_score", "workload_score"],
+     ["NASA HRP: Behavioral Conditions"]),
 ]
 
 # Display name, unit, source label and the day field shown on screen.
@@ -57,6 +58,19 @@ INDICATORS = {
                        "radiation_dose_cumulative"),
     "vision_amsler": ("Vision (Amsler grid)", "", "Personal baseline", "vision_amsler"),
     "mood_score": ("Mood", "/10 (10 = worst)", "Personal baseline", "mood_score"),
+    "fatigue_score": ("Fatigue", "/10 (10 = worst)", "Personal baseline", "fatigue_score"),
+    "stress_score": ("Stress", "/10 (10 = worst)", "Personal baseline", "stress_score"),
+    "workload_score": ("Workload", "/10 (10 = worst)", "Personal baseline", "workload_score"),
+}
+
+# Texts for the three check-in scales that alert_texts.md does not cover yet
+# (thread A, 14/11; thread C to review and move them into alert_texts.md).
+# Textos de las tres escalas que alert_texts.md todavía no cubre (hilo A;
+# el hilo C los revisa y los pasa a alert_texts.md).
+SCALE_TEXTS = {
+    "yellow": ("Your {name} is higher than your usual.", "Soft warning: monitor. No consultation needed."),
+    "orange": ("Your {name} has been much higher than your usual for several days.",
+               "Contact the crew medical officer."),
 }
 
 # In-app tests: (id, name, route, frequency in days, day field). Frequencies
@@ -69,6 +83,7 @@ TESTS = [
 ]
 
 OVERALL_MESSAGES = {
+    NOT_EVALUABLE: "Still learning your usual values. Keep measuring every day.",
     "green": "Everything looks good today.",
     "yellow": "Mostly good today. {areas} a little attention.",
     "orange": "Some values need attention. Your onboard doctor and the flight surgeon have been notified.",
@@ -86,10 +101,15 @@ def last_value(days, field):
     return None, None
 
 
-def indicator_entry(m, days, level):
-    """One indicator as the screen expects it. / Un indicador como lo espera la pantalla."""
+def indicator_entry(m, days, level, baseline_available):
+    """One indicator as the screen expects it. / Un indicador como lo espera la pantalla.
+
+    `baseline_available` is False when the personal baseline could not be used.
+    `baseline_available` es False si no se pudo usar la línea base personal.
+    """
     name, unit, source, field = INDICATORS[m]
-    entry = {"id": m, "name": name, "unit": unit, "level": level, "threshold_source": source}
+    entry = {"id": m, "name": name, "unit": unit, "level": level or NOT_EVALUABLE,
+             "threshold_source": source, "baseline_available": baseline_available.get(m, True)}
     if m == "blood_pressure":
         entry["systolic"], entry["diastolic"] = days[-1]["systolic"], days[-1]["diastolic"]
     elif m == "vision_amsler":
@@ -99,21 +119,37 @@ def indicator_entry(m, days, level):
     return entry
 
 
-def block_entry(block, days, levels, texts):
+def recommendation_for(m, level, texts):
+    """Astronaut text + action for one indicator and level (alert_texts.md).
+    Texto y acción para un indicador y nivel (alert_texts.md).
+    """
+    if m in texts and level in texts[m]:
+        sees, action = texts[m][level]
+    else:
+        sees, action = SCALE_TEXTS[level]
+        sees = sees.format(name=INDICATORS[m][0].lower())
+    return f"{sees} {action}"
+
+
+def block_entry(block, days, levels, available, texts):
     """One body-map block: level = worst indicator; texts from alert_texts.md.
     Un bloque: nivel = peor indicador; textos desde alert_texts.md.
+
+    If no indicator of the block could be evaluated, the block is "not_evaluable".
+    Si ningún indicador del bloque se pudo evaluar, el bloque es "not_evaluable".
     """
     block_id, name, members, risks = block
-    level = highest(*(levels[m] for m in members))
-    worst = next(m for m in members if levels[m] == level)
-    if level == GREEN:
+    level = highest(*(levels.get(m) for m in members))
+    if level is None:
+        level, recommendation = NOT_EVALUABLE, "Not enough data yet to compare with your usual values."
+    elif level == GREEN:
         recommendation = "All stable. Keep your routine."
     else:
-        sees, action = texts[worst][level]
-        recommendation = f"{sees} {action}"
+        worst = next(m for m in members if levels.get(m) == level)
+        recommendation = recommendation_for(worst, level, texts)
     return {"id": block_id, "name": name, "level": level, "nasa_risk": risks,
             "recommendation": recommendation,
-            "indicators": [indicator_entry(m, days, levels[m]) for m in members]}
+            "indicators": [indicator_entry(m, days, levels.get(m), available) for m in members]}
 
 
 def tests_entry(days):
@@ -151,18 +187,30 @@ def areas_text(count):
     return "1 area needs" if count == 1 else f"{count} areas need"
 
 
+def latest_baseline_flags(results):
+    """Whether the baseline could be used on each measurement's last day.
+    Si la línea base se pudo usar en el último día de cada medición.
+    """
+    flags = {}
+    for result in results:
+        flags.update(result["baseline_available"])
+    return flags
+
+
 def status_entry(days, results, texts):
     """The whole status for the last day (same shape as mockStatus.ts).
     El estado completo del último día (misma forma que mockStatus.ts).
     """
     levels = latest_levels(results)
-    blocks = [block_entry(block, days, levels, texts) for block in BLOCKS]
-    overall = highest(*(b["level"] for b in blocks))
-    affected = sum(1 for b in blocks if b["level"] != GREEN)
+    available = latest_baseline_flags(results)
+    blocks = [block_entry(block, days, levels, available, texts) for block in BLOCKS]
+    overall = highest(*(b["level"] for b in blocks)) or NOT_EVALUABLE
+    affected = sum(1 for b in blocks if b["level"] not in (GREEN, NOT_EVALUABLE))
     astronaut = dict(ASTRONAUT, flight_day=days[-1]["flight_day"])
     return {"profile": "crew", "simulated": True, "astronaut": astronaut, "overall_level": overall,
             "overall_message": OVERALL_MESSAGES[overall].format(areas=areas_text(affected)),
-            "escalation": {"notified": escalation_for(overall)}, "blocks": blocks,
+            "escalation": {"notified": escalation_for(overall) if overall != NOT_EVALUABLE else []},
+            "blocks": blocks,
             "tests": tests_entry(days), "rewards": rewards_entry(days)}
 
 
@@ -179,7 +227,10 @@ def band_for(m, field, days):
         t = THRESHOLDS["radiation_dose"]
         high = t["career_limit_msv"] * t["green_below_pct"] / 100
         return high / 2, 0, high
-    baseline = calculate_baseline([d.get(field) for d in days if is_baseline_day(d["flight_day"])])
+    minimum = THRESHOLDS["pvt_lapses"]["min_baseline_sessions"] if field == "pvt_lapses" else None
+    baseline = calculate_baseline([d.get(field) for d in days if is_baseline_day(d["flight_day"])], minimum)
+    if baseline is None:
+        return None, None, None
     low, high = baseline_band(*baseline)
     return round(baseline[0], 1), round(low, 1), round(high, 1)
 

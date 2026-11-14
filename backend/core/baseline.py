@@ -29,17 +29,22 @@ def baseline_is_ready(flight_day):
     return flight_day > BASELINE_RULES["last_flight_day"]
 
 
-def calculate_baseline(values):
+def calculate_baseline(values, min_values=None):
     """Mean and population standard deviation of the baseline values.
     Media y desvío estándar poblacional de los valores de línea base.
 
-    Receives a list of numbers (None values are skipped).
-    Returns (mean, std_dev), or None if there are fewer than 2 values.
-    Recibe una lista de números (se saltean los None).
-    Devuelve (media, desvío), o None si hay menos de 2 valores.
+    Receives a list of numbers (None values are skipped) and the minimum
+    number of valid values (default: thresholds.py, 5 of 7 days).
+    Returns (mean, std_dev), or None if there are too few values: then the
+    measurement is "not evaluable" against the baseline, never green.
+    Recibe una lista de números (se saltean los None) y el mínimo de valores
+    válidos. Devuelve (media, desvío), o None si hay muy pocos: entonces la
+    medición es "no evaluable" contra la línea base, nunca verde.
     """
+    if min_values is None:
+        min_values = BASELINE_RULES["min_daily_observations"]
     clean = [value for value in values if value is not None]
-    if len(clean) < 2:
+    if len(clean) < max(min_values, 2):
         return None
     return statistics.mean(clean), statistics.pstdev(clean)
 

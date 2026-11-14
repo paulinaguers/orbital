@@ -75,13 +75,13 @@ def start_session(scenario):
 
 
 def today(flight_day):
-    """The stored day with that number, or the last day if it is not stored.
-    El día guardado con ese número, o el último si no está.
+    """The stored day with that number; an unknown day is an error (422).
+    El día guardado con ese número; un día que no existe es un error (422).
     """
     for day in SESSION["days"]:
         if day["flight_day"] == flight_day:
             return day
-    return SESSION["days"][-1]
+    raise HTTPException(status_code=422, detail=f"Flight day {flight_day} is not in the mission data.")
 
 
 def current():
@@ -104,7 +104,10 @@ def apply_report(payload):
         if isinstance(report, CheckIn):
             day.update(report.model_dump(exclude={"flight_day"}))
         elif isinstance(report, PvtSession):
+            # False starts are stored but not scored yet (future work).
+            # Las anticipaciones se guardan pero todavía no se puntúan.
             day["pvt_lapses"] = count_pvt_lapses(report.reaction_times_ms)
+            day["pvt_false_starts"] = report.false_starts
         else:
             cells = {tuple(c) for c in report.cells} if report.distortion else set()
             category = classify_amsler(cells, SESSION["amsler_cells"][report.eye])

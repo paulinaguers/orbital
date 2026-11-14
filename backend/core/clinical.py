@@ -5,11 +5,12 @@ Capa 1: umbrales clínicos fijos, una función por medición.
 Every number comes from backend/core/thresholds.py. Ranges are read as
 continuous (e.g. heart rate 49.5 is orange, not a gap), and where two levels
 share a boundary the higher one wins (PROVISIONAL, conservative choice of
-thread A on 14/11, pending team decisions SLEEP-7H and RAD-65).
+thread A on 14/11, pending team decision SLEEP-7H). Radiation at exactly 65 %
+is orange.
 Cada número sale de thresholds.py. Los rangos se leen continuos (FC 49,5 es
 naranja, no un hueco) y donde dos niveles comparten un borde gana el más alto
-(PROVISORIO, criterio conservador del hilo A el 14/11; decisiones pendientes
-SLEEP-7H y RAD-65).
+(PROVISORIO, criterio conservador del hilo A el 14/11; decisión pendiente
+SLEEP-7H). La radiación en 65 % exacto es naranja.
 """
 
 from backend.core.levels import GREEN, ORANGE, RED, YELLOW
@@ -125,19 +126,20 @@ def cabin_co2_level(avg_7d, avg_1h_max, headache):
 
 
 def radiation_level(cumulative_msv, solar_particle_event):
-    """Clinical level of cumulative radiation, as % of the career limit.
-    Nivel clínico de la radiación acumulada, como % del límite de carrera.
+    """Level of radiation: long-term exposure tracking plus solar storms.
+    Nivel de radiación: seguimiento de exposición más tormentas solares.
 
-    Limits: NASA-STD-3001; percentages: Proposal. A solar storm in progress
-    is red. Exactly 65 % is orange (the higher wins: PROVISIONAL, RAD-65).
-    Límites: NASA-STD-3001; porcentajes: Proposal. Tormenta solar = rojo.
-    65 % exacto es naranja (gana el más alto: PROVISORIO, RAD-65).
+    Limits: NASA-STD-3001; percentages: Proposal. The cumulative dose (as % of
+    the career limit) reaches orange at most; red only for a solar particle
+    event in progress (team decision 14/11, PROVISIONAL).
+    Límites: NASA-STD-3001; porcentajes: Proposal. La dosis acumulada llega
+    como máximo a naranja; el rojo solo por una tormenta solar en curso.
     """
     t = THRESHOLDS["radiation_dose"]
-    percent = 100 * cumulative_msv / t["career_limit_msv"]
-    if solar_particle_event or percent > t["red_above_pct"]:
+    if solar_particle_event:
         return RED
-    if percent >= t["orange_range_pct"][0]:
+    percent = 100 * cumulative_msv / t["career_limit_msv"]
+    if percent >= t["orange_from_pct"]:
         return ORANGE
     if percent >= t["yellow_range_pct"][0]:
         return YELLOW

@@ -50,6 +50,13 @@ THRESHOLDS = {
         # el desvío estándar de la línea base es statistics.pstdev (desvío
         # poblacional). El baseline.py del hilo A debería usarla una vez
         # confirmada, para coincidir con los casos de prueba clínicos.
+        # Minimum valid values before a baseline is used (thread A, 14/11,
+        # Proposal): 5 of the 7 daily baseline days. Fewer values, or a
+        # baseline with no spread, means "not evaluable", never green.
+        # Mínimo de valores válidos para usar una línea base (hilo A, 14/11,
+        # Proposal): 5 de los 7 días. Con menos valores, o sin variación,
+        # el resultado es "no evaluable", nunca verde.
+        "min_daily_observations": 5,
     },
     # ------------------------------------------------------------------
     # Deviation from the baseline (z-score) / Desvío de la línea base (z)
@@ -209,6 +216,11 @@ THRESHOLDS = {
         # in 3 sessions in a row / en 3 sesiones seguidas; Proposal
         "orange_abs_z_min": 1.5,
         "orange_consecutive_sessions": 3,  # Proposal
+        # The PVT is every few days: its baseline needs at least 3 sessions,
+        # after the 2-3 practice sessions the protocol asks for (Proposal).
+        # El PVT es cada algunos días: su línea base necesita al menos 3
+        # sesiones, después de las 2-3 de práctica del protocolo (Proposal).
+        "min_baseline_sessions": 3,
         # Red: |z| >= 2 sustained, together with symptoms or sleep in red.
         # Proposal. Open decision ("sustained" and "symptoms").
         # Rojo: |z| >= 2 sostenido, junto con síntomas o sueño en rojo.
@@ -259,9 +271,18 @@ THRESHOLDS = {
         "yellow_range_pct": (50, 65),  # Proposal
         # Overlaps yellow at exactly 65 %: open team decision.
         # Se superpone con amarillo en 65 % exacto: decisión pendiente.
-        "orange_range_pct": (65, 80),  # Proposal
-        # Or any solar storm; Proposal. / O cualquier tormenta solar; Proposal.
-        "red_above_pct": 80,
+        # Team decision 14/11 (PROVISIONAL, to confirm with thread C): the
+        # cumulative dose is long-term exposure tracking, not an operational
+        # alarm, so it reaches orange at most (orange from 65 % of the career
+        # limit). Red is reserved for an operational event: a solar particle
+        # event in progress. Dose rate is future work.
+        # Decisión del equipo 14/11 (PROVISORIA, a confirmar con el hilo C):
+        # la dosis acumulada es seguimiento de exposición a largo plazo, no
+        # una alarma operativa: llega como máximo a naranja (desde el 65 % del
+        # límite de carrera). El rojo queda para un evento operativo: una
+        # tormenta solar en curso. La tasa de dosis queda como trabajo futuro.
+        "orange_from_pct": 65,  # Proposal
+        "red_only_for_solar_particle_event": True,
     },
     # Temperature is not in the MVP (open team decision). Its CDC values
     # (fever >= 38 °C, hypothermia < 35 °C) are in the skill.

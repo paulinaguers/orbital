@@ -50,7 +50,10 @@ DECISIONS = {
     # Q4 se resolvió el 14/11 con la guía ACC/AHA 2017 (y su actualización
     # AHA/ACC 2025): gana la categoría más alta.
     "SLEEP-7H": "Sleep at exactly 7 h is both green and yellow",
-    "RAD-65": "Radiation at exactly 65 % is both yellow and orange [7b]",
+    # RAD-65 resolved on 14/11 (team decision, provisional): orange from 65 %;
+    # the cumulative dose reaches orange at most, red only for a solar storm.
+    # RAD-65 resuelta el 14/11: naranja desde 65 %; la dosis acumulada llega
+    # como máximo a naranja, rojo solo por tormenta solar.
     "PVT-355": "PVT: whether exactly 355 ms is a lapse (>= or >)",
 }
 
@@ -504,6 +507,7 @@ SEQUENCE_CASES = {
 # ----------------------------------------------------------------------
 # Radiation (last: the dose can only go up) / Radiación (al final: solo sube)
 # Percent of the 600 mSv career limit (NASA-STD-3001 V1 4030). Cuts: Proposal.
+# Since 14/11 the cumulative dose reaches orange at most; red = solar storm.
 # This set has no per-event dose, so the 250 mSv solar-event limit is not
 # tested (how the two limits combine is open: RAD-LIMITS).
 # Porcentaje del límite de carrera de 600 mSv. Cortes: Proposal. Este set no
@@ -519,10 +523,11 @@ RADIATION_CASES = [
     single("RAD-04", {RAD: 300.0}, {"radiation_dose": ("yellow", "yellow")}, "Exactly 50 % · Proposal."),
     single("RAD-05", {RAD: 300.1}, {"radiation_dose": ("yellow", "yellow")}, "Just above 50 % · Proposal."),
     single("RAD-06", {RAD: 389.9}, {"radiation_dose": ("yellow", "yellow")}, "Just below 65 % · Proposal."),
-    single("RAD-07", {RAD: 390.0}, {"radiation_dose": (P, P)},
-           "Exactly 65 % is both yellow (50-65) and orange (65-80). PENDING RAD-65."),
+    single("RAD-07", {RAD: 390.0}, {"radiation_dose": O},
+           "Exactly 65 %: orange (team decision 14/11: orange from 65 %) · Proposal."),
     single("RAD-08", {RAD: 390.1}, {"radiation_dose": O}, "Just above 65 % · Proposal."),
     single("RAD-09", {RAD: 479.9}, {"radiation_dose": O}, "Just below 80 % · Proposal."),
     single("RAD-10", {RAD: 480.0}, {"radiation_dose": O}, "Exactly 80 %, which is not > 80 % · Proposal."),
-    single("RAD-11", {RAD: 480.1}, {"radiation_dose": R}, "Just above 80 % · Proposal."),
+    single("RAD-11", {RAD: 480.1}, {"radiation_dose": O},
+           "Just above 80 %: still orange; the cumulative dose is exposure tracking, red only for a solar storm (team decision 14/11) · Proposal."),
 ]

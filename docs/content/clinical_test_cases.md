@@ -245,11 +245,11 @@ Flight days 4-10 (order shuffled with a fixed seed). Mean and `statistics.pstdev
 | RAD-04 | 181 | dose 300.0 mSv | radiation_dose: yellow → yellow | Exactly 50 % · Proposal. |
 | RAD-05 | 182 | dose 300.1 mSv | radiation_dose: yellow → yellow | Just above 50 % · Proposal. |
 | RAD-06 | 183 | dose 389.9 mSv | radiation_dose: yellow → yellow | Just below 65 % · Proposal. |
-| RAD-07 | 184 | dose 390.0 mSv | radiation_dose: PENDING → PENDING | Exactly 65 % is both yellow (50-65) and orange (65-80). PENDING RAD-65. |
+| RAD-07 | 184 | dose 390.0 mSv | radiation_dose: orange → orange | Exactly 65 %: orange (team decision 14/11: orange from 65 %) · Proposal. |
 | RAD-08 | 185 | dose 390.1 mSv | radiation_dose: orange → orange | Just above 65 % · Proposal. |
 | RAD-09 | 186 | dose 479.9 mSv | radiation_dose: orange → orange | Just below 80 % · Proposal. |
 | RAD-10 | 187 | dose 480.0 mSv | radiation_dose: orange → orange | Exactly 80 %, which is not > 80 % · Proposal. |
-| RAD-11 | 188 | dose 480.1 mSv | radiation_dose: red → red | Just above 80 % · Proposal. |
+| RAD-11 | 188 | dose 480.1 mSv | radiation_dose: orange → orange | Just above 80 %: still orange; the cumulative dose is exposure tracking, red only for a solar storm (team decision 14/11) · Proposal. |
 
 ### Symptoms alone / Síntomas solos
 
@@ -282,7 +282,6 @@ Un conteo diario de lapsos no puede mostrar un tiempo de reacción, así que est
 | Q5 | BP baseline layer: whether a systolic deviation alone is enough, or how the two z-scores combine | 7 |
 | RAD-LIMITS | Radiation: how the 600 mSv career and 250 mSv solar-event limits combine [thresholds.py, radiation] | 0 |
 | SLEEP-7H | Sleep at exactly 7 h is both green and yellow | 1 |
-| RAD-65 | Radiation at exactly 65 % is both yellow and orange [7b] | 1 |
 | PVT-355 | PVT: whether exactly 355 ms is a lapse (>= or >) | 0 |
 
 ## New names / Nombres nuevos

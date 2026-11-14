@@ -14,6 +14,13 @@ def count_pvt_lapses(reaction_times_ms):
     """Counts lapses in a brief PVT session (Basner 2011: 355 ms).
     Cuenta los lapsos de una sesión de PVT breve (Basner 2011: 355 ms).
 
+    The 355 ms cut is validated for the 3-minute PVT-B. The app's 1-minute
+    demo is a brief PVT-inspired test: its lapse counts are only comparable
+    with the astronaut's own sessions of the same length (experimental).
+    El corte de 355 ms está validado para el PVT-B de 3 minutos. La demo de
+    1 minuto es un test breve inspirado en el PVT: sus lapsos solo se
+    comparan con sesiones propias de la misma duración (experimental).
+
     A response of exactly 355 ms counts as a lapse (">=", as in
     escalas-y-protocolos.md): PROVISIONAL, open decision PVT-355.
     Una respuesta de 355 ms exactos cuenta como lapso (">="): PROVISORIO,

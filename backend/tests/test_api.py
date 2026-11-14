@@ -77,6 +77,8 @@ def test_bad_payload_and_reset():
     Un envío desconocido da 422; reset vuelve a los datos guardados.
     """
     assert client.post("/astronauts/SIM-02/self_reports", json={"foo": 1}).status_code == 422
+    unknown_day = {"flight_day": 99, "mood_score": 1, "fatigue_score": 1, "stress_score": 1, "workload_score": 1}
+    assert client.post("/astronauts/SIM-02/self_reports", json=unknown_day).status_code == 422
     assert client.post("/reset").json()["overall_level"] == "yellow"
     assert client.get("/scenarios").json()["active"] == "deterioration"
     assert client.post("/scenarios/emergency").json()["overall_level"] == "red"

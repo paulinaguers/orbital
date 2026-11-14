@@ -68,3 +68,55 @@ def test_highest_level_wins_and_ignores_missing():
     """The higher level wins; None means no level yet. / Gana el más alto."""
     assert highest("green", "orange", None) == "orange"
     assert highest(None, None) is None
+
+
+def flat_days(field, baseline_values, later_value):
+    """Days 1-12 where `field` takes the given baseline values on days 4-10.
+    Días 1-12 donde `field` toma los valores de línea base dados en 4-10.
+    """
+    days = []
+    for d in range(1, 13):
+        value = baseline_values[d - 4] if 4 <= d <= 10 and d - 4 < len(baseline_values) else None
+        if d > 10:
+            value = later_value
+        days.append({"flight_day": d, field: value})
+    return days
+
+
+def test_flat_baseline_is_not_evaluable_never_green():
+    """No spread in the baseline: mood is 'not_evaluable', not green.
+    Línea base sin variación: el ánimo es 'not_evaluable', no verde.
+    """
+    from backend.core.escalation import evaluate_timeline
+    results = evaluate_timeline(flat_days("mood_score", [2] * 7, 2))
+    assert results[-1]["final"]["mood_score"] == "not_evaluable"
+
+
+def test_too_few_baseline_days_is_not_evaluable():
+    """Only 4 of 7 baseline days measured (< 5): not evaluable.
+    Solo 4 de 7 días medidos (< 5): no evaluable.
+    """
+    from backend.core.escalation import evaluate_timeline
+    results = evaluate_timeline(flat_days("stress_score", [1, 3, 5, 2], 3))
+    assert results[-1]["final"]["stress_score"] == "not_evaluable"
+
+
+def test_clinical_layer_still_works_without_baseline():
+    """Heart rate without a usable baseline keeps its clinical level and says so.
+    FC sin línea base utilizable mantiene su nivel clínico y lo indica.
+    """
+    from backend.core.escalation import evaluate_timeline
+    results = evaluate_timeline(flat_days("heart_rate", [60] * 7, 125))
+    assert results[-1]["final"]["heart_rate"] == "red"
+    assert results[-1]["baseline_available"]["heart_rate"] is False
+
+
+def test_cumulative_radiation_reaches_orange_at_most():
+    """Team decision 14/11: cumulative dose max orange; red only for a solar storm.
+    Decisión 14/11: dosis acumulada máximo naranja; rojo solo por tormenta solar.
+    """
+    from backend.core.clinical import radiation_level
+    assert radiation_level(390.0, False) == "orange"
+    assert radiation_level(590.0, False) == "orange"
+    assert radiation_level(20.0, True) == "red"
+    assert radiation_level(299.9, False) == "green"

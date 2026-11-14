@@ -2,7 +2,7 @@
 
 **Onboard health monitoring for long-duration spaceflight.** ORBITAL watches each astronaut's key health indicators, compares them with clinical standards **and with the astronaut's own normal**, and turns every result into a clear color, a plain-language explanation and the right person to notify — on board, without depending on Earth.
 
-> 🚀 **Live demo:** https://orbital-lovat.vercel.app
+> 🚀 **Live demo:** https://orbital-lovat.vercel.app (shows the core's precomputed results for 4 scenarios; live recalculation runs locally, see [§9](#9-architecture))
 > 🧪 **All data in this project is simulated.** ORBITAL guides; it does not diagnose.
 > NASA Space Apps Challenge 2026 · Challenge: *Create Health Monitoring Software for Astronauts on Space Missions* · Team **The Foxhole Court** · UCEL Rosario, Argentina
 
@@ -20,7 +20,7 @@
 8. [The demo: one astronaut, four scenarios](#8-the-demo-one-astronaut-four-scenarios)
 9. [Architecture](#9-architecture)
 10. [Run it locally](#10-run-it-locally)
-11. [Validation and tests](#11-validation-and-tests)
+11. [Verification and tests](#11-verification-and-tests)
 12. [Limitations and future work](#12-limitations-and-future-work)
 13. [Use of AI (SI)](#13-use-of-ai-si)
 14. [References](#14-references)
@@ -44,7 +44,7 @@ On long missions this risk grows:
 
 ## 2. What ORBITAL monitors
 
-Ten measurements, grouped in **five health blocks**. Each one watches an official risk from the **NASA Human Research Program (HRP)** or a documented spaceflight effect.
+Thirteen measurements, grouped in **five health blocks**. Each one watches an official risk from the **NASA Human Research Program (HRP)** or a documented spaceflight effect.
 
 | Block | Measurement | How it is measured | Official risk it watches | Threshold source |
 | --- | --- | --- | --- | --- |
@@ -52,14 +52,17 @@ Ten measurements, grouped in **five health blocks**. Each one watches an officia
 | | Resting heart rate | Wearable biomonitor | NASA HRP: Cardiovascular Adaptations | AHA |
 | | SpO₂ | Wearable biomonitor | NASA HRP: Hypoxia | WHO |
 | **Sleep & Cognition** | Sleep hours | Wearable sleep tracking | NASA HRP: Inadequate Sleep and Irregular Schedules | ISS sleep study (*Sleep*, 2022) |
-| | Reaction test (PVT lapses) | In-app test | NASA HRP: Inadequate Sleep / Behavioral Conditions | Personal baseline |
+| | Brief reaction test (PVT-inspired, lapses) | In-app test | NASA HRP: Inadequate Sleep / Behavioral Conditions | Personal baseline |
 | **Metabolic & Internal Balance** | Glucose | Onboard glucometer | CSA: insulin resistance in spaceflight | ADA |
 | **Environment, Radiation & Vision** | Cabin CO₂ | Habitat air sensor | Closed environment (NASA-STD-3001) | NASA-STD-3001 |
 | | Cumulative radiation | Personal dosimeter | NASA HRP: Radiation | NASA-STD-3001 |
 | | Vision (Amsler grid) | In-app test | NASA HRP: SANS (neuro-ocular syndrome) | Personal baseline |
 | **Mental Health** | Mood (daily check-in, 0–10) | Self-report | NASA HRP: Behavioral Conditions | Personal baseline |
+| | Fatigue (0–10) | Self-report | NASA HRP: Behavioral Conditions / Inadequate Sleep | Personal baseline |
+| | Stress (0–10) | Self-report | NASA HRP: Behavioral Conditions | Personal baseline |
+| | Workload (0–10) | Self-report | NASA HRP: Behavioral Conditions | Personal baseline |
 
-The daily check-in also records **fatigue, stress and workload** (0–10, 10 = worst) and four **symptom** boxes (headache, dizziness, feeling faint, cold sore or rash) that change some levels (for example, high CO₂ **with** a headache).
+The four check-in scales (10 = worst) are separate indicators, each compared with the astronaut's own baseline, as the scales protocol asks. The check-in also has four **symptom** boxes (headache, dizziness, feeling faint, cold sore or rash) that change some levels (for example, high CO₂ **with** a headache).
 
 📄 Rationale per risk: [`riesgos-nasa.md`](.claude/skills/fisiologia-espacial/references/riesgos-nasa.md) · Thresholds: [`umbrales.md`](.claude/skills/fisiologia-espacial/references/umbrales.md) · Scales and protocols: [`escalas-y-protocolos.md`](.claude/skills/fisiologia-espacial/references/escalas-y-protocolos.md)
 
@@ -72,7 +75,7 @@ ORBITAL follows what NASA's crew health standard actually asks for:
 - **NASA-STD-3001 (Vol. 1, Rev. C)** requires vital signs to be **assessed, recorded, monitored and trended in flight** (V1 3004) and refers to current U.S. clinical standards for the values (V1 3000). That is exactly ORBITAL's design: vital-sign cut-offs come from **AHA, WHO and ADA**, and every reading is **trended against the astronaut's own baseline**.
 - **Limits set by NASA-STD-3001** are used directly: cabin CO₂ (7-day average < 2.5 mmHg; 1-hour average > 3 mmHg is critical, OCHMO-TB-004) and radiation (career limit **600 mSv**, **250 mSv** per solar event, V1 4030–4031).
 - **Every indicator maps to an official NASA HRP risk** (table above). Glucose follows the CSA's finding of insulin resistance in spaceflight.
-- **In-app tests follow protocols used on the ISS:** the brief **PVT-B** reaction test (taken by ISS crews about every 4 days in the Reaction Self Test; lapse = response ≥ 355 ms, Basner 2011) and the **Amsler grid**, one of the vision checks done on the ISS for SANS.
+- **In-app tests based on protocols used on the ISS:** a **brief reaction test inspired by the PVT-B** (ISS crews took the PVT about every 4 days in the Reaction Self Test) and the **Amsler grid**, one of the vision checks done on the ISS for SANS. The demo PVT lasts **1 minute** (the scales document allows it for the demo); the 355 ms lapse cut is validated for the **3-minute** PVT-B (Basner 2011), so ORBITAL only compares lapses with the astronaut's own sessions of the same length. It is an experimental, PVT-inspired measure, not the validated PVT-B.
 - **Personal baseline**, as in NASA Standard Measures and Artemis II: each astronaut is compared with themselves before and during flight.
 - **Simulated wearable data** is modeled on the signals of CSA's Bio-Monitor / Astroskin (heart rate, blood pressure, SpO₂, activity).
 
@@ -88,7 +91,7 @@ ORBITAL evaluates every reading in **two layers** and keeps the more serious res
 Fixed cut-offs from AHA, WHO, ADA and NASA-STD-3001 → [`backend/core/clinical.py`](backend/core/clinical.py)
 
 ### Layer 2 — Personal baseline (what is normal *for this astronaut*)
-1. **Baseline:** during flight days **4 to 10**, ORBITAL learns the astronaut's normal: the **mean** and the **standard deviation** of each measurement → [`backend/core/baseline.py`](backend/core/baseline.py)
+1. **Baseline:** during flight days **4 to 10**, ORBITAL learns the astronaut's normal: the **mean** and the **standard deviation** of each measurement → [`backend/core/baseline.py`](backend/core/baseline.py). It needs at least **5 of the 7 days** (the PVT, which is every few days: at least 3 sessions).
 2. **z-score:** for every new reading it computes how far it is from that normal, in standard deviations:
 
    $$z = \frac{\text{today's value} - \text{baseline mean}}{\text{baseline standard deviation}}$$
@@ -98,6 +101,11 @@ Fixed cut-offs from AHA, WHO, ADA and NASA-STD-3001 → [`backend/core/clinical.
    - **Yellow:** |z| ≥ 1.5 in **3 measurements in a row**.
    - **Orange:** |z| ≥ 2 in **3 measurements in a row**.
    - The reaction test uses its own rule: yellow at |z| ≥ 1.5 in one session, orange in 3 sessions in a row.
+
+### When the baseline cannot be used
+If there are too few baseline values, or they have no spread, ORBITAL **does not assume normality**. Measurements that rely only on the baseline (the four check-in scales and the PVT) are shown as **Not evaluable**; the others keep their clinical level and flag that the personal comparison was not possible (`baseline_available: false`). Absence of evidence is never shown as green.
+
+Sleep, cabin CO₂, radiation and the Amsler grid use clinical or protocol rules only (no baseline layer), as defined in [`alert_texts.md`](docs/content/alert_texts.md).
 
 ### Final level
 - **The higher level of the two layers wins.**
@@ -129,8 +137,11 @@ On-board alerts are immediate; messages to Earth go out in the next communicatio
 | Glucose (mg/dL) | 70–180 | baseline deviation | 54–69 or 181–250 | < 54 or > 250 | ADA |
 | Sleep (h/night) | ≥ 7 | 6–7 | < 6 one night | < 6 two nights in a row | ISS sleep study; cuts: Proposal |
 | Cabin CO₂ (mmHg) | < 2.5 (7-day avg) | 2.5–3 | 2.5–3 with headache | > 3 (1-hour avg) | NASA-STD-3001 |
-| Radiation (% of 600 mSv) | < 50 % | 50–65 % | 65–80 % | > 80 % or solar storm | NASA-STD-3001; percentages: Proposal |
-| PVT, Amsler, mood | personal baseline | | | | escalas-y-protocolos.md (Proposal) |
+| Radiation (% of 600 mSv career limit) | < 50 % | 50–65 % | ≥ 65 % | solar storm in progress | NASA-STD-3001; percentages: Proposal |
+| PVT, check-in scales | personal baseline | | | | escalas-y-protocolos.md (Proposal) |
+| Amsler grid | no change | change not repeated | change confirmed | sudden loss or growing area | Proposal |
+
+**Radiation is tracked as long-term exposure, not as an operational alarm:** the cumulative dose reaches orange at most, and red is reserved for an operational event, a solar particle event in progress (team decision, provisional). Dose rate is future work.
 
 On-screen texts for every measurement and level (English and Spanish) come from one file: [`docs/content/alert_texts.md`](docs/content/alert_texts.md).
 
@@ -145,7 +156,7 @@ ORBITAL is designed to be **easy, intuitive and informative**: the astronaut sho
 | **Home — Orbi** | Orbi, an original mascot, takes the color of the overall status and explains it in a speech bubble: what is affected, a short recommendation and who was notified. "Today's tasks" lists the tests that are due. | [`HomePage.tsx`](frontend/src/pages/HomePage.tsx), [`OrbiMascot.tsx`](frontend/src/components/OrbiMascot.tsx) |
 | **Body map** | A silhouette linked to the 5 blocks, each card in its level color and with the NASA risk it watches. | [`BodyMapPage.tsx`](frontend/src/pages/BodyMapPage.tsx), [`BodySilhouette.tsx`](frontend/src/components/BodySilhouette.tsx) |
 | **Block dashboards** | Current value, level, threshold source, "your usual range" and a 14-day trend chart for each measurement, with "what it measures" and "why it matters in space". | [`BlockDetailPage.tsx`](frontend/src/pages/BlockDetailPage.tsx), [`IndicatorChart.tsx`](frontend/src/components/IndicatorChart.tsx) |
-| **In-app tests** | PVT reaction test, Amsler grid (one eye at a time) and the daily 0–10 check-in, each with a short explanation before starting. The screen only records raw data; the core scores it. | [`PvtTestPage.tsx`](frontend/src/pages/PvtTestPage.tsx), [`AmslerTestPage.tsx`](frontend/src/pages/AmslerTestPage.tsx), [`MentalCheckinPage.tsx`](frontend/src/pages/MentalCheckinPage.tsx) |
+| **In-app tests** | Brief PVT-inspired reaction test (1-min demo), Amsler grid (one eye at a time) and the daily 0–10 check-in, each with a short explanation before starting. The screen only records raw data; the core scores it. | [`PvtTestPage.tsx`](frontend/src/pages/PvtTestPage.tsx), [`AmslerTestPage.tsx`](frontend/src/pages/AmslerTestPage.tsx), [`MentalCheckinPage.tsx`](frontend/src/pages/MentalCheckinPage.tsx) |
 | **Mental health** | Private journal (stored only on the device, never shared) and a guided breathing exercise. | [`MentalJournalPage.tsx`](frontend/src/pages/MentalJournalPage.tsx), [`MentalBreathingPage.tsx`](frontend/src/pages/MentalBreathingPage.tsx) |
 | **Self-care tips** | Concrete steps for each affected indicator; steps backed by NASA practice are labeled. | [`TipsDrawer.tsx`](frontend/src/components/TipsDrawer.tsx), [`tips.ts`](frontend/src/data/tips.ts) |
 | **Reminders and rewards** | Bell and reminders for due tests; Orbi collects stars for **completing** tests (never for results, so self-reports stay honest). | [`TopBar.tsx`](frontend/src/components/TopBar.tsx) |
@@ -177,7 +188,7 @@ The demo follows **one fictional astronaut** (`SIM-02`, Alex Rivera, Flight Engi
 | Scenario | Story | Day 42 |
 | --- | --- | --- |
 | 🟢 **Healthy** | Everything in the usual range | Green — no alert on any of the 42 days |
-| 🟡 **Deterioration** | From day 33 cabin CO₂ rises, sleep shortens and the reaction test worsens | Yellow: sleep, CO₂, PVT |
+| 🟡 **Deterioration** | From day 33 cabin CO₂ rises, sleep shortens, the reaction test worsens and fatigue goes up | Yellow: sleep, CO₂, PVT, fatigue |
 | 🟠 **Attention** | Resting heart rate 66–67 bpm on days 40–42: clinically normal, but a sustained marked deviation from Alex's own baseline | Orange: heart rate (personal baseline) |
 | 🔴 **Emergency** | Two nights under 6 h and SpO₂ 89 % with a headache | Red: SpO₂ and sleep |
 
@@ -202,6 +213,8 @@ Switch scenarios from the ⚙️ menu in the top bar. Running locally with the A
 
 **Works offline:** everything runs on board; nothing needs a connection to Earth.
 
+**Why the public link uses `demo.json`:** the demo API keeps one shared session in memory (no users, no persistence), so publishing it would let one visitor's test change what another sees, and free servers take up to a minute to wake up. The public site therefore shows the core's precomputed results; the live recalculation is shown running locally. Deploying the API with sessions and storage is future work.
+
 ---
 
 ## 10. Run it locally
@@ -211,7 +224,7 @@ Switch scenarios from the ⚙️ menu in the top bar. Running locally with the A
 ```bash
 # 1. Backend: install and test
 pip install -r backend/requirements.txt
-python -m pytest                          # 44 tests
+python -m pytest                          # 48 tests
 
 # 2. (Optional) regenerate the demo data and the backup file
 python -m backend.simulator.demo_scenarios
@@ -230,12 +243,15 @@ The ⚙️ menu shows the data source: **Live core (API)**, **Demo file** or **M
 
 ---
 
-## 11. Validation and tests
+## 11. Verification and tests
 
 - **Clinical answer key:** [`data/clinical_test_cases.csv`](data/clinical_test_cases.csv) — 188 hand-written days covering every level and the main threshold boundaries of the 10 measurements, written from the alert texts and the clinical skill, **independently of the core's code** (case list: [`docs/content/clinical_test_cases.md`](docs/content/clinical_test_cases.md)). The core matches **every non-pending expected level (more than 1,500 comparisons)** → [`test_core_vs_clinical_cases.py`](backend/tests/test_core_vs_clinical_cases.py)
 - **No false alarms:** the healthy scenario stays green for all 42 days → [`test_demo_scenarios.py`](backend/tests/test_demo_scenarios.py)
 - **Live recalculation:** API tests for check-in, PVT and Amsler → [`test_api.py`](backend/tests/test_api.py)
-- **44 automated tests** in [`backend/tests/`](backend/tests/).
+- **Not evaluable, never green:** unit tests for flat or incomplete baselines, radiation rules and API input checks → [`test_core_units.py`](backend/tests/test_core_units.py)
+- **48 automated tests** in [`backend/tests/`](backend/tests/); the frontend is built on every deploy.
+
+> **What this proves, and what it does not.** These tests show that the code applies the rules the team defined, consistently (internal verification). They do **not** show that the rules are clinically right for astronauts: that needs clinical validation with real data, which is out of the scope of a hackathon.
 
 **Open clinical decisions.** Some rules still need a team decision (what "sustained" means, single extreme readings, exact boundaries such as 7 h of sleep). The core applies a conservative **provisional** answer to each one — when in doubt, the higher level — marked PROVISIONAL in the code and listed in the [logbook](BITACORA.md).
 
@@ -244,11 +260,17 @@ The ⚙️ menu shows the data source: **Live core (API)**, **Demo file** or **M
 ## 12. Limitations and future work
 
 - **Simulated data only;** not validated with real astronauts. ORBITAL is not a medical device.
+- **Earth-based clinical thresholds** (AHA, WHO, ADA) are what NASA-STD-3001 points to, but they need clinical review before being applied in microgravity; the personal baseline layer partly addresses this.
+- **Brief PVT:** the 1-minute demo is PVT-inspired and experimental; false starts are recorded but not scored yet. A 3-minute mode would match the validated PVT-B.
+- **Radiation:** dose rate and per-event dose are not modeled yet.
+- **Demo API:** one shared in-memory session, no authentication; new results are lost on restart; an unknown flight day is rejected.
+- **Simulated communications:** notifications to the onboard doctor, flight surgeon and crewmate are computed but not delivered; My Circle message delivery is simulated; the private journal is stored on the device but not encrypted.
 - **Baseline length:** with only 7 baseline days, the standard deviation can come out too narrow by chance and cause false alarms. Future: a minimum spread, a longer baseline, or a pre-flight baseline.
 - **ML anomaly layer** (multivariate detection with cold start) was designed but left out of the MVP; it is the natural next step once more history exists.
 - **Passenger mode in the core** (thresholds by profile), conditions and age for commercial passengers.
 - **Persistent storage** (SQLite), real device integration, and implemented end-to-end encryption for My Circle.
 - **Exercise, body mass, temperature and immune signals** are documented as next indicators.
+- **Frontend tests and CI** (GitHub Actions running the tests on every push).
 
 ---
 

@@ -69,11 +69,11 @@ Media y `statistics.pstdev` (desvío poblacional) de los días 4–10. Propuesta
 | Scenario | Story / Historia | Day 42 / Día 42 |
 | --- | --- | --- |
 | `healthy` | Everything in the usual range / Todo en lo habitual | green, no alert on any day |
-| `deterioration` | From day 33 cabin CO₂ rises, sleep shortens (6.4–6.9 h) and the PVT on day 38 is worse / Desde el día 33 sube el CO₂, se duerme menos y empeora el PVT del día 38 | yellow: sleep, CO₂, PVT |
+| `deterioration` | From day 33 cabin CO₂ rises, sleep shortens (6.4–6.9 h), the PVT on day 38 is worse and fatigue rises to 5/10 / Desde el día 33 sube el CO₂, se duerme menos y empeora el PVT del día 38 | yellow: sleep, CO₂, PVT, fatigue |
 | `attention` | Deterioration + resting HR 66–67 bpm on days 40–42: clinically normal, but a sustained marked deviation from Alex's own baseline / Deterioro + FC 66–67 lpm: normal clínicamente, pero desvío marcado y sostenido de su propia línea base | orange: heart rate (personal baseline); sleep and CO₂ yellow |
 | `emergency` | Deterioration + nights under 6 h on days 41–42, SpO₂ 89 % and headache on day 42 / Deterioro + dos noches de menos de 6 h y SpO₂ 89 % con cefalea | red: SpO₂, sleep; CO₂ orange |
 
-**Schedule / Calendario:** vitals, sleep, CO₂, radiation and check-in every day; PVT on days 4, 6, 8, 10 (practice, baseline) and then every 4 days; Amsler weekly (days 5, 12, …, 40). Mood, fatigue, stress and workload use the 0–10 scale (10 = worst). Radiation rises 0.5 mSv/day (arbitrary simulated rate).
+**Schedule / Calendario:** vitals, sleep, CO₂, radiation and check-in every day; PVT on days 4, 6, 8, 10 (practice, baseline) and then every 4 days; Amsler weekly (days 5, 12, …, 40). Mood, fatigue, stress and workload use the 0–10 scale (10 = worst) and are four separate indicators with a baseline layer. Radiation rises 0.5 mSv/day (arbitrary simulated rate).
 **Calendario:** signos, sueño, CO₂, radiación y check-in todos los días; PVT en los días 4, 6, 8 y 10 (práctica, línea base) y después cada 4 días; Amsler semanal. Ánimo, fatiga, estrés y carga en escala 0–10.
 
 **Baseline days / Días de línea base:** on days 4–10 each vital is spread like the rest of the mission (offsets −1.5 to +1.5 × its daily spread). With 7 purely random days the baseline can come out too narrow by chance, and then normal days trigger false deviation alerts: an open point for the team (minimum spread or a longer baseline).

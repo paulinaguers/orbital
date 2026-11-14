@@ -36,8 +36,9 @@
                 "unit": "mmHg",
                 "level": "green",
                 "threshold_source": "AHA",
-                "systolic": 108,
-                "diastolic": 70
+                "baseline_available": true,
+                "systolic": 109,
+                "diastolic": 79
               },
               {
                 "id": "heart_rate",
@@ -45,7 +46,8 @@
                 "unit": "bpm",
                 "level": "green",
                 "threshold_source": "AHA",
-                "value": 66
+                "baseline_available": true,
+                "value": 57
               },
               {
                 "id": "spo2",
@@ -53,7 +55,8 @@
                 "unit": "%",
                 "level": "green",
                 "threshold_source": "WHO",
-                "value": 98
+                "baseline_available": true,
+                "value": 99
               }
             ]
           },
@@ -72,7 +75,8 @@
                 "unit": "h",
                 "level": "green",
                 "threshold_source": "Sleep 2022 (ISS study)",
-                "value": 7.3
+                "baseline_available": true,
+                "value": 7.5
               },
               {
                 "id": "pvt_lapses",
@@ -80,7 +84,8 @@
                 "unit": "lapses",
                 "level": "green",
                 "threshold_source": "Personal baseline",
-                "value": 1
+                "baseline_available": true,
+                "value": 3
               }
             ]
           },
@@ -99,7 +104,8 @@
                 "unit": "mg/dL",
                 "level": "green",
                 "threshold_source": "ADA",
-                "value": 99
+                "baseline_available": true,
+                "value": 106
               }
             ]
           },
@@ -120,7 +126,8 @@
                 "unit": "mmHg",
                 "level": "green",
                 "threshold_source": "NASA-STD-3001",
-                "value": 2.03
+                "baseline_available": true,
+                "value": 2.02
               },
               {
                 "id": "radiation_dose",
@@ -128,6 +135,7 @@
                 "unit": "mSv",
                 "level": "green",
                 "threshold_source": "NASA-STD-3001 (career limit 600 mSv)",
+                "baseline_available": true,
                 "value": 21.0
               },
               {
@@ -136,6 +144,7 @@
                 "unit": "",
                 "level": "green",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": "No distortion"
               }
             ]
@@ -155,7 +164,35 @@
                 "unit": "/10 (10 = worst)",
                 "level": "green",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "fatigue_score",
+                "name": "Fatigue",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": 2
+              },
+              {
+                "id": "stress_score",
+                "name": "Stress",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "workload_score",
+                "name": "Workload",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 4
               }
             ]
           }
@@ -203,86 +240,86 @@
           "points": [
             {
               "flight_day": 29,
-              "systolic": 114,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 30,
-              "systolic": 110,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 31,
-              "systolic": 113,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 32,
-              "systolic": 110,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "systolic": 107,
+              "systolic": 109,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 34,
+              "flight_day": 30,
+              "systolic": 113,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
               "systolic": 112,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 35,
-              "systolic": 115,
+              "flight_day": 32,
+              "systolic": 111,
               "diastolic": 73,
               "level": "green"
             },
             {
-              "flight_day": 36,
+              "flight_day": 33,
               "systolic": 111,
-              "diastolic": 71,
+              "diastolic": 70,
               "level": "green"
             },
             {
-              "flight_day": 37,
-              "systolic": 115,
-              "diastolic": 75,
-              "level": "green"
-            },
-            {
-              "flight_day": 38,
+              "flight_day": 34,
               "systolic": 116,
               "diastolic": 75,
               "level": "green"
             },
             {
-              "flight_day": 39,
-              "systolic": 112,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
-              "systolic": 111,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 41,
-              "systolic": 111,
+              "flight_day": 35,
+              "systolic": 110,
               "diastolic": 71,
               "level": "green"
             },
             {
-              "flight_day": 42,
+              "flight_day": 36,
+              "systolic": 118,
+              "diastolic": 71,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "systolic": 108,
-              "diastolic": 70,
+              "diastolic": 69,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "systolic": 109,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "systolic": 111,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "systolic": 117,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "systolic": 114,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "systolic": 109,
+              "diastolic": 79,
               "level": "green"
             }
           ],
@@ -301,7 +338,7 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 59,
+              "value": 54,
               "level": "green"
             },
             {
@@ -316,37 +353,37 @@
             },
             {
               "flight_day": 32,
-              "value": 63,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 62,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 36,
-              "value": 57,
-              "level": "green"
-            },
-            {
-              "flight_day": 37,
               "value": 60,
               "level": "green"
             },
             {
-              "flight_day": 38,
+              "flight_day": 33,
+              "value": 58,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 57,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 59,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 63,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "value": 62,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 56,
               "level": "green"
             },
             {
@@ -356,17 +393,17 @@
             },
             {
               "flight_day": 40,
-              "value": 61,
+              "value": 58,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 59,
+              "value": 61,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 66,
+              "value": 57,
               "level": "green"
             }
           ]
@@ -384,7 +421,7 @@
             },
             {
               "flight_day": 30,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
@@ -404,17 +441,17 @@
             },
             {
               "flight_day": 34,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 97,
+              "value": 99,
               "level": "green"
             },
             {
@@ -424,7 +461,7 @@
             },
             {
               "flight_day": 38,
-              "value": 98,
+              "value": 99,
               "level": "green"
             },
             {
@@ -434,17 +471,17 @@
             },
             {
               "flight_day": 40,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 98,
+              "value": 99,
               "level": "green"
             }
           ]
@@ -457,47 +494,47 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 93,
+              "value": 90,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 107,
+              "value": 97,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 88,
+              "value": 89,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 106,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 109,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 102,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
               "value": 95,
               "level": "green"
             },
             {
+              "flight_day": 33,
+              "value": 112,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 92,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 102,
+              "level": "green"
+            },
+            {
               "flight_day": 36,
-              "value": 99,
+              "value": 102,
               "level": "green"
             },
             {
               "flight_day": 37,
-              "value": 98,
+              "value": 106,
               "level": "green"
             },
             {
@@ -507,22 +544,22 @@
             },
             {
               "flight_day": 39,
-              "value": 98,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
               "value": 97,
               "level": "green"
             },
             {
+              "flight_day": 40,
+              "value": 101,
+              "level": "green"
+            },
+            {
               "flight_day": 41,
-              "value": 95,
+              "value": 91,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 99,
+              "value": 106,
               "level": "green"
             }
           ]
@@ -535,12 +572,12 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 7.8,
+              "value": 7.7,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 7.6,
+              "value": 7.3,
               "level": "green"
             },
             {
@@ -550,7 +587,7 @@
             },
             {
               "flight_day": 32,
-              "value": 7.1,
+              "value": 7.2,
               "level": "green"
             },
             {
@@ -560,47 +597,47 @@
             },
             {
               "flight_day": 34,
-              "value": 7.4,
+              "value": 8.0,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 7.3,
-              "level": "green"
-            },
-            {
-              "flight_day": 36,
-              "value": 7.1,
-              "level": "green"
-            },
-            {
-              "flight_day": 37,
-              "value": 7.3,
-              "level": "green"
-            },
-            {
-              "flight_day": 38,
-              "value": 7.5,
-              "level": "green"
-            },
-            {
-              "flight_day": 39,
               "value": 7.7,
               "level": "green"
             },
             {
-              "flight_day": 40,
+              "flight_day": 36,
+              "value": 7.3,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 7.6,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 7.6,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
               "value": 7.8,
               "level": "green"
             },
             {
+              "flight_day": 40,
+              "value": 7.5,
+              "level": "green"
+            },
+            {
               "flight_day": 41,
-              "value": 7.4,
+              "value": 7.1,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 7.3,
+              "value": 7.5,
               "level": "green"
             }
           ]
@@ -618,80 +655,80 @@
             },
             {
               "flight_day": 34,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
               "flight_day": 38,
-              "value": 1,
+              "value": 3,
               "level": "green"
             }
           ]
         },
         "cabin_co2": {
           "indicator": "cabin_co2",
-          "baseline_mean": 2.1,
+          "baseline_mean": 2.0,
           "baseline_low": 2.0,
           "baseline_high": 2.1,
           "points": [
             {
               "flight_day": 29,
-              "value": 2.06,
+              "value": 2.0,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 2.06,
+              "value": 2.02,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 2.06,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 33,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 34,
-              "value": 2.08,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 2.06,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 37,
-              "value": 2.05,
+              "value": 2.03,
               "level": "green"
             },
             {
               "flight_day": 38,
-              "value": 2.06,
+              "value": 2.02,
               "level": "green"
             },
             {
               "flight_day": 39,
-              "value": 2.06,
+              "value": 2.03,
               "level": "green"
             },
             {
               "flight_day": 40,
-              "value": 2.03,
+              "value": 2.02,
               "level": "green"
             },
             {
@@ -701,7 +738,7 @@
             },
             {
               "flight_day": 42,
-              "value": 2.03,
+              "value": 2.02,
               "level": "green"
             }
           ]
@@ -807,17 +844,17 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 1,
+              "value": 2,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -827,7 +864,7 @@
             },
             {
               "flight_day": 33,
-              "value": 2,
+              "value": 3,
               "level": "green"
             },
             {
@@ -837,7 +874,7 @@
             },
             {
               "flight_day": 35,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
@@ -857,12 +894,90 @@
             },
             {
               "flight_day": 39,
-              "value": 3,
+              "value": 1,
               "level": "green"
             },
             {
               "flight_day": 40,
-              "value": 1,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "fatigue_score": {
+          "indicator": "fatigue_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 3,
               "level": "green"
             },
             {
@@ -873,6 +988,162 @@
             {
               "flight_day": 42,
               "value": 2,
+              "level": "green"
+            }
+          ]
+        },
+        "stress_score": {
+          "indicator": "stress_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "workload_score": {
+          "indicator": "workload_score",
+          "baseline_mean": 4,
+          "baseline_low": 2.2,
+          "baseline_high": 5.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 4,
               "level": "green"
             }
           ]
@@ -891,7 +1162,7 @@
           "flight_day": 42
         },
         "overall_level": "yellow",
-        "overall_message": "Mostly good today. 2 areas need a little attention.",
+        "overall_message": "Mostly good today. 3 areas need a little attention.",
         "escalation": {
           "notified": []
         },
@@ -912,8 +1183,9 @@
                 "unit": "mmHg",
                 "level": "green",
                 "threshold_source": "AHA",
-                "systolic": 108,
-                "diastolic": 70
+                "baseline_available": true,
+                "systolic": 109,
+                "diastolic": 79
               },
               {
                 "id": "heart_rate",
@@ -921,7 +1193,8 @@
                 "unit": "bpm",
                 "level": "green",
                 "threshold_source": "AHA",
-                "value": 66
+                "baseline_available": true,
+                "value": 57
               },
               {
                 "id": "spo2",
@@ -929,7 +1202,8 @@
                 "unit": "%",
                 "level": "green",
                 "threshold_source": "WHO",
-                "value": 98
+                "baseline_available": true,
+                "value": 99
               }
             ]
           },
@@ -948,6 +1222,7 @@
                 "unit": "h",
                 "level": "yellow",
                 "threshold_source": "Sleep 2022 (ISS study)",
+                "baseline_available": true,
                 "value": 6.4
               },
               {
@@ -956,6 +1231,7 @@
                 "unit": "lapses",
                 "level": "yellow",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": 6
               }
             ]
@@ -975,7 +1251,8 @@
                 "unit": "mg/dL",
                 "level": "green",
                 "threshold_source": "ADA",
-                "value": 99
+                "baseline_available": true,
+                "value": 106
               }
             ]
           },
@@ -996,6 +1273,7 @@
                 "unit": "mmHg",
                 "level": "yellow",
                 "threshold_source": "NASA-STD-3001",
+                "baseline_available": true,
                 "value": 2.54
               },
               {
@@ -1004,6 +1282,7 @@
                 "unit": "mSv",
                 "level": "green",
                 "threshold_source": "NASA-STD-3001 (career limit 600 mSv)",
+                "baseline_available": true,
                 "value": 21.0
               },
               {
@@ -1012,6 +1291,7 @@
                 "unit": "",
                 "level": "green",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": "No distortion"
               }
             ]
@@ -1019,11 +1299,11 @@
           {
             "id": "mental_health",
             "name": "Mental Health",
-            "level": "green",
+            "level": "yellow",
             "nasa_risk": [
               "NASA HRP: Behavioral Conditions"
             ],
-            "recommendation": "All stable. Keep your routine.",
+            "recommendation": "Your fatigue is higher than your usual. Soft warning: monitor. No consultation needed.",
             "indicators": [
               {
                 "id": "mood_score",
@@ -1031,7 +1311,35 @@
                 "unit": "/10 (10 = worst)",
                 "level": "green",
                 "threshold_source": "Personal baseline",
-                "value": 2
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "fatigue_score",
+                "name": "Fatigue",
+                "unit": "/10 (10 = worst)",
+                "level": "yellow",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 5
+              },
+              {
+                "id": "stress_score",
+                "name": "Stress",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "workload_score",
+                "name": "Workload",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 4
               }
             ]
           }
@@ -1079,86 +1387,86 @@
           "points": [
             {
               "flight_day": 29,
-              "systolic": 114,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 30,
-              "systolic": 110,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 31,
-              "systolic": 113,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 32,
-              "systolic": 110,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "systolic": 107,
+              "systolic": 109,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 34,
+              "flight_day": 30,
+              "systolic": 113,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
               "systolic": 112,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 35,
-              "systolic": 115,
+              "flight_day": 32,
+              "systolic": 111,
               "diastolic": 73,
               "level": "green"
             },
             {
-              "flight_day": 36,
+              "flight_day": 33,
               "systolic": 111,
-              "diastolic": 71,
+              "diastolic": 70,
               "level": "green"
             },
             {
-              "flight_day": 37,
-              "systolic": 115,
-              "diastolic": 75,
-              "level": "green"
-            },
-            {
-              "flight_day": 38,
+              "flight_day": 34,
               "systolic": 116,
               "diastolic": 75,
               "level": "green"
             },
             {
-              "flight_day": 39,
-              "systolic": 112,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
-              "systolic": 111,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 41,
-              "systolic": 111,
+              "flight_day": 35,
+              "systolic": 110,
               "diastolic": 71,
               "level": "green"
             },
             {
-              "flight_day": 42,
+              "flight_day": 36,
+              "systolic": 118,
+              "diastolic": 71,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "systolic": 108,
-              "diastolic": 70,
+              "diastolic": 69,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "systolic": 109,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "systolic": 111,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "systolic": 117,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "systolic": 114,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "systolic": 109,
+              "diastolic": 79,
               "level": "green"
             }
           ],
@@ -1177,7 +1485,7 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 59,
+              "value": 54,
               "level": "green"
             },
             {
@@ -1192,37 +1500,37 @@
             },
             {
               "flight_day": 32,
-              "value": 63,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 62,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 36,
-              "value": 57,
-              "level": "green"
-            },
-            {
-              "flight_day": 37,
               "value": 60,
               "level": "green"
             },
             {
-              "flight_day": 38,
+              "flight_day": 33,
+              "value": 58,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 57,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 59,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 63,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "value": 62,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 56,
               "level": "green"
             },
             {
@@ -1232,17 +1540,17 @@
             },
             {
               "flight_day": 40,
-              "value": 61,
+              "value": 58,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 59,
+              "value": 61,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 66,
+              "value": 57,
               "level": "green"
             }
           ]
@@ -1260,7 +1568,7 @@
             },
             {
               "flight_day": 30,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
@@ -1280,17 +1588,17 @@
             },
             {
               "flight_day": 34,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 97,
+              "value": 99,
               "level": "green"
             },
             {
@@ -1300,7 +1608,7 @@
             },
             {
               "flight_day": 38,
-              "value": 98,
+              "value": 99,
               "level": "green"
             },
             {
@@ -1310,17 +1618,17 @@
             },
             {
               "flight_day": 40,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 98,
+              "value": 99,
               "level": "green"
             }
           ]
@@ -1333,47 +1641,47 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 93,
+              "value": 90,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 107,
+              "value": 97,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 88,
+              "value": 89,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 106,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 109,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 102,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
               "value": 95,
               "level": "green"
             },
             {
+              "flight_day": 33,
+              "value": 112,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 92,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 102,
+              "level": "green"
+            },
+            {
               "flight_day": 36,
-              "value": 99,
+              "value": 102,
               "level": "green"
             },
             {
               "flight_day": 37,
-              "value": 98,
+              "value": 106,
               "level": "green"
             },
             {
@@ -1383,22 +1691,22 @@
             },
             {
               "flight_day": 39,
-              "value": 98,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
               "value": 97,
               "level": "green"
             },
             {
+              "flight_day": 40,
+              "value": 101,
+              "level": "green"
+            },
+            {
               "flight_day": 41,
-              "value": 95,
+              "value": 91,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 99,
+              "value": 106,
               "level": "green"
             }
           ]
@@ -1411,12 +1719,12 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 7.8,
+              "value": 7.7,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 7.6,
+              "value": 7.3,
               "level": "green"
             },
             {
@@ -1426,7 +1734,7 @@
             },
             {
               "flight_day": 32,
-              "value": 7.1,
+              "value": 7.2,
               "level": "green"
             },
             {
@@ -1436,12 +1744,12 @@
             },
             {
               "flight_day": 34,
-              "value": 7.4,
+              "value": 8.0,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 7.3,
+              "value": 7.7,
               "level": "green"
             },
             {
@@ -1494,7 +1802,7 @@
             },
             {
               "flight_day": 34,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -1506,48 +1814,48 @@
         },
         "cabin_co2": {
           "indicator": "cabin_co2",
-          "baseline_mean": 2.1,
+          "baseline_mean": 2.0,
           "baseline_low": 2.0,
           "baseline_high": 2.1,
           "points": [
             {
               "flight_day": 29,
-              "value": 2.06,
+              "value": 2.0,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 2.06,
+              "value": 2.02,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 2.06,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 33,
-              "value": 2.08,
+              "value": 2.03,
               "level": "green"
             },
             {
               "flight_day": 34,
-              "value": 2.1,
+              "value": 2.06,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 2.12,
+              "value": 2.1,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 2.16,
+              "value": 2.15,
               "level": "green"
             },
             {
@@ -1557,7 +1865,7 @@
             },
             {
               "flight_day": 38,
-              "value": 2.26,
+              "value": 2.27,
               "level": "green"
             },
             {
@@ -1683,17 +1991,17 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 1,
+              "value": 2,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -1703,7 +2011,7 @@
             },
             {
               "flight_day": 33,
-              "value": 2,
+              "value": 3,
               "level": "green"
             },
             {
@@ -1713,7 +2021,7 @@
             },
             {
               "flight_day": 35,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
@@ -1733,12 +2041,246 @@
             },
             {
               "flight_day": 39,
+              "value": 1,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "fatigue_score": {
+          "indicator": "fatigue_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 39,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 41,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 42,
+              "value": 5,
+              "level": "yellow"
+            }
+          ]
+        },
+        "stress_score": {
+          "indicator": "stress_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
               "value": 3,
               "level": "green"
             },
             {
               "flight_day": 40,
-              "value": 1,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "workload_score": {
+          "indicator": "workload_score",
+          "baseline_mean": 4,
+          "baseline_low": 2.2,
+          "baseline_high": 5.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
               "level": "green"
             },
             {
@@ -1748,7 +2290,7 @@
             },
             {
               "flight_day": 42,
-              "value": 2,
+              "value": 4,
               "level": "green"
             }
           ]
@@ -1791,8 +2333,9 @@
                 "unit": "mmHg",
                 "level": "green",
                 "threshold_source": "AHA",
-                "systolic": 108,
-                "diastolic": 70
+                "baseline_available": true,
+                "systolic": 109,
+                "diastolic": 79
               },
               {
                 "id": "heart_rate",
@@ -1800,6 +2343,7 @@
                 "unit": "bpm",
                 "level": "orange",
                 "threshold_source": "AHA",
+                "baseline_available": true,
                 "value": 66
               },
               {
@@ -1808,7 +2352,8 @@
                 "unit": "%",
                 "level": "green",
                 "threshold_source": "WHO",
-                "value": 98
+                "baseline_available": true,
+                "value": 99
               }
             ]
           },
@@ -1827,6 +2372,7 @@
                 "unit": "h",
                 "level": "yellow",
                 "threshold_source": "Sleep 2022 (ISS study)",
+                "baseline_available": true,
                 "value": 6.4
               },
               {
@@ -1835,6 +2381,7 @@
                 "unit": "lapses",
                 "level": "yellow",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": 6
               }
             ]
@@ -1854,7 +2401,8 @@
                 "unit": "mg/dL",
                 "level": "green",
                 "threshold_source": "ADA",
-                "value": 99
+                "baseline_available": true,
+                "value": 106
               }
             ]
           },
@@ -1875,6 +2423,7 @@
                 "unit": "mmHg",
                 "level": "yellow",
                 "threshold_source": "NASA-STD-3001",
+                "baseline_available": true,
                 "value": 2.54
               },
               {
@@ -1883,6 +2432,7 @@
                 "unit": "mSv",
                 "level": "green",
                 "threshold_source": "NASA-STD-3001 (career limit 600 mSv)",
+                "baseline_available": true,
                 "value": 21.0
               },
               {
@@ -1891,6 +2441,7 @@
                 "unit": "",
                 "level": "green",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": "No distortion"
               }
             ]
@@ -1898,11 +2449,11 @@
           {
             "id": "mental_health",
             "name": "Mental Health",
-            "level": "green",
+            "level": "yellow",
             "nasa_risk": [
               "NASA HRP: Behavioral Conditions"
             ],
-            "recommendation": "All stable. Keep your routine.",
+            "recommendation": "Your fatigue is higher than your usual. Soft warning: monitor. No consultation needed.",
             "indicators": [
               {
                 "id": "mood_score",
@@ -1910,7 +2461,35 @@
                 "unit": "/10 (10 = worst)",
                 "level": "green",
                 "threshold_source": "Personal baseline",
-                "value": 2
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "fatigue_score",
+                "name": "Fatigue",
+                "unit": "/10 (10 = worst)",
+                "level": "yellow",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 5
+              },
+              {
+                "id": "stress_score",
+                "name": "Stress",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "workload_score",
+                "name": "Workload",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 4
               }
             ]
           }
@@ -1958,86 +2537,86 @@
           "points": [
             {
               "flight_day": 29,
-              "systolic": 114,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 30,
-              "systolic": 110,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 31,
-              "systolic": 113,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 32,
-              "systolic": 110,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "systolic": 107,
+              "systolic": 109,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 34,
+              "flight_day": 30,
+              "systolic": 113,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
               "systolic": 112,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 35,
-              "systolic": 115,
+              "flight_day": 32,
+              "systolic": 111,
               "diastolic": 73,
               "level": "green"
             },
             {
-              "flight_day": 36,
+              "flight_day": 33,
               "systolic": 111,
-              "diastolic": 71,
+              "diastolic": 70,
               "level": "green"
             },
             {
-              "flight_day": 37,
-              "systolic": 115,
-              "diastolic": 75,
-              "level": "green"
-            },
-            {
-              "flight_day": 38,
+              "flight_day": 34,
               "systolic": 116,
               "diastolic": 75,
               "level": "green"
             },
             {
-              "flight_day": 39,
-              "systolic": 112,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
-              "systolic": 111,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 41,
-              "systolic": 111,
+              "flight_day": 35,
+              "systolic": 110,
               "diastolic": 71,
               "level": "green"
             },
             {
-              "flight_day": 42,
+              "flight_day": 36,
+              "systolic": 118,
+              "diastolic": 71,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "systolic": 108,
-              "diastolic": 70,
+              "diastolic": 69,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "systolic": 109,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "systolic": 111,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "systolic": 117,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "systolic": 114,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "systolic": 109,
+              "diastolic": 79,
               "level": "green"
             }
           ],
@@ -2056,7 +2635,7 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 59,
+              "value": 54,
               "level": "green"
             },
             {
@@ -2071,37 +2650,37 @@
             },
             {
               "flight_day": 32,
-              "value": 63,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 62,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 36,
-              "value": 57,
-              "level": "green"
-            },
-            {
-              "flight_day": 37,
               "value": 60,
               "level": "green"
             },
             {
-              "flight_day": 38,
+              "flight_day": 33,
+              "value": 58,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 57,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 59,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 63,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "value": 62,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 56,
               "level": "green"
             },
             {
@@ -2139,7 +2718,7 @@
             },
             {
               "flight_day": 30,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
@@ -2159,17 +2738,17 @@
             },
             {
               "flight_day": 34,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 97,
+              "value": 99,
               "level": "green"
             },
             {
@@ -2179,7 +2758,7 @@
             },
             {
               "flight_day": 38,
-              "value": 98,
+              "value": 99,
               "level": "green"
             },
             {
@@ -2189,17 +2768,17 @@
             },
             {
               "flight_day": 40,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 98,
+              "value": 99,
               "level": "green"
             }
           ]
@@ -2212,47 +2791,47 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 93,
+              "value": 90,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 107,
+              "value": 97,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 88,
+              "value": 89,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 106,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 109,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 102,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
               "value": 95,
               "level": "green"
             },
             {
+              "flight_day": 33,
+              "value": 112,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 92,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 102,
+              "level": "green"
+            },
+            {
               "flight_day": 36,
-              "value": 99,
+              "value": 102,
               "level": "green"
             },
             {
               "flight_day": 37,
-              "value": 98,
+              "value": 106,
               "level": "green"
             },
             {
@@ -2262,22 +2841,22 @@
             },
             {
               "flight_day": 39,
-              "value": 98,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
               "value": 97,
               "level": "green"
             },
             {
+              "flight_day": 40,
+              "value": 101,
+              "level": "green"
+            },
+            {
               "flight_day": 41,
-              "value": 95,
+              "value": 91,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 99,
+              "value": 106,
               "level": "green"
             }
           ]
@@ -2290,12 +2869,12 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 7.8,
+              "value": 7.7,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 7.6,
+              "value": 7.3,
               "level": "green"
             },
             {
@@ -2305,7 +2884,7 @@
             },
             {
               "flight_day": 32,
-              "value": 7.1,
+              "value": 7.2,
               "level": "green"
             },
             {
@@ -2315,12 +2894,12 @@
             },
             {
               "flight_day": 34,
-              "value": 7.4,
+              "value": 8.0,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 7.3,
+              "value": 7.7,
               "level": "green"
             },
             {
@@ -2373,7 +2952,7 @@
             },
             {
               "flight_day": 34,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -2385,48 +2964,48 @@
         },
         "cabin_co2": {
           "indicator": "cabin_co2",
-          "baseline_mean": 2.1,
+          "baseline_mean": 2.0,
           "baseline_low": 2.0,
           "baseline_high": 2.1,
           "points": [
             {
               "flight_day": 29,
-              "value": 2.06,
+              "value": 2.0,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 2.06,
+              "value": 2.02,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 2.06,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 33,
-              "value": 2.08,
+              "value": 2.03,
               "level": "green"
             },
             {
               "flight_day": 34,
-              "value": 2.1,
+              "value": 2.06,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 2.12,
+              "value": 2.1,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 2.16,
+              "value": 2.15,
               "level": "green"
             },
             {
@@ -2436,7 +3015,7 @@
             },
             {
               "flight_day": 38,
-              "value": 2.26,
+              "value": 2.27,
               "level": "green"
             },
             {
@@ -2562,17 +3141,17 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 1,
+              "value": 2,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -2582,7 +3161,7 @@
             },
             {
               "flight_day": 33,
-              "value": 2,
+              "value": 3,
               "level": "green"
             },
             {
@@ -2592,7 +3171,7 @@
             },
             {
               "flight_day": 35,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
@@ -2612,12 +3191,246 @@
             },
             {
               "flight_day": 39,
+              "value": 1,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "fatigue_score": {
+          "indicator": "fatigue_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 39,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 41,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 42,
+              "value": 5,
+              "level": "yellow"
+            }
+          ]
+        },
+        "stress_score": {
+          "indicator": "stress_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
               "value": 3,
               "level": "green"
             },
             {
               "flight_day": 40,
-              "value": 1,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "workload_score": {
+          "indicator": "workload_score",
+          "baseline_mean": 4,
+          "baseline_low": 2.2,
+          "baseline_high": 5.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
               "level": "green"
             },
             {
@@ -2627,7 +3440,7 @@
             },
             {
               "flight_day": 42,
-              "value": 2,
+              "value": 4,
               "level": "green"
             }
           ]
@@ -2671,8 +3484,9 @@
                 "unit": "mmHg",
                 "level": "green",
                 "threshold_source": "AHA",
-                "systolic": 108,
-                "diastolic": 70
+                "baseline_available": true,
+                "systolic": 109,
+                "diastolic": 79
               },
               {
                 "id": "heart_rate",
@@ -2680,6 +3494,7 @@
                 "unit": "bpm",
                 "level": "green",
                 "threshold_source": "AHA",
+                "baseline_available": true,
                 "value": 74
               },
               {
@@ -2688,6 +3503,7 @@
                 "unit": "%",
                 "level": "red",
                 "threshold_source": "WHO",
+                "baseline_available": true,
                 "value": 89
               }
             ]
@@ -2707,6 +3523,7 @@
                 "unit": "h",
                 "level": "red",
                 "threshold_source": "Sleep 2022 (ISS study)",
+                "baseline_available": true,
                 "value": 5.4
               },
               {
@@ -2715,6 +3532,7 @@
                 "unit": "lapses",
                 "level": "yellow",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": 6
               }
             ]
@@ -2734,7 +3552,8 @@
                 "unit": "mg/dL",
                 "level": "green",
                 "threshold_source": "ADA",
-                "value": 99
+                "baseline_available": true,
+                "value": 106
               }
             ]
           },
@@ -2755,6 +3574,7 @@
                 "unit": "mmHg",
                 "level": "orange",
                 "threshold_source": "NASA-STD-3001",
+                "baseline_available": true,
                 "value": 2.54
               },
               {
@@ -2763,6 +3583,7 @@
                 "unit": "mSv",
                 "level": "green",
                 "threshold_source": "NASA-STD-3001 (career limit 600 mSv)",
+                "baseline_available": true,
                 "value": 21.0
               },
               {
@@ -2771,6 +3592,7 @@
                 "unit": "",
                 "level": "green",
                 "threshold_source": "Personal baseline",
+                "baseline_available": true,
                 "value": "No distortion"
               }
             ]
@@ -2778,11 +3600,11 @@
           {
             "id": "mental_health",
             "name": "Mental Health",
-            "level": "green",
+            "level": "yellow",
             "nasa_risk": [
               "NASA HRP: Behavioral Conditions"
             ],
-            "recommendation": "All stable. Keep your routine.",
+            "recommendation": "Your fatigue is higher than your usual. Soft warning: monitor. No consultation needed.",
             "indicators": [
               {
                 "id": "mood_score",
@@ -2790,7 +3612,35 @@
                 "unit": "/10 (10 = worst)",
                 "level": "green",
                 "threshold_source": "Personal baseline",
-                "value": 2
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "fatigue_score",
+                "name": "Fatigue",
+                "unit": "/10 (10 = worst)",
+                "level": "yellow",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 5
+              },
+              {
+                "id": "stress_score",
+                "name": "Stress",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 3
+              },
+              {
+                "id": "workload_score",
+                "name": "Workload",
+                "unit": "/10 (10 = worst)",
+                "level": "green",
+                "threshold_source": "Personal baseline",
+                "baseline_available": true,
+                "value": 4
               }
             ]
           }
@@ -2838,86 +3688,86 @@
           "points": [
             {
               "flight_day": 29,
-              "systolic": 114,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 30,
-              "systolic": 110,
-              "diastolic": 73,
-              "level": "green"
-            },
-            {
-              "flight_day": 31,
-              "systolic": 113,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 32,
-              "systolic": 110,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "systolic": 107,
+              "systolic": 109,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 34,
+              "flight_day": 30,
+              "systolic": 113,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
               "systolic": 112,
               "diastolic": 72,
               "level": "green"
             },
             {
-              "flight_day": 35,
-              "systolic": 115,
+              "flight_day": 32,
+              "systolic": 111,
               "diastolic": 73,
               "level": "green"
             },
             {
-              "flight_day": 36,
+              "flight_day": 33,
               "systolic": 111,
-              "diastolic": 71,
+              "diastolic": 70,
               "level": "green"
             },
             {
-              "flight_day": 37,
-              "systolic": 115,
-              "diastolic": 75,
-              "level": "green"
-            },
-            {
-              "flight_day": 38,
+              "flight_day": 34,
               "systolic": 116,
               "diastolic": 75,
               "level": "green"
             },
             {
-              "flight_day": 39,
-              "systolic": 112,
-              "diastolic": 70,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
-              "systolic": 111,
-              "diastolic": 74,
-              "level": "green"
-            },
-            {
-              "flight_day": 41,
-              "systolic": 111,
+              "flight_day": 35,
+              "systolic": 110,
               "diastolic": 71,
               "level": "green"
             },
             {
-              "flight_day": 42,
+              "flight_day": 36,
+              "systolic": 118,
+              "diastolic": 71,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "systolic": 108,
-              "diastolic": 70,
+              "diastolic": 69,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "systolic": 109,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "systolic": 111,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "systolic": 117,
+              "diastolic": 72,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "systolic": 114,
+              "diastolic": 73,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "systolic": 109,
+              "diastolic": 79,
               "level": "green"
             }
           ],
@@ -2936,7 +3786,7 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 59,
+              "value": 54,
               "level": "green"
             },
             {
@@ -2951,37 +3801,37 @@
             },
             {
               "flight_day": 32,
-              "value": 63,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 62,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
-              "value": 64,
-              "level": "green"
-            },
-            {
-              "flight_day": 36,
-              "value": 57,
-              "level": "green"
-            },
-            {
-              "flight_day": 37,
               "value": 60,
               "level": "green"
             },
             {
-              "flight_day": 38,
+              "flight_day": 33,
+              "value": 58,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 57,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 59,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 63,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
               "value": 62,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 56,
               "level": "green"
             },
             {
@@ -2991,12 +3841,12 @@
             },
             {
               "flight_day": 40,
-              "value": 61,
+              "value": 58,
               "level": "green"
             },
             {
               "flight_day": 41,
-              "value": 59,
+              "value": 61,
               "level": "green"
             },
             {
@@ -3019,7 +3869,7 @@
             },
             {
               "flight_day": 30,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
@@ -3039,17 +3889,17 @@
             },
             {
               "flight_day": 34,
-              "value": 99,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 97,
+              "value": 99,
               "level": "green"
             },
             {
@@ -3059,7 +3909,7 @@
             },
             {
               "flight_day": 38,
-              "value": 98,
+              "value": 99,
               "level": "green"
             },
             {
@@ -3069,7 +3919,7 @@
             },
             {
               "flight_day": 40,
-              "value": 97,
+              "value": 98,
               "level": "green"
             },
             {
@@ -3092,47 +3942,47 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 93,
+              "value": 90,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 107,
+              "value": 97,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 88,
+              "value": 89,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 106,
-              "level": "green"
-            },
-            {
-              "flight_day": 33,
-              "value": 109,
-              "level": "green"
-            },
-            {
-              "flight_day": 34,
-              "value": 102,
-              "level": "green"
-            },
-            {
-              "flight_day": 35,
               "value": 95,
               "level": "green"
             },
             {
+              "flight_day": 33,
+              "value": 112,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 92,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 102,
+              "level": "green"
+            },
+            {
               "flight_day": 36,
-              "value": 99,
+              "value": 102,
               "level": "green"
             },
             {
               "flight_day": 37,
-              "value": 98,
+              "value": 106,
               "level": "green"
             },
             {
@@ -3142,22 +3992,22 @@
             },
             {
               "flight_day": 39,
-              "value": 98,
-              "level": "green"
-            },
-            {
-              "flight_day": 40,
               "value": 97,
               "level": "green"
             },
             {
+              "flight_day": 40,
+              "value": 101,
+              "level": "green"
+            },
+            {
               "flight_day": 41,
-              "value": 95,
+              "value": 91,
               "level": "green"
             },
             {
               "flight_day": 42,
-              "value": 99,
+              "value": 106,
               "level": "green"
             }
           ]
@@ -3170,12 +4020,12 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 7.8,
+              "value": 7.7,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 7.6,
+              "value": 7.3,
               "level": "green"
             },
             {
@@ -3185,7 +4035,7 @@
             },
             {
               "flight_day": 32,
-              "value": 7.1,
+              "value": 7.2,
               "level": "green"
             },
             {
@@ -3195,12 +4045,12 @@
             },
             {
               "flight_day": 34,
-              "value": 7.4,
+              "value": 8.0,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 7.3,
+              "value": 7.7,
               "level": "green"
             },
             {
@@ -3253,7 +4103,7 @@
             },
             {
               "flight_day": 34,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -3265,48 +4115,48 @@
         },
         "cabin_co2": {
           "indicator": "cabin_co2",
-          "baseline_mean": 2.1,
+          "baseline_mean": 2.0,
           "baseline_low": 2.0,
           "baseline_high": 2.1,
           "points": [
             {
               "flight_day": 29,
-              "value": 2.06,
+              "value": 2.0,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 2.07,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 2.06,
+              "value": 2.02,
               "level": "green"
             },
             {
               "flight_day": 32,
-              "value": 2.06,
+              "value": 2.01,
               "level": "green"
             },
             {
               "flight_day": 33,
-              "value": 2.08,
+              "value": 2.03,
               "level": "green"
             },
             {
               "flight_day": 34,
-              "value": 2.1,
+              "value": 2.06,
               "level": "green"
             },
             {
               "flight_day": 35,
-              "value": 2.12,
+              "value": 2.1,
               "level": "green"
             },
             {
               "flight_day": 36,
-              "value": 2.16,
+              "value": 2.15,
               "level": "green"
             },
             {
@@ -3316,7 +4166,7 @@
             },
             {
               "flight_day": 38,
-              "value": 2.26,
+              "value": 2.27,
               "level": "green"
             },
             {
@@ -3442,17 +4292,17 @@
           "points": [
             {
               "flight_day": 29,
-              "value": 1,
+              "value": 2,
               "level": "green"
             },
             {
               "flight_day": 30,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
               "flight_day": 31,
-              "value": 3,
+              "value": 2,
               "level": "green"
             },
             {
@@ -3462,7 +4312,7 @@
             },
             {
               "flight_day": 33,
-              "value": 2,
+              "value": 3,
               "level": "green"
             },
             {
@@ -3472,7 +4322,7 @@
             },
             {
               "flight_day": 35,
-              "value": 1,
+              "value": 3,
               "level": "green"
             },
             {
@@ -3492,12 +4342,246 @@
             },
             {
               "flight_day": 39,
+              "value": 1,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "fatigue_score": {
+          "indicator": "fatigue_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 39,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 41,
+              "value": 5,
+              "level": "yellow"
+            },
+            {
+              "flight_day": 42,
+              "value": 5,
+              "level": "yellow"
+            }
+          ]
+        },
+        "stress_score": {
+          "indicator": "stress_score",
+          "baseline_mean": 3,
+          "baseline_low": 1.2,
+          "baseline_high": 4.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 2,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
               "value": 3,
               "level": "green"
             },
             {
               "flight_day": 40,
-              "value": 1,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 41,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 42,
+              "value": 3,
+              "level": "green"
+            }
+          ]
+        },
+        "workload_score": {
+          "indicator": "workload_score",
+          "baseline_mean": 4,
+          "baseline_low": 2.2,
+          "baseline_high": 5.8,
+          "points": [
+            {
+              "flight_day": 29,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 30,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 31,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 32,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 33,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 34,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 35,
+              "value": 4,
+              "level": "green"
+            },
+            {
+              "flight_day": 36,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 37,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 38,
+              "value": 5,
+              "level": "green"
+            },
+            {
+              "flight_day": 39,
+              "value": 3,
+              "level": "green"
+            },
+            {
+              "flight_day": 40,
+              "value": 5,
               "level": "green"
             },
             {
@@ -3507,7 +4591,7 @@
             },
             {
               "flight_day": 42,
-              "value": 2,
+              "value": 4,
               "level": "green"
             }
           ]

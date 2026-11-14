@@ -75,6 +75,8 @@ VITALS = {
 BASELINE_OFFSETS = [-1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5]
 BASELINE_DISCRETE = {
     "spo2": [97, 98, 99, 98, 97, 99, 98], "mood_score": [1, 2, 3, 2, 1, 3, 2],
+    "fatigue_score": [1, 2, 3, 4, 5, 3, 3], "stress_score": [1, 2, 3, 4, 5, 3, 3],
+    "workload_score": [2, 3, 4, 5, 6, 4, 4],
 }
 PVT_BASELINE = {4: 1, 6: 3, 8: 2, 10: 4}
 
@@ -116,9 +118,9 @@ def normal_day(rng, flight_day, offsets):
         "spo2": discrete_value(rng, "spo2", flight_day, [97, 98, 98, 98, 99, 99]),
         "sleep_hours": min(8.4, max(7.1, round(rng.gauss(7.5, 0.25), 1))),
         "mood_score": discrete_value(rng, "mood_score", flight_day, [1, 2, 2, 2, 3, 3]),
-        "fatigue_score": rng.choice([2, 3, 3, 4]),
-        "stress_score": rng.choice([2, 2, 3, 3, 4]),
-        "workload_score": rng.choice([3, 4, 4, 5]),
+        "fatigue_score": discrete_value(rng, "fatigue_score", flight_day, [2, 3, 3, 4]),
+        "stress_score": discrete_value(rng, "stress_score", flight_day, [2, 2, 3, 3, 4]),
+        "workload_score": discrete_value(rng, "workload_score", flight_day, [3, 4, 4, 5]),
         "pvt_lapses": pvt_value(rng, flight_day),
         "vision_amsler": "no_change" if flight_day in AMSLER_DAYS else None,
         "cabin_co2_daily_avg": co2_daily,
@@ -142,7 +144,7 @@ def apply_deterioration(day):
     short_nights = {36: 6.9, 37: 6.8, 38: 6.6, 39: 6.5, 40: 6.7, 41: 6.5, 42: 6.4}
     if d in short_nights:
         day["sleep_hours"] = short_nights[d]
-        day["fatigue_score"] = 5 if d < 40 else 6
+        day["fatigue_score"] = 5
     if d == 38:
         day["pvt_lapses"] = 6
 

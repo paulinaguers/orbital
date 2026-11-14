@@ -298,6 +298,21 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Pending: update the code glossary (sent, it must be copied into `.claude/` by hand), team confirmation of the provisional decisions, thread C updates to `alert_texts.md` and the answer key.
 - Commit: no commit
 
+### [2026-11-14 20:30] Corrections after an external review
+- Thread: A
+- Type: decision
+- What was done: an external AI review (ChatGPT) of the repo was read point by point and checked against the code and the project documents. Applied:
+  - **Not evaluable, never green:** a baseline needs at least 5 of the 7 baseline days (PVT: 3 sessions). With too few values or no spread, the check-in scales and the PVT show `not_evaluable` instead of green; other measurements keep their clinical level and flag `baseline_available: false`.
+  - **Fatigue, stress and workload** are now separate indicators in the Mental Health block, each with a baseline layer (escalas-y-protocolos.md §2.1). The deterioration scenario now also shows higher fatigue (yellow).
+  - **Radiation as exposure tracking:** the cumulative dose reaches orange at most (from 65 % of the career limit); red only for a solar storm in progress. Answer key updated (RAD-07 and RAD-11 now orange) and alert_texts.md §7b updated. RAD-65 resolved.
+  - **Brief PVT:** presented as a 1-minute PVT-inspired experimental test, not the validated 3-minute PVT-B; false starts are stored but not scored.
+  - **API:** an unknown flight day returns 422 instead of using the last day.
+  - **README:** "Validation" renamed "Verification", with an explicit note that the tests prove internal consistency, not clinical validity; limitations completed; why the public link uses demo.json.
+- Not applied, with reasons: (1) "glucose, CO₂ and Amsler were not in the MVP" is not correct: the project document on NASA risks marks them MVP (3), (6) and (7), and the challenge asks for glucose; (2) deploying the API publicly now would share one in-memory session among all visitors and add cold starts, so the public link keeps demo.json and the live recalculation is shown locally; (3) the frontend build was verified with a clean install and builds on every Vercel deploy.
+- AI tools: ChatGPT (external review); Claude evaluated each point, changed the code, data, tests and docs.
+- Human review: Paulina read the review, approved the plan and the two decisions (radiation as exposure tracking; brief PVT presentation). Thread C (Miguel) to confirm the radiation change in alert_texts.md and the answer key, and to review the fallback texts for fatigue, stress and workload in export_demo.py.
+- Commit: (complete with hash)
+
 ## Sunday 15/11
 
 <!-- -->

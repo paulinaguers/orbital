@@ -50,11 +50,12 @@ def test_healthy_scenario_has_no_alerts_at_all():
         assert set(result["final"].values()) <= {"green", None}, result["flight_day"]
 
 
-def test_deterioration_ends_yellow_in_sleep_co2_and_pvt():
+def test_deterioration_ends_yellow_in_sleep_co2_pvt_and_fatigue():
     """The demo story: soft warnings, no consultation. / Avisos suaves, sin consulta."""
     levels, overall = day42("deterioration")
     assert overall == "yellow"
-    assert {m for m, lvl in levels.items() if lvl != "green"} == {"sleep_hours", "cabin_co2", "pvt_lapses"}
+    assert {m for m, lvl in levels.items() if lvl != "green"} == {
+        "sleep_hours", "cabin_co2", "pvt_lapses", "fatigue_score"}
 
 
 def test_attention_ends_orange_from_the_personal_baseline():
