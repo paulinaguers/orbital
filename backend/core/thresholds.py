@@ -76,12 +76,16 @@ THRESHOLDS = {
     # hypotension: NHLBI, NHS inform.
     # ------------------------------------------------------------------
     "blood_pressure": {
-        # Open decision: the skill does not say whether green ("< 130 / < 80")
-        # and orange ("130–180 / 80–120") combine systolic and diastolic with
-        # AND or with OR; only red says "and/or".
-        # Decisión pendiente: la skill no dice si el verde ("< 130 / < 80") y
-        # el naranja ("130–180 / 80–120") combinan sistólica y diastólica con
-        # Y o con O; solo el rojo dice "y/o".
+        # Systolic and diastolic in different categories: the higher category
+        # wins (ACC/AHA 2017 guideline, AFP summary
+        # https://www.aafp.org/afp/2018/0315/p413; 2025 update, Hypertension
+        # 2025;82(10):e212-e316, https://doi.org/10.1161/HYP.0000000000000249).
+        # So green = systolic < 130 AND diastolic < 80;
+        # orange = systolic 130-180 OR diastolic 80-120.
+        # Sistólica y diastólica en categorías distintas: gana la más alta
+        # (guía ACC/AHA 2017, resumen de AFP; actualización 2025). Entonces
+        # verde = sistólica < 130 Y diastólica < 80; naranja = sistólica
+        # 130-180 O diastólica 80-120.
         "green_systolic_below": 130,  # AHA
         "green_diastolic_below": 80,  # AHA
         "orange_systolic_range": (130, 180),  # AHA

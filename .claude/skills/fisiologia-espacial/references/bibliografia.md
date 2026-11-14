@@ -72,6 +72,8 @@ Todas las referencias citadas en los documentos del equipo. Agrupadas por docume
 - Myatt, R. (2017). Pulse oximetry: what the nurse needs to know. *Nursing Standard*. https://journals.rcni.com/nursing-standard/pulse-oximetry-what-the-nurse-needs-to-know-ns.2017.e9940
 - AHA. All About Heart Rate. https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse
 - NHS inform. Low blood pressure (hypotension). https://www.nhsinform.scot/illnesses-and-conditions/a-to-z/low-blood-pressure-hypotension/
+- American Family Physician (15/03/2018), p. 413. Resumen de la guía ACC/AHA 2017 de presión arterial: "patients whose systolic and diastolic BP are in different categories should be assigned to the higher category". https://www.aafp.org/afp/2018/0315/p413 (agregada el 14/11/2026: sistólica y diastólica en categorías distintas → gana la más alta)
+- ACC/AHA. (2025). Actualización de la guía de presión arterial. *Hypertension*, 82(10), e212–e316. doi:10.1161/HYP.0000000000000249. https://doi.org/10.1161/HYP.0000000000000249 (agregada el 14/11/2026)
 
 ## D. Capa de ML y medición real en la ISS
 
