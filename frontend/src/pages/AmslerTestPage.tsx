@@ -119,7 +119,7 @@ export function AmslerTestPage({
         <button
           type="button"
           onClick={() => onNavigate('/block/environment')}
-          className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+          className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>Back</span>
@@ -131,7 +131,7 @@ export function AmslerTestPage({
             onClick={() => setHelpOpen(true)}
             aria-label="Test instructions"
             title="Test instructions"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700/80 bg-slate-800/80 text-slate-300 transition-colors hover:border-sky-400/60 hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(120,180,255,0.24)] bg-[rgba(20,35,70,0.65)] text-[#8FA3C7] transition-colors hover:border-[#4FC3F7] hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <HelpCircle className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -172,11 +172,11 @@ export function AmslerTestPage({
       )}
 
       {step === 'intro-left' && (
-        <div className="my-auto mx-auto w-full max-w-2xl rounded-2xl border border-slate-800/90 bg-[#10192D] p-7 shadow-xl shadow-black/25 sm:p-9">
-          <p className="text-2xl font-bold tracking-tight text-sky-300 sm:text-3xl">
+        <div className="glass-panel my-auto mx-auto w-full max-w-2xl p-7 sm:p-9">
+          <p className="text-2xl font-bold tracking-tight text-[#4FC3F7] sm:text-3xl">
             Cover your RIGHT eye completely.
           </p>
-          <p className="mt-4 text-lg leading-relaxed text-slate-200">
+          <p className="mt-4 text-lg leading-relaxed text-[#E8F0FF]">
             Hold the screen at reading distance (30–38 cm). Stare at the center
             dot without moving your eyes.
           </p>
@@ -184,7 +184,7 @@ export function AmslerTestPage({
             <button
               type="button"
               onClick={() => setStep('grid-left')}
-              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-[#4FC3F7] px-6 py-3 text-base font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors duration-150 hover:bg-[#7AD6FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               Start left eye test
             </button>
@@ -194,7 +194,7 @@ export function AmslerTestPage({
 
       {isGridVisible && (
         <div className="mt-2 flex flex-1 flex-col items-center justify-center">
-          <p className="mb-3 text-sm font-medium text-slate-300">
+          <p className="mb-3 text-sm font-medium text-[#E8F0FF]">
             {currentEye === 'right'
               ? 'Right eye (LEFT eye covered) — keep staring at the center dot'
               : 'Left eye (RIGHT eye covered) — keep staring at the center dot'}
@@ -256,7 +256,7 @@ export function AmslerTestPage({
           <div className="mt-5 flex flex-col items-center gap-3 text-center">
             {!isMarking ? (
               <>
-                <p className="text-base font-medium text-slate-100 sm:text-lg">
+                <p className="text-base font-medium text-[#E8F0FF] sm:text-lg">
                   Do any lines look wavy, blurry, dark or missing?
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
@@ -264,7 +264,7 @@ export function AmslerTestPage({
                     type="button"
                     disabled={saving}
                     onClick={() => submitEyeResult(false)}
-                    className="inline-flex min-h-[44px] min-w-[112px] items-center justify-center rounded-xl bg-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-sky-400 disabled:opacity-60 cursor-pointer"
+                    className="inline-flex min-h-[44px] min-w-[112px] items-center justify-center rounded-xl bg-[#4FC3F7] px-5 py-2.5 text-sm font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors hover:bg-[#7AD6FA] disabled:opacity-60 cursor-pointer"
                   >
                     No
                   </button>
@@ -276,7 +276,7 @@ export function AmslerTestPage({
                         currentEye === 'right' ? 'mark-right' : 'mark-left',
                       )
                     }
-                    className="inline-flex min-h-[44px] min-w-[112px] items-center justify-center rounded-xl border border-slate-600 bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-100 transition-colors hover:bg-slate-700 disabled:opacity-60 cursor-pointer"
+                    className="inline-flex min-h-[44px] min-w-[112px] items-center justify-center rounded-xl border border-[rgba(120,180,255,0.28)] bg-[rgba(20,35,70,0.65)] px-5 py-2.5 text-sm font-semibold text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] disabled:opacity-60 cursor-pointer"
                   >
                     Yes
                   </button>
@@ -284,14 +284,14 @@ export function AmslerTestPage({
               </>
             ) : (
               <>
-                <p className="text-base font-medium text-slate-100 sm:text-lg">
+                <p className="text-base font-medium text-[#E8F0FF] sm:text-lg">
                   Tap the cells where you see it.
                 </p>
                 <button
                   type="button"
                   disabled={saving}
                   onClick={() => submitEyeResult(true)}
-                  className="inline-flex min-h-[44px] min-w-[140px] items-center justify-center rounded-xl bg-sky-500 px-6 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-sky-400 disabled:opacity-60 cursor-pointer"
+                  className="inline-flex min-h-[44px] min-w-[140px] items-center justify-center rounded-xl bg-[#4FC3F7] px-6 py-2.5 text-sm font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors hover:bg-[#7AD6FA] disabled:opacity-60 cursor-pointer"
                 >
                   {saving ? 'Saving...' : 'Done'}
                 </button>
@@ -302,23 +302,23 @@ export function AmslerTestPage({
       )}
 
       {step === 'complete' && (
-        <div className="my-auto mx-auto w-full max-w-2xl rounded-2xl border border-slate-800/90 bg-[#10192D] p-7 shadow-xl shadow-black/25 sm:p-9">
+        <div className="glass-panel my-auto mx-auto w-full max-w-2xl p-7 sm:p-9">
           <div className="flex items-start gap-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-500/15 text-sky-300 shrink-0">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(79,195,247,0.18)] text-[#4FC3F7] shrink-0">
               <Check className="h-5 w-5" aria-hidden="true" />
             </span>
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
+              <h1 className="text-2xl font-semibold tracking-tight text-[#E8F0FF]">
                 Amsler grid test complete
               </h1>
-              <p className="mt-2 text-lg leading-relaxed text-slate-200">
+              <p className="mt-2 text-lg leading-relaxed text-[#8FA3C7]">
                 Thank you. Your result will be compared with your previous
                 tests.
               </p>
               <button
                 type="button"
                 onClick={() => onNavigate('/block/environment')}
-                className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-2.5 text-sm font-medium text-slate-100 transition-colors hover:bg-slate-700/80 cursor-pointer"
+                className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[rgba(120,180,255,0.24)] bg-[rgba(10,20,46,0.58)] px-5 py-2.5 text-sm font-medium text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] hover:bg-[rgba(24,43,86,0.7)] cursor-pointer"
               >
                 Return to Environment, Radiation &amp; Vision
               </button>
@@ -331,7 +331,7 @@ export function AmslerTestPage({
           role="dialog"
           aria-modal="true"
           aria-label="Amsler grid test instructions"
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs overflow-y-auto"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-[#050B1A]/80 p-4 backdrop-blur-sm overflow-y-auto"
         >
           <TestIntroCard
             title="Amsler grid test"

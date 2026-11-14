@@ -313,17 +313,17 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
           <button
             type="button"
             onClick={() => onNavigate('/')}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Back to Home</span>
           </button>
 
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl">
+            <h1 className="text-3xl font-semibold tracking-tight text-[#E8F0FF] sm:text-4xl">
               Space moments
             </h1>
-            <span className="rounded-md border border-slate-700/80 bg-slate-800/75 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+            <span className="rounded-md border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.55)] px-2.5 py-0.5 text-xs font-medium text-[#8FA3C7]">
               Simulated
             </span>
           </div>
@@ -331,10 +331,10 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
 
         {/* Link status chip reusing My Circle window */}
         <div
-          className={`flex items-center gap-2.5 rounded-2xl border px-4 py-2.5 text-sm ${
+          className={`flex items-center gap-2.5 px-4 py-2.5 text-sm ${
             isConnected
-              ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200'
-              : 'border-slate-700/90 bg-[#10192D] text-slate-200'
+              ? 'rounded-[20px] border border-emerald-400/40 bg-emerald-500/15 text-emerald-200 backdrop-blur-[14px]'
+              : 'glass-panel text-[#E8F0FF]'
           }`}
         >
           {isConnected ? (
@@ -344,10 +344,10 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
             </>
           ) : (
             <>
-              <WifiOff className="h-4 w-4 text-slate-300 shrink-0" aria-hidden="true" />
+              <WifiOff className="h-4 w-4 text-[#8FA3C7] shrink-0" aria-hidden="true" />
               <span>
                 Next Earth window in{' '}
-                <span className="font-mono-tabular font-semibold text-sky-300">
+                <span className="font-mono-tabular font-semibold text-[#4FC3F7]">
                   {formatCountdown(remainingMs)}
                 </span>
               </span>
@@ -359,74 +359,74 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
       {/* Right now card */}
       <section
         aria-labelledby="right-now-heading"
-        className="mt-6 rounded-3xl border border-slate-800/90 bg-[#10192D] p-6 shadow-xl shadow-black/25 sm:p-7"
+        className="glass-panel mt-6 p-6 sm:p-7"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <Sparkles className="h-5 w-5 text-sky-300" aria-hidden="true" />
+            <Sparkles className="h-5 w-5 text-[#4FC3F7]" aria-hidden="true" />
             <h2
               id="right-now-heading"
-              className="text-xl font-semibold text-slate-50"
+              className="text-xl font-semibold text-[#E8F0FF]"
             >
               Right now
             </h2>
           </div>
-          <span className="rounded-md border border-slate-700/80 bg-slate-800/70 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+          <span className="rounded-md border border-[rgba(120,180,255,0.2)] bg-[rgba(10,20,46,0.56)] px-2.5 py-0.5 text-xs font-medium text-[#8FA3C7]">
             Simulated flight telemetry
           </span>
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0A1120] p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="glass-panel-soft p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-[#8FA3C7]">
               Altitude
             </p>
-            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-slate-50">
+            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-[#E8F0FF]">
               {rightNow.altitude_km} km
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0A1120] p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="glass-panel-soft p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-[#8FA3C7]">
               Speed
             </p>
-            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-slate-50">
+            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-[#E8F0FF]">
               {rightNow.speed_kmh.toLocaleString('en-US')} km/h
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0A1120] p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="glass-panel-soft p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-[#8FA3C7]">
               Orbits completed
             </p>
-            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-slate-50">
+            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-[#E8F0FF]">
               {rightNow.orbits_completed}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0A1120] p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="glass-panel-soft p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-[#8FA3C7]">
               Sunrises seen today
             </p>
-            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-slate-50">
+            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-[#E8F0FF]">
               {rightNow.sunrises_seen_today}
             </p>
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-[#8FA3C7]">
               {rightNow.sunrises_note}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0A1120] p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="glass-panel-soft p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-[#8FA3C7]">
               Signal time to Earth
             </p>
-            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-slate-50">
+            <p className="font-mono-tabular mt-1.5 text-2xl font-bold text-[#E8F0FF]">
               ~{link.one_way_delay_min ?? rightNow.signal_time_min} min
             </p>
           </div>
         </div>
 
-        <p className="mt-5 rounded-2xl border border-sky-400/20 bg-sky-500/10 px-4 py-3 text-base font-medium text-sky-100">
+        <p className="mt-5 rounded-2xl border border-[#4FC3F7]/30 bg-[rgba(61,123,255,0.14)] px-4 py-3 text-base font-medium text-[#E8F0FF]">
           {rightNow.fun_fact}
         </p>
       </section>
@@ -437,11 +437,11 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
           <div>
             <h2
               id="gallery-heading"
-              className="text-2xl font-semibold text-slate-50"
+              className="text-2xl font-semibold text-[#E8F0FF]"
             >
               Photo gallery
             </h2>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-[#8FA3C7]">
               Added images stay on this device. Your health data is never
               included in posts.
             </p>
@@ -459,7 +459,7 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-[#4FC3F7] px-5 py-2.5 text-sm font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors hover:bg-[#7AD6FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               <ImagePlus className="h-4 w-4" aria-hidden="true" />
               <span>Add photo</span>
@@ -478,9 +478,9 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
             return (
               <article
                 key={photo.id}
-                className="flex flex-col overflow-hidden rounded-3xl border border-slate-800/90 bg-[#10192D] shadow-lg shadow-black/25"
+                className="glass-panel flex flex-col overflow-hidden"
               >
-                <div className="aspect-[5/3] w-full overflow-hidden bg-[#060B16]">
+                <div className="aspect-[5/3] w-full overflow-hidden bg-[#050B1A]">
                   {photo.imageUrl ? (
                     <img
                       src={photo.imageUrl}
@@ -498,21 +498,21 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                 <div className="flex flex-1 flex-col justify-between p-5">
                   <div>
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-slate-50">
+                      <h3 className="text-lg font-semibold text-[#E8F0FF]">
                         {photo.title}
                       </h3>
-                      <span className="font-mono-tabular text-xs font-medium text-slate-400">
+                      <span className="font-mono-tabular text-xs font-medium text-[#8FA3C7]">
                         Flight day {photo.flight_day}
                         {photo.isLocal ? ' · On device' : ' · Simulated'}
                       </span>
                     </div>
-                    <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
+                    <p className="mt-1.5 text-sm leading-relaxed text-[#E8F0FF]/85">
                       {photo.caption}
                     </p>
                   </div>
 
                   {/* Fake social network buttons + Share when connected */}
-                  <div className="mt-4 border-t border-slate-800/80 pt-4">
+                  <div className="mt-4 border-t border-[rgba(120,180,255,0.16)] pt-4">
                     <div className="flex flex-wrap items-center gap-2">
                       {SOCIAL_TARGETS.map((target) => {
                         const isPicked = activeNetwork === target;
@@ -527,10 +527,10 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                               }))
                             }
                             aria-pressed={isPicked}
-                            className={`rounded-xl border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                            className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                               isPicked
-                                ? 'border-sky-400/50 bg-sky-500/15 text-sky-200'
-                                : 'border-slate-700/80 bg-slate-800/60 text-slate-300 hover:border-slate-600 hover:text-slate-100'
+                                ? 'glass-nav-active text-[#E8F0FF]'
+                                : 'border border-[rgba(120,180,255,0.18)] bg-[rgba(10,20,46,0.56)] text-[#8FA3C7] hover:border-[#4FC3F7]/60 hover:text-[#E8F0FF]'
                             }`}
                           >
                             {target}
@@ -544,9 +544,9 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                         type="button"
                         onClick={() => handleQueueShare(photo)}
                         disabled={isQueuedForNetwork}
-                        className="inline-flex min-h-[40px] items-center gap-2 rounded-xl border border-sky-400/45 bg-sky-500/15 px-4 py-2 text-sm font-semibold text-sky-200 transition-colors hover:border-sky-400/75 hover:bg-sky-500/25 hover:text-white disabled:cursor-default disabled:border-emerald-500/35 disabled:bg-emerald-500/10 disabled:text-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+                        className="inline-flex min-h-[40px] items-center gap-2 rounded-xl border border-[#4FC3F7]/45 bg-[rgba(79,195,247,0.14)] px-4 py-2 text-sm font-semibold text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] hover:bg-[rgba(79,195,247,0.24)] disabled:cursor-default disabled:border-emerald-400/40 disabled:bg-emerald-500/15 disabled:text-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
                       >
-                        <Share2 className="h-4 w-4" aria-hidden="true" />
+                        <Share2 className="h-4 w-4 text-[#4FC3F7]" aria-hidden="true" />
                         <span>
                           {isQueuedForNetwork
                             ? `Added to Outbox (${activeNetwork})`
@@ -565,32 +565,32 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
       {/* Outbox */}
       <section
         aria-labelledby="outbox-heading"
-        className="mt-8 rounded-3xl border border-slate-800/90 bg-[#10192D] p-6 shadow-xl shadow-black/25"
+        className="glass-panel mt-8 p-6"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id="outbox-heading" className="text-xl font-semibold text-slate-50">
+          <h2 id="outbox-heading" className="text-xl font-semibold text-[#E8F0FF]">
             Outbox
           </h2>
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300">
-            <Lock className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#8FA3C7]">
+            <Lock className="h-3.5 w-3.5 text-[#4FC3F7]" aria-hidden="true" />
             <span>Your health data is never included in posts.</span>
           </span>
         </div>
 
         {outbox.length === 0 ? (
-          <p className="mt-3 text-sm text-slate-400">
+          <p className="mt-3 text-sm text-[#8FA3C7]">
             No photos queued yet. Pick a social button and choose &ldquo;Share
             when connected&rdquo; on any photo above.
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-slate-800/80">
+          <ul className="mt-4 divide-y divide-[rgba(120,180,255,0.14)]">
             {outbox.map((item) => (
               <li
                 key={item.outboxId}
                 className="flex flex-wrap items-center justify-between gap-4 py-3.5 first:pt-1 last:pb-0"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="h-12 w-16 overflow-hidden rounded-xl border border-slate-700/80 bg-[#060B16] shrink-0">
+                  <div className="h-12 w-16 overflow-hidden rounded-xl border border-[rgba(120,180,255,0.2)] bg-[#050B1A] shrink-0">
                     {item.photo.imageUrl ? (
                       <img
                         src={item.photo.imageUrl}
@@ -605,10 +605,10 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-base font-medium text-slate-100">
+                    <p className="truncate text-base font-medium text-[#E8F0FF]">
                       {item.photo.title}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-[#8FA3C7]">
                       {item.network} · Queued at {item.addedAt} (simulated)
                     </p>
                   </div>
@@ -617,14 +617,14 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                 <div className="flex flex-wrap items-center gap-2.5 shrink-0">
                   {isConnected ? (
                     <>
-                      <span className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-200">
+                      <span className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-400/45 bg-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-200">
                         <Check className="h-3.5 w-3.5" aria-hidden="true" />
                         <span>Ready to post</span>
                       </span>
                       <button
                         type="button"
                         onClick={() => setPostedFeedbackId(item.outboxId)}
-                        className="rounded-xl bg-sky-500 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-sky-400 cursor-pointer"
+                        className="rounded-xl bg-[#4FC3F7] px-3 py-1.5 text-xs font-semibold text-[#050B1A] hover:bg-[#7AD6FA] cursor-pointer"
                       >
                         {postedFeedbackId === item.outboxId
                           ? 'Demo posted (simulated)'
@@ -632,7 +632,7 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
                       </button>
                     </>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-amber-400/40 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-200">
+                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-amber-400/40 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-200">
                       <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                       <span>Waiting for connection</span>
                     </span>
@@ -644,7 +644,7 @@ export function MomentsPage({ currentFlightDay, onNavigate }: MomentsPageProps) 
         )}
       </section>
 
-      <footer className="mt-8 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
+      <footer className="mt-8 border-t border-[rgba(120,180,255,0.14)] pt-5 text-center text-xs leading-relaxed text-[#8FA3C7]">
         Your health data is never included in posts. Social sharing buttons are
         simulated for this prototype. ORBITAL guides, it does not diagnose. All
         data shown is simulated.

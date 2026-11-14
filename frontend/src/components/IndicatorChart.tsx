@@ -69,10 +69,10 @@ function VisionAmslerHistory({
 
   return (
     <div className="mt-5">
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs text-[#8FA3C7]">
         <span>14-day screening history</span>
         {hoveredPoint ? (
-          <span className="inline-flex items-center gap-2 text-slate-200">
+          <span className="inline-flex items-center gap-2 text-[#E8F0FF]">
             <span className="font-mono-tabular font-medium">
               Day {hoveredPoint.flight_day}:
             </span>
@@ -101,12 +101,12 @@ function VisionAmslerHistory({
               onBlur={() => setHoveredIdx(null)}
               title={`Flight day ${point.flight_day}${isToday ? ' (Today)' : ''}: ${point.result} (${style.label})`}
               aria-label={`Flight day ${point.flight_day}${isToday ? ' (Today)' : ''}: ${point.result}, ${style.label}`}
-              className={`flex flex-col items-center justify-center gap-1 rounded-xl border py-2.5 transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
+              className={`flex flex-col items-center justify-center gap-1 rounded-xl border py-2.5 transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] ${
                 isHovered
-                  ? 'border-slate-500 bg-slate-800/90 -translate-y-0.5'
+                  ? 'border-[#4FC3F7] bg-[rgba(24,43,86,0.72)] -translate-y-0.5'
                   : isToday
-                    ? 'border-slate-600 bg-slate-800/50'
-                    : 'border-slate-800/80 bg-[#0B1222]'
+                    ? 'border-[rgba(79,195,247,0.45)] bg-[rgba(20,35,70,0.65)]'
+                    : 'border-[rgba(120,180,255,0.16)] bg-[rgba(10,20,46,0.52)]'
               }`}
             >
               {isDistortion ? (
@@ -122,7 +122,7 @@ function VisionAmslerHistory({
                   aria-hidden="true"
                 />
               )}
-              <span className="font-mono-tabular text-[11px] font-medium text-slate-300">
+              <span className="font-mono-tabular text-[11px] font-medium text-[#E8F0FF]">
                 {isToday ? 'Today' : point.flight_day}
               </span>
             </button>
@@ -130,7 +130,7 @@ function VisionAmslerHistory({
         })}
       </div>
 
-      <p className="mt-2.5 text-center text-xs text-slate-400">
+      <p className="mt-2.5 text-center text-xs text-[#8FA3C7]">
         Flight day · Icons = daily results (color = level)
       </p>
     </div>
@@ -188,13 +188,13 @@ function BloodPressureChart({
   return (
     <div className="mt-5">
       {/* Line style key */}
-      <div className="mb-2 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+      <div className="mb-2 flex flex-wrap items-center gap-4 text-xs text-[#8FA3C7]">
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-4 bg-slate-200" />
+          <span className="inline-block h-0.5 w-4 bg-[#7DD3FC] shadow-[0_0_6px_rgba(79,195,247,0.7)]" />
           <span>Systolic</span>
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-4 border-t-2 border-dashed border-slate-400" />
+          <span className="inline-block h-0.5 w-4 border-t-2 border-dashed border-[#8FA3C7]" />
           <span>Diastolic</span>
         </span>
       </div>
@@ -203,21 +203,22 @@ function BloodPressureChart({
         {/* Tooltip */}
         {hoveredPoint && (
           <div
-            className="pointer-events-none absolute -top-2 z-10 rounded-xl border border-slate-700 bg-[#080D18]/95 px-3 py-2 text-xs shadow-xl"
+            className="glass-panel pointer-events-none absolute -top-2 z-10 px-3 py-2 text-xs"
             style={{
               left: `${Math.min(Math.max(hoveredLeftPct, 18), 82)}%`,
               transform: 'translate(-50%, -100%)',
+              borderRadius: '14px',
             }}
           >
             <div className="flex items-center gap-2">
-              <span className="font-mono-tabular font-medium text-slate-300">
+              <span className="font-mono-tabular font-medium text-[#8FA3C7]">
                 {hoveredPoint.phase_label
                   ? `${hoveredPoint.phase_label} (Day ${hoveredPoint.flight_day})`
                   : `Flight day ${hoveredPoint.flight_day}`}
               </span>
               <StatusBadge level={hoveredPoint.level} variant="pill" />
             </div>
-            <p className="font-mono-tabular mt-1 font-semibold text-slate-50">
+            <p className="font-mono-tabular mt-1 font-semibold text-[#E8F0FF]">
               {hoveredPoint.systolic}/{hoveredPoint.diastolic} {unit}
             </p>
           </div>
@@ -239,14 +240,14 @@ function BloodPressureChart({
                   y1={y}
                   x2={SVG_WIDTH - MARGIN.right}
                   y2={y}
-                  stroke="#1E293B"
+                  stroke="rgba(120, 180, 255, 0.09)"
                   strokeWidth="1"
                 />
                 <text
                   x={MARGIN.left - 8}
                   y={y + 3.5}
                   textAnchor="end"
-                  fill="#94A3B8"
+                  fill="#8FA3C7"
                   fontSize="10.5"
                   className="font-mono-tabular"
                 >
@@ -307,22 +308,22 @@ function BloodPressureChart({
             y={sysBandTop}
             width={PLOT_WIDTH}
             height={Math.max(1, sysBandBottom - sysBandTop)}
-            fill="#38BDF8"
-            fillOpacity="0.11"
+            fill="#3D7BFF"
+            fillOpacity="0.16"
           />
           <rect
             x={MARGIN.left}
             y={diaBandTop}
             width={PLOT_WIDTH}
             height={Math.max(1, diaBandBottom - diaBandTop)}
-            fill="#38BDF8"
-            fillOpacity="0.11"
+            fill="#3D7BFF"
+            fillOpacity="0.16"
           />
           {passengerMode && (
             <text
               x={MARGIN.left + 8}
               y={sysBandTop + 13}
-              fill="#7DD3FC"
+              fill="#4FC3F7"
               fontSize="10.5"
               fontWeight="600"
             >
@@ -337,29 +338,35 @@ function BloodPressureChart({
               y1={MARGIN.top}
               x2={xForIndex(hoveredIdx, points.length)}
               y2={MARGIN.top + PLOT_HEIGHT}
-              stroke="#475569"
+              stroke="rgba(79, 195, 247, 0.35)"
               strokeWidth="1"
               strokeDasharray="3 3"
             />
           )}
 
-          {/* Systolic & Diastolic trend lines */}
+          {/* Systolic & Diastolic glowing trend lines */}
           <polyline
             fill="none"
-            stroke="#E2E8F0"
+            stroke="#7DD3FC"
             strokeWidth="2"
             strokeLinejoin="round"
             strokeLinecap="round"
             points={sysPolyline}
+            style={{
+              filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
+            }}
           />
           <polyline
             fill="none"
-            stroke="#94A3B8"
-            strokeWidth="2"
+            stroke="#8FA3C7"
+            strokeWidth="1.8"
             strokeDasharray="5 4"
             strokeLinejoin="round"
             strokeLinecap="round"
             points={diaPolyline}
+            style={{
+              filter: 'drop-shadow(0 0 4px rgba(143, 163, 199, 0.4))',
+            }}
           />
 
           {/* Points & X-axis labels */}
@@ -378,7 +385,7 @@ function BloodPressureChart({
                   x={x}
                   y={MARGIN.top + PLOT_HEIGHT + 18}
                   textAnchor="middle"
-                  fill={isActive || isToday ? '#F8FAFC' : '#94A3B8'}
+                  fill={isActive || isToday ? '#E8F0FF' : '#8FA3C7'}
                   fontWeight={isToday ? '600' : '400'}
                   fontSize="11"
                   className="font-mono-tabular"
@@ -393,20 +400,20 @@ function BloodPressureChart({
                       cy={ySys}
                       r={9.5}
                       fill={color}
-                      fillOpacity="0.22"
+                      fillOpacity="0.24"
                     />
                     <circle
                       cx={x}
                       cy={yDia}
                       r={9.5}
                       fill={color}
-                      fillOpacity="0.22"
+                      fillOpacity="0.24"
                     />
                     <text
                       x={x}
                       y={ySys - 12}
                       textAnchor="middle"
-                      fill="#F8FAFC"
+                      fill="#E8F0FF"
                       fontSize="11"
                       fontWeight="600"
                     >
@@ -420,7 +427,7 @@ function BloodPressureChart({
                   cy={ySys}
                   r={radius}
                   fill={color}
-                  stroke={isToday ? '#F8FAFC' : '#0B1222'}
+                  stroke={isToday ? '#E8F0FF' : '#081229'}
                   strokeWidth={isToday ? 2 : 1.8}
                 />
                 <circle
@@ -428,7 +435,7 @@ function BloodPressureChart({
                   cy={yDia}
                   r={radius}
                   fill={color}
-                  stroke={isToday ? '#F8FAFC' : '#0B1222'}
+                  stroke={isToday ? '#E8F0FF' : '#081229'}
                   strokeWidth={isToday ? 2 : 1.8}
                 />
 
@@ -455,7 +462,7 @@ function BloodPressureChart({
             x={MARGIN.left + PLOT_WIDTH / 2}
             y={SVG_HEIGHT - 4}
             textAnchor="middle"
-            fill="#94A3B8"
+            fill="#8FA3C7"
             fontSize="11.5"
           >
             Flight day
@@ -464,7 +471,7 @@ function BloodPressureChart({
       </div>
 
       {/* Required Legend */}
-      <p className="mt-2 text-center text-xs text-slate-400">
+      <p className="mt-2 text-center text-xs text-[#8FA3C7]">
         {passengerMode
           ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
           : 'Shaded area = your usual range · Dots = daily values (color = level)'}
@@ -515,14 +522,15 @@ function NumericTrendChart({
       <div className="relative">
         {hoveredPoint && (
           <div
-            className="pointer-events-none absolute -top-2 z-10 rounded-xl border border-slate-700 bg-[#080D18]/95 px-3 py-2 text-xs shadow-xl"
+            className="glass-panel pointer-events-none absolute -top-2 z-10 px-3 py-2 text-xs"
             style={{
               left: `${Math.min(Math.max(hoveredLeftPct, 18), 82)}%`,
               transform: 'translate(-50%, -100%)',
+              borderRadius: '14px',
             }}
           >
             <div className="flex items-center gap-2">
-              <span className="font-mono-tabular font-medium text-slate-300">
+              <span className="font-mono-tabular font-medium text-[#8FA3C7]">
                 {hoveredPoint.phase_label
                   ? `${hoveredPoint.phase_label} (Day ${hoveredPoint.flight_day})`
                   : `Flight day ${hoveredPoint.flight_day}`}
@@ -532,7 +540,7 @@ function NumericTrendChart({
                 variant="pill"
               />
             </div>
-            <p className="font-mono-tabular mt-1 font-semibold text-slate-50">
+            <p className="font-mono-tabular mt-1 font-semibold text-[#E8F0FF]">
               {hoveredPoint.value}
               {unit ? ` ${unit}` : ''}
             </p>
@@ -555,14 +563,14 @@ function NumericTrendChart({
                   y1={y}
                   x2={SVG_WIDTH - MARGIN.right}
                   y2={y}
-                  stroke="#1E293B"
+                  stroke="rgba(120, 180, 255, 0.09)"
                   strokeWidth="1"
                 />
                 <text
                   x={MARGIN.left - 8}
                   y={y + 3.5}
                   textAnchor="end"
-                  fill="#94A3B8"
+                  fill="#8FA3C7"
                   fontSize="10.5"
                   className="font-mono-tabular"
                 >
@@ -623,14 +631,14 @@ function NumericTrendChart({
             y={bandTop}
             width={PLOT_WIDTH}
             height={Math.max(1, bandBottom - bandTop)}
-            fill="#38BDF8"
-            fillOpacity="0.12"
+            fill="#3D7BFF"
+            fillOpacity="0.16"
           />
           {passengerMode && (
             <text
               x={MARGIN.left + 8}
               y={Math.min(bandTop + 13, MARGIN.top + PLOT_HEIGHT - 6)}
-              fill="#7DD3FC"
+              fill="#4FC3F7"
               fontSize="10.5"
               fontWeight="600"
             >
@@ -645,20 +653,23 @@ function NumericTrendChart({
               y1={MARGIN.top}
               x2={xForIndex(hoveredIdx, points.length)}
               y2={MARGIN.top + PLOT_HEIGHT}
-              stroke="#475569"
+              stroke="rgba(79, 195, 247, 0.35)"
               strokeWidth="1"
               strokeDasharray="3 3"
             />
           )}
 
-          {/* Trend polyline */}
+          {/* Glowing trend polyline */}
           <polyline
             fill="none"
-            stroke="#CBD5E1"
+            stroke="#7DD3FC"
             strokeWidth="2"
             strokeLinejoin="round"
             strokeLinecap="round"
             points={polyline}
+            style={{
+              filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
+            }}
           />
 
           {/* Individual points colored by own level */}
@@ -676,7 +687,7 @@ function NumericTrendChart({
                   x={x}
                   y={MARGIN.top + PLOT_HEIGHT + 18}
                   textAnchor="middle"
-                  fill={isActive || isToday ? '#F8FAFC' : '#94A3B8'}
+                  fill={isActive || isToday ? '#E8F0FF' : '#8FA3C7'}
                   fontWeight={isToday ? '600' : '400'}
                   fontSize="11"
                   className="font-mono-tabular"
@@ -691,13 +702,13 @@ function NumericTrendChart({
                       cy={y}
                       r={10}
                       fill={color}
-                      fillOpacity="0.22"
+                      fillOpacity="0.24"
                     />
                     <text
                       x={x}
                       y={y - 13}
                       textAnchor="middle"
-                      fill="#F8FAFC"
+                      fill="#E8F0FF"
                       fontSize="11"
                       fontWeight="600"
                     >
@@ -711,7 +722,7 @@ function NumericTrendChart({
                   cy={y}
                   r={radius}
                   fill={color}
-                  stroke={isToday ? '#F8FAFC' : '#0B1222'}
+                  stroke={isToday ? '#E8F0FF' : '#081229'}
                   strokeWidth={isToday ? 2 : 1.8}
                 />
 
@@ -738,7 +749,7 @@ function NumericTrendChart({
             x={MARGIN.left + PLOT_WIDTH / 2}
             y={SVG_HEIGHT - 4}
             textAnchor="middle"
-            fill="#94A3B8"
+            fill="#8FA3C7"
             fontSize="11.5"
           >
             Flight day
@@ -747,7 +758,7 @@ function NumericTrendChart({
       </div>
 
       {/* Required Legend */}
-      <p className="mt-2 text-center text-xs text-slate-400">
+      <p className="mt-2 text-center text-xs text-[#8FA3C7]">
         {passengerMode
           ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
           : 'Shaded area = your usual range · Dots = daily values (color = level)'}

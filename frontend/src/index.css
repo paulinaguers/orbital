@@ -7,8 +7,10 @@
 
   html,
   body {
-    background-color: #070b14;
-    color: #e6edf7;
+    min-height: 100%;
+    background: linear-gradient(155deg, #050b1a 0%, #081028 52%, #0b1533 100%);
+    background-attachment: fixed;
+    color: #e8f0ff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
       Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -20,6 +22,84 @@
       "Liberation Mono", "Courier New", monospace;
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Deep Space Glass Dashboard surfaces */
+.glass-panel {
+  background: rgba(20, 35, 70, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(120, 180, 255, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 0 24px rgba(60, 140, 255, 0.12);
+}
+
+.glass-panel-soft {
+  background: rgba(10, 20, 46, 0.56);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(120, 180, 255, 0.16);
+  border-radius: 16px;
+}
+
+.glass-card-interactive {
+  background: rgba(20, 35, 70, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(120, 180, 255, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 0 24px rgba(60, 140, 255, 0.12);
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.glass-card-interactive:hover,
+.glass-card-interactive[data-highlighted="true"] {
+  background: rgba(24, 43, 86, 0.66);
+  border-color: #4fc3f7;
+  transform: translateY(-3px);
+  box-shadow: 0 0 28px rgba(79, 195, 247, 0.24);
+}
+
+.glass-bar {
+  background: rgba(8, 15, 36, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgba(120, 180, 255, 0.18);
+}
+
+.glass-nav-active {
+  background:
+    linear-gradient(rgba(20, 35, 70, 0.85), rgba(20, 35, 70, 0.85)) padding-box,
+    linear-gradient(135deg, #4fc3f7 0%, #3d7bff 100%) border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 0 18px rgba(79, 195, 247, 0.28);
+  color: #e8f0ff;
+}
+
+@keyframes space-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.92;
+  }
+}
+
+.space-star-twinkle-1 {
+  animation: space-twinkle 11s ease-in-out infinite;
+}
+
+.space-star-twinkle-2 {
+  animation: space-twinkle 15s ease-in-out infinite 3.5s;
+}
+
+.space-star-twinkle-3 {
+  animation: space-twinkle 19s ease-in-out infinite 7s;
 }
 
 @keyframes orbi-float {
@@ -263,6 +343,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .space-star-twinkle-1,
+  .space-star-twinkle-2,
+  .space-star-twinkle-3,
   .animate-orbi-float,
   .animate-orbi-blink,
   .animate-orbi-antenna-pulse,

@@ -19,39 +19,31 @@ export function BlockCard({
   highlighted = false,
   simpleMode = false,
 }: BlockCardProps) {
-  const blockStyle = LEVEL_STYLES[block.level];
-
   if (simpleMode) {
     return (
       <button
         type="button"
+        data-highlighted={highlighted ? 'true' : undefined}
         onClick={() => onSelect(block.id)}
         onMouseEnter={() => onHoverChange?.(block.id)}
         onMouseLeave={() => onHoverChange?.(null)}
         onFocus={() => onHoverChange?.(block.id)}
         onBlur={() => onHoverChange?.(null)}
-        className={`group w-full rounded-3xl bg-[#10192D] p-5 text-left transition-all duration-150 ease-out hover:-translate-y-1 hover:bg-[#131E36] hover:shadow-xl hover:shadow-black/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer ${
-          highlighted
-            ? '-translate-y-1 bg-[#131E36] shadow-xl shadow-black/35'
-            : 'shadow-lg shadow-black/20'
-        }`}
-        style={{
-          border: `2px solid ${blockStyle.color}`,
-        }}
+        className="glass-card-interactive group w-full p-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
       >
         <div className="flex flex-wrap items-center justify-between gap-2.5">
-          <h2 className="text-lg font-semibold leading-snug text-slate-50 group-hover:text-white">
+          <h2 className="text-lg font-semibold leading-snug text-[#E8F0FF] group-hover:text-white">
             {block.name}
           </h2>
           <StatusBadge level={block.level} variant="pill" />
         </div>
 
-        <p className="mt-3 text-base leading-relaxed text-slate-200">
+        <p className="mt-3 text-base leading-relaxed text-[#E8F0FF]/90">
           {block.simple_explanation ?? block.recommendation}
         </p>
 
-        <div className="mt-4 flex items-center justify-end border-t border-slate-800/60 pt-3">
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-sky-400 transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-sky-300">
+        <div className="mt-4 flex items-center justify-end border-t border-[rgba(120,180,255,0.14)] pt-3">
+          <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#4FC3F7] transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-[#7DD3FC]">
             See details →
           </span>
         </div>
@@ -62,30 +54,24 @@ export function BlockCard({
   return (
     <button
       type="button"
+      data-highlighted={highlighted ? 'true' : undefined}
       onClick={() => onSelect(block.id)}
       onMouseEnter={() => onHoverChange?.(block.id)}
       onMouseLeave={() => onHoverChange?.(null)}
       onFocus={() => onHoverChange?.(block.id)}
       onBlur={() => onHoverChange?.(null)}
-      className={`group w-full rounded-2xl bg-[#10192D] p-4 text-left transition-all duration-150 ease-out hover:-translate-y-1 hover:bg-[#131E36] hover:shadow-xl hover:shadow-black/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer ${
-        highlighted
-          ? '-translate-y-1 bg-[#131E36] shadow-xl shadow-black/35'
-          : 'shadow-lg shadow-black/20'
-      }`}
-      style={{
-        border: `1.5px solid ${blockStyle.color}`,
-      }}
+      className="glass-card-interactive group w-full p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
     >
       {/* Header: Block name + level pill */}
       <div className="flex items-start justify-between gap-3">
-        <h2 className="text-[15px] font-semibold leading-snug text-slate-50 group-hover:text-white">
+        <h2 className="text-[15px] font-semibold leading-snug text-[#E8F0FF] group-hover:text-white">
           {block.name}
         </h2>
         <StatusBadge level={block.level} variant="pill" />
       </div>
 
       {/* Compact indicator list */}
-      <ul className="mt-3 space-y-1.5 border-t border-slate-800/80 pt-3">
+      <ul className="mt-3 space-y-1.5 border-t border-[rgba(120,180,255,0.14)] pt-3">
         {block.indicators.map((indicator) => {
           const indStyle = LEVEL_STYLES[indicator.level];
           return (
@@ -93,7 +79,7 @@ export function BlockCard({
               key={indicator.id}
               className="flex items-center justify-between gap-3 text-xs sm:text-[13px]"
             >
-              <span className="flex min-w-0 items-center gap-2 text-slate-300">
+              <span className="flex min-w-0 items-center gap-2 text-[#8FA3C7]">
                 <span
                   aria-label={`${indStyle.label} level`}
                   title={`${indStyle.label} level`}
@@ -102,7 +88,7 @@ export function BlockCard({
                 />
                 <span className="truncate">{indicator.name}</span>
               </span>
-              <span className="font-mono-tabular font-medium text-slate-100 whitespace-nowrap shrink-0">
+              <span className="font-mono-tabular font-medium text-[#E8F0FF] whitespace-nowrap shrink-0">
                 {formatIndicatorValue(indicator)}
               </span>
             </li>
@@ -112,11 +98,11 @@ export function BlockCard({
 
       {/* NASA / CSA risk area tags */}
       {block.nasa_risk.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5 border-t border-slate-800/70 pt-2.5">
+        <div className="mt-3 flex flex-wrap gap-1.5 border-t border-[rgba(120,180,255,0.14)] pt-2.5">
           {block.nasa_risk.map((risk) => (
             <span
               key={risk}
-              className="rounded-md border border-slate-700/70 bg-slate-800/75 px-2 py-0.5 text-[11px] leading-tight text-slate-300"
+              className="rounded-md border border-[rgba(120,180,255,0.18)] bg-[rgba(10,20,46,0.55)] px-2 py-0.5 text-[11px] leading-tight text-[#8FA3C7]"
             >
               {risk}
             </span>
@@ -125,8 +111,8 @@ export function BlockCard({
       )}
 
       {/* Clear click call-to-action */}
-      <div className="mt-3 flex items-center justify-end border-t border-slate-800/60 pt-2.5">
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-sky-400 transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-sky-300">
+      <div className="mt-3 flex items-center justify-end border-t border-[rgba(120,180,255,0.14)] pt-2.5">
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#4FC3F7] transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-[#7DD3FC]">
           View metrics →
         </span>
       </div>

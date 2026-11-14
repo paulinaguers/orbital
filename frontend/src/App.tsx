@@ -3,6 +3,7 @@
 import { Sparkles, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
+import { SpaceBackdrop } from './components/SpaceBackdrop';
 import { TipsDrawer } from './components/TipsDrawer';
 import { TopBar } from './components/TopBar';
 import {
@@ -381,92 +382,104 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#070B14] text-slate-100">
-      <TopBar
-        astronaut={status.astronaut}
-        simulated={status.simulated}
-        profile={profile}
-        tests={status.tests}
-        onChangeProfile={handleChangeProfile}
-        onNavigateHome={() => navigate('/')}
-        onNavigate={navigate}
-      />
+    <div className="relative flex min-h-screen flex-col text-[#E8F0FF]">
+      <SpaceBackdrop />
 
-      <main className="flex flex-1 flex-col">{renderPage()}</main>
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <TopBar
+          astronaut={status.astronaut}
+          simulated={status.simulated}
+          profile={profile}
+          tests={status.tests}
+          onChangeProfile={handleChangeProfile}
+          onNavigateHome={() => navigate('/')}
+          onNavigate={navigate}
+        />
 
-      {unlockedToast && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed bottom-36 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 rounded-2xl border border-amber-300/60 bg-[#10192D]/95 px-4 py-3 shadow-2xl shadow-black/60 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-2.5">
-            <Sparkles
-              className="h-4 w-4 text-amber-300 shrink-0"
-              aria-hidden="true"
-            />
-            <p className="text-sm font-semibold text-amber-100">
-              {unlockedToast}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setUnlockedToast(null)}
-            aria-label="Dismiss unlock message"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 cursor-pointer"
+        <main className="flex flex-1 flex-col">{renderPage()}</main>
+
+        {unlockedToast && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="glass-panel fixed bottom-36 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 px-4 py-3"
+            style={{
+              borderColor: 'rgba(241, 196, 15, 0.5)',
+              boxShadow: '0 0 24px rgba(241, 196, 15, 0.22)',
+            }}
           >
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-      )}
-
-      {overdueToastTest && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed bottom-20 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 rounded-2xl border border-[#E67E22]/55 bg-[#10192D]/95 px-4 py-3 shadow-2xl shadow-black/60 backdrop-blur-sm"
-        >
-          <p className="text-sm font-medium text-slate-100">
-            Reminder: {overdueToastTest.name} is overdue.
-          </p>
-
-          <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2.5">
+              <Sparkles
+                className="h-4 w-4 text-amber-300 shrink-0"
+                aria-hidden="true"
+              />
+              <p className="text-sm font-semibold text-[#E8F0FF]">
+                {unlockedToast}
+              </p>
+            </div>
             <button
               type="button"
-              onClick={() => {
-                setToastDismissed(true);
-                navigate(overdueToastTest.route);
-              }}
-              className="inline-flex min-h-[34px] items-center justify-center rounded-lg bg-[#E67E22] px-3 py-1.5 text-xs font-semibold text-slate-950 transition-colors hover:bg-[#EB984E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 cursor-pointer"
-            >
-              Start now
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setToastDismissed(true)}
-              aria-label="Dismiss reminder"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-sky-400 cursor-pointer"
+              onClick={() => setUnlockedToast(null)}
+              aria-label="Dismiss unlock message"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-[#8FA3C7] transition-colors hover:bg-white/10 hover:text-[#E8F0FF] cursor-pointer"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      <TipsDrawer
-        open={tipsDrawerOpen}
-        blocks={status.blocks}
-        filterBlockId={tipsFilterBlockId}
-        checkedSteps={checkedTipSteps}
-        onToggleStep={handleToggleTipStep}
-        onShowAllBlocks={
-          route.page === 'home' ? () => setTipsFilterBlockId(null) : undefined
-        }
-        onClose={() => setTipsDrawerOpen(false)}
-      />
+        {overdueToastTest && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="glass-panel fixed bottom-20 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 px-4 py-3"
+            style={{
+              borderColor: 'rgba(230, 126, 34, 0.55)',
+              boxShadow: '0 0 24px rgba(230, 126, 34, 0.25)',
+            }}
+          >
+            <p className="text-sm font-medium text-[#E8F0FF]">
+              Reminder: {overdueToastTest.name} is overdue.
+            </p>
 
-      <BottomNav route={route} profile={profile} onNavigate={navigate} />
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setToastDismissed(true);
+                  navigate(overdueToastTest.route);
+                }}
+                className="inline-flex min-h-[34px] items-center justify-center rounded-lg bg-[#E67E22] px-3 py-1.5 text-xs font-semibold text-slate-950 transition-colors hover:bg-[#EB984E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 cursor-pointer"
+              >
+                Start now
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setToastDismissed(true)}
+                aria-label="Dismiss reminder"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-[#8FA3C7] transition-colors hover:bg-white/10 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        <TipsDrawer
+          open={tipsDrawerOpen}
+          blocks={status.blocks}
+          filterBlockId={tipsFilterBlockId}
+          checkedSteps={checkedTipSteps}
+          onToggleStep={handleToggleTipStep}
+          onShowAllBlocks={
+            route.page === 'home' ? () => setTipsFilterBlockId(null) : undefined
+          }
+          onClose={() => setTipsDrawerOpen(false)}
+        />
+
+        <BottomNav route={route} profile={profile} onNavigate={navigate} />
+      </div>
     </div>
   );
 }

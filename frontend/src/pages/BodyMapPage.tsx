@@ -178,13 +178,13 @@ export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
           <button
             type="button"
             onClick={() => onNavigate('/')}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Back to Orbi</span>
           </button>
 
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-[#E8F0FF] sm:text-3xl">
             {isPassenger ? 'How your body is doing today' : 'Your systems today'}
           </h1>
 
@@ -194,7 +194,7 @@ export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
             }`}
           >
             <StatusBadge level={status.overall_level} variant="pill" />
-            <span className="text-slate-300">{status.overall_message}</span>
+            <span className="text-[#E8F0FF]/85">{status.overall_message}</span>
           </div>
         </div>
 
@@ -202,14 +202,12 @@ export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
         <button
           type="button"
           onClick={() => onNavigate('/circle')}
-          className={`flex min-h-[48px] items-center gap-3 self-start border border-slate-700/80 bg-[#10192D] px-4 py-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-500/80 hover:bg-[#131E36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer shrink-0 ${
-            isPassenger ? 'rounded-3xl' : 'rounded-2xl'
-          }`}
+          className="glass-card-interactive flex min-h-[48px] items-center gap-3 self-start px-4 py-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer shrink-0"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-500/15 text-rose-300 shrink-0">
             <Heart className="h-4 w-4" aria-hidden="true" />
           </span>
-          <span className="text-sm font-medium text-slate-100">
+          <span className="text-sm font-medium text-[#E8F0FF]">
             My Circle – messages from Earth
           </span>
         </button>
@@ -346,7 +344,7 @@ export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
       </div>
 
       {/* Bottom Footnote + How alerts work link */}
-      <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
+      <footer className="mt-10 border-t border-[rgba(120,180,255,0.16)] pt-5 text-center text-xs leading-relaxed text-[#8FA3C7]">
         <span>
           {isPassenger
             ? 'ORBITAL guides, it does not diagnose. All data shown is simulated.'
@@ -355,7 +353,7 @@ export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
         <button
           type="button"
           onClick={() => onNavigate('/alerts-info')}
-          className="font-medium text-slate-300 underline decoration-slate-600 underline-offset-4 transition-colors hover:text-slate-100 hover:decoration-slate-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+          className="font-medium text-[#E8F0FF] underline decoration-[#8FA3C7]/50 underline-offset-4 transition-colors hover:text-[#4FC3F7] hover:decoration-[#4FC3F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
         >
           How alerts work
         </button>

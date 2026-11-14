@@ -133,15 +133,15 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
           <button
             type="button"
             onClick={() => onNavigate('/block/mental_health')}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Mental Health</span>
           </button>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-[#E8F0FF] sm:text-3xl">
             Breathing exercise
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-[#8FA3C7]">
             Rhythm: breathe in 4 s · hold 4 s · breathe out 6 s
           </p>
         </div>
@@ -150,7 +150,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
         <div
           role="group"
           aria-label="Exercise duration"
-          className="flex items-center gap-1 rounded-xl border border-slate-800 bg-[#0B1222] p-1"
+          className="glass-panel-soft flex items-center gap-1 p-1"
         >
           {DURATIONS.map((mins) => {
             const active = durationMinutes === mins;
@@ -159,10 +159,10 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
                 key={mins}
                 type="button"
                 onClick={() => handleSelectDuration(mins)}
-                className={`min-h-[38px] rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors duration-150 cursor-pointer ${
+                className={`min-h-[38px] rounded-xl px-3.5 py-1.5 text-sm font-medium transition-colors duration-150 cursor-pointer ${
                   active
-                    ? 'bg-slate-800 text-slate-50'
-                    : 'text-slate-400 hover:text-slate-100'
+                    ? 'glass-nav-active text-[#E8F0FF]'
+                    : 'text-[#8FA3C7] hover:text-[#E8F0FF]'
                 }`}
               >
                 {mins} min
@@ -178,13 +178,13 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
           {/* Outer guide ring */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-full border border-slate-800/90"
+            className="absolute inset-0 rounded-full border border-[rgba(120,180,255,0.22)] bg-[rgba(20,35,70,0.22)] backdrop-blur-[8px]"
           />
 
           {/* Expanding / holding / contracting circle */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-sky-400/15 border-2 border-sky-400/50 transition-opacity duration-300"
+            className="absolute inset-0 rounded-full bg-[#4FC3F7]/15 border-2 border-[#4FC3F7]/60 shadow-[0_0_32px_rgba(79,195,247,0.22)] transition-opacity duration-300"
             style={{
               transform: `scale(${completed ? 0.85 : running || elapsedSec > 0 ? phase.scale : 0.72})`,
             }}
@@ -194,19 +194,19 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
           <div className="relative z-10 px-4">
             {completed ? (
               <>
-                <p className="text-2xl font-semibold text-slate-50 sm:text-3xl">
+                <p className="text-2xl font-semibold text-[#E8F0FF] sm:text-3xl">
                   Well done
                 </p>
-                <p className="mt-1.5 text-sm text-slate-300">
+                <p className="mt-1.5 text-sm text-[#8FA3C7]">
                   {durationMinutes}-minute session complete
                 </p>
               </>
             ) : (
               <>
-                <p className="text-2xl font-semibold text-slate-50 sm:text-3xl">
+                <p className="text-2xl font-semibold text-[#E8F0FF] sm:text-3xl">
                   {running || elapsedSec > 0 ? phase.label : 'Ready'}
                 </p>
-                <p className="font-mono-tabular mt-2 text-lg text-sky-300">
+                <p className="font-mono-tabular mt-2 text-lg text-[#4FC3F7]">
                   {running || elapsedSec > 0
                     ? `${phase.phaseRemainingSec} s`
                     : `${formatClock(totalSec)}`}
@@ -217,7 +217,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
         </div>
 
         {/* Remaining time & Start / Pause controls */}
-        <p className="font-mono-tabular mt-5 text-sm text-slate-400">
+        <p className="font-mono-tabular mt-5 text-sm text-[#8FA3C7]">
           Remaining: {formatClock(remainingSec)}
         </p>
 
@@ -226,7 +226,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
             <button
               type="button"
               onClick={handleStart}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-[#4FC3F7] px-6 py-3 text-base font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors duration-150 hover:bg-[#7AD6FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               <Play className="h-4 w-4" aria-hidden="true" />
               <span>
@@ -241,7 +241,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
             <button
               type="button"
               onClick={handlePause}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-slate-600 bg-slate-800 px-6 py-3 text-base font-semibold text-slate-100 transition-colors duration-150 hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-[rgba(120,180,255,0.28)] bg-[rgba(20,35,70,0.68)] px-6 py-3 text-base font-semibold text-[#E8F0FF] backdrop-blur-[14px] transition-colors duration-150 hover:border-[#4FC3F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               <Pause className="h-4 w-4" aria-hidden="true" />
               <span>Pause</span>
@@ -252,7 +252,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-slate-800 bg-[#10192D] px-4 py-3 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-[rgba(120,180,255,0.2)] bg-[rgba(10,20,46,0.56)] px-4 py-3 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:border-[#4FC3F7]/60 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
               <span>Reset</span>
@@ -262,7 +262,7 @@ export function MentalBreathingPage({ onNavigate }: MentalBreathingPageProps) {
       </div>
 
       {/* Small grey disclaimer note */}
-      <p className="border-t border-slate-800/70 pt-4 text-center text-xs leading-relaxed text-slate-400">
+      <p className="border-t border-[rgba(120,180,255,0.14)] pt-4 text-center text-xs leading-relaxed text-[#8FA3C7]">
         A relaxation exercise. It does not replace support from your flight
         surgeon or the psychological support team.
       </p>

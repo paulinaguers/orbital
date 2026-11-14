@@ -135,28 +135,28 @@ export function TipsDrawer({
       />
 
       {/* Slide-over panel */}
-      <aside className="relative z-10 flex h-full w-full max-w-lg flex-col border-l border-slate-800 bg-[#0D1526] text-slate-100 shadow-2xl shadow-black/70">
+      <aside className="relative z-10 flex h-full w-full max-w-lg flex-col border-l border-[rgba(120,180,255,0.2)] bg-[rgba(11,21,51,0.84)] text-[#E8F0FF] shadow-[0_0_40px_rgba(0,0,0,0.65)] backdrop-blur-xl">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 border-b border-slate-800/90 px-6 py-5">
+        <div className="flex items-start justify-between gap-4 border-b border-[rgba(120,180,255,0.16)] px-6 py-5">
           <div>
             <h2
               id="tips-drawer-title"
-              className="text-xl font-semibold tracking-tight text-slate-50"
+              className="text-xl font-semibold tracking-tight text-[#E8F0FF]"
             >
               Suggestions for today
             </h2>
             {filteredBlock && (
-              <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-slate-300">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-[#8FA3C7]">
                 <span>Showing tips for {filteredBlock.name}</span>
                 {onShowAllBlocks && affectedBlockCount > 1 && (
                   <>
-                    <span aria-hidden="true" className="text-slate-600">
+                    <span aria-hidden="true" className="text-[#8FA3C7]/50">
                       ·
                     </span>
                     <button
                       type="button"
                       onClick={onShowAllBlocks}
-                      className="font-medium text-sky-300 underline decoration-sky-500/50 underline-offset-4 hover:text-sky-200 cursor-pointer"
+                      className="font-medium text-[#4FC3F7] underline decoration-[#4FC3F7]/50 underline-offset-4 hover:text-[#7DD3FC] cursor-pointer"
                     >
                       Show all ({affectedBlockCount})
                     </button>
@@ -170,7 +170,7 @@ export function TipsDrawer({
             type="button"
             onClick={onClose}
             aria-label="Close suggestions panel"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-700/80 bg-slate-800/70 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-400 cursor-pointer"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.6)] text-[#8FA3C7] transition-colors hover:border-[#4FC3F7] hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -179,7 +179,7 @@ export function TipsDrawer({
         {/* Body */}
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
           {sections.length === 0 ? (
-            <div className="rounded-2xl border border-slate-800 bg-[#10192D] p-5 text-sm text-slate-300">
+            <div className="glass-panel p-5 text-sm text-[#8FA3C7]">
               No active suggestions for this selection.
             </div>
           ) : (
@@ -188,17 +188,17 @@ export function TipsDrawer({
               return (
                 <section
                   key={section.key}
-                  className="rounded-2xl bg-[#10192D] p-5 shadow-md shadow-black/20"
-                  style={{ border: `1px solid ${style.surfaceBorder}` }}
+                  className="glass-panel p-5"
+                  style={{ borderColor: style.surfaceBorder }}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#8FA3C7]">
                       {section.indicatorLabel}
                     </span>
                     <StatusBadge level={section.level} variant="pill" />
                   </div>
 
-                  <h3 className="mt-2 text-lg font-semibold text-slate-50">
+                  <h3 className="mt-2 text-lg font-semibold text-[#E8F0FF]">
                     {section.tip.title}
                   </h3>
 
@@ -212,8 +212,8 @@ export function TipsDrawer({
                           <label
                             className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 transition-colors ${
                               isChecked
-                                ? 'border-emerald-500/35 bg-emerald-500/10 text-slate-300'
-                                : 'border-slate-800/90 bg-[#0A1120] text-slate-100 hover:border-slate-700'
+                                ? 'border-emerald-400/40 bg-emerald-500/12 text-[#8FA3C7]'
+                                : 'border-[rgba(120,180,255,0.16)] bg-[rgba(10,20,46,0.55)] text-[#E8F0FF] hover:border-[#4FC3F7]/60'
                             }`}
                           >
                             <input
@@ -228,7 +228,7 @@ export function TipsDrawer({
                               className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                                 isChecked
                                   ? 'border-emerald-400 bg-emerald-500 text-slate-950'
-                                  : 'border-slate-600 bg-slate-900 text-transparent'
+                                  : 'border-[rgba(120,180,255,0.3)] bg-[rgba(5,11,26,0.65)] text-transparent'
                               }`}
                             >
                               <Check className="h-3.5 w-3.5 stroke-[2.75]" />
@@ -238,18 +238,18 @@ export function TipsDrawer({
                               <p
                                 className={`text-sm leading-relaxed ${
                                   isChecked
-                                    ? 'line-through text-slate-400'
-                                    : 'text-slate-100'
+                                    ? 'line-through text-[#8FA3C7]'
+                                    : 'text-[#E8F0FF]'
                                 }`}
                               >
-                                <span className="font-mono-tabular mr-1.5 font-semibold text-slate-400">
+                                <span className="font-mono-tabular mr-1.5 font-semibold text-[#8FA3C7]">
                                   {idx + 1}.
                                 </span>
                                 {step.text}
                               </p>
 
                               {step.basis === 'nasa' && (
-                                <span className="mt-2 inline-block rounded-md border border-sky-400/30 bg-sky-500/12 px-2 py-0.5 text-[11px] font-medium text-sky-200">
+                                <span className="mt-2 inline-block rounded-md border border-[#4FC3F7]/35 bg-[#4FC3F7]/15 px-2 py-0.5 text-[11px] font-medium text-[#7DD3FC]">
                                   Based on NASA practice
                                 </span>
                               )}
@@ -266,7 +266,7 @@ export function TipsDrawer({
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-slate-800/90 bg-[#0A101E] px-6 py-4 text-xs leading-relaxed text-slate-400">
+        <footer className="border-t border-[rgba(120,180,255,0.16)] bg-[rgba(8,15,36,0.75)] px-6 py-4 text-xs leading-relaxed text-[#8FA3C7]">
           These are general self-care tips. ORBITAL guides, it does not
           diagnose.
         </footer>

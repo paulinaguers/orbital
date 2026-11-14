@@ -179,17 +179,17 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
           <button
             type="button"
             onClick={() => onNavigate('/body')}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Body map</span>
           </button>
 
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#E8F0FF] sm:text-3xl">
               My Circle
             </h1>
-            <span className="rounded-md border border-slate-700/80 bg-slate-800/75 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+            <span className="rounded-lg border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.65)] px-2.5 py-0.5 text-xs font-medium text-[#8FA3C7]">
               Simulated messages
             </span>
           </div>
@@ -198,11 +198,17 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
 
       {/* Top Communication Link Status Banner */}
       <div
-        className={`mt-5 rounded-2xl border px-5 py-4 ${
-          isConnected
-            ? 'border-emerald-500/40 bg-emerald-500/10'
-            : 'border-slate-700/90 bg-[#10192D]'
+        className={`glass-panel mt-5 px-5 py-4 ${
+          isConnected ? '' : ''
         }`}
+        style={
+          isConnected
+            ? {
+                borderColor: 'rgba(46, 204, 113, 0.45)',
+                background: 'rgba(46, 204, 113, 0.12)',
+              }
+            : undefined
+        }
       >
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
@@ -210,7 +216,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
               className={`mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl shrink-0 ${
                 isConnected
                   ? 'bg-emerald-500/20 text-emerald-300'
-                  : 'bg-slate-800 text-slate-300'
+                  : 'bg-[rgba(10,20,46,0.65)] text-[#8FA3C7]'
               }`}
             >
               {isConnected ? (
@@ -223,15 +229,15 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
             <div>
               {!isConnected ? (
                 <>
-                  <p className="text-sm font-semibold text-slate-100 sm:text-base">
+                  <p className="text-sm font-semibold text-[#E8F0FF] sm:text-base">
                     No connection with Earth right now. Next communication
                     window in{' '}
-                    <span className="font-mono-tabular text-sky-300">
+                    <span className="font-mono-tabular text-[#4FC3F7]">
                       {formatCountdown(remainingMs)}
                     </span>
                     .
                   </p>
-                  <p className="mt-0.5 text-xs sm:text-sm text-slate-300">
+                  <p className="mt-0.5 text-xs sm:text-sm text-[#8FA3C7]">
                     Messages will be sent automatically when the window opens.
                   </p>
                 </>
@@ -243,7 +249,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
             </div>
           </div>
 
-          <p className="font-mono-tabular text-xs font-medium text-slate-300 sm:text-right shrink-0">
+          <p className="font-mono-tabular text-xs font-medium text-[#8FA3C7] sm:text-right shrink-0">
             Signal delay: ~{link.one_way_delay_min} min each way.
           </p>
         </div>
@@ -254,7 +260,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
         {/* Left: Contact list */}
         <aside
           aria-label="Contacts on Earth"
-          className="rounded-2xl border border-slate-800/90 bg-[#10192D] p-3 shadow-lg shadow-black/20"
+          className="glass-panel p-3"
         >
           <ul className="space-y-1.5">
             {contacts.map((contact) => {
@@ -262,17 +268,17 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
               const lastMsg = contact.messages[contact.messages.length - 1];
               const avatarTone =
                 AVATAR_TONES[contact.id] ??
-                'bg-slate-700 text-slate-100 border-slate-600';
+                'bg-slate-700 text-[#E8F0FF] border-slate-600';
 
               return (
                 <li key={contact.id}>
                   <button
                     type="button"
                     onClick={() => handleSelectContact(contact.id)}
-                    className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
+                    className={`flex w-full items-center gap-3 rounded-[14px] px-3.5 py-3 text-left transition-all duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] ${
                       isSelected
-                        ? 'bg-slate-800/90 border border-slate-700'
-                        : 'border border-transparent hover:bg-slate-800/45'
+                        ? 'glass-nav-active'
+                        : 'border border-transparent hover:bg-white/5'
                     }`}
                   >
                     <div
@@ -284,21 +290,21 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="truncate text-sm font-semibold text-slate-100">
+                        <span className="truncate text-sm font-semibold text-[#E8F0FF]">
                           {contact.name}
                         </span>
                         {contact.unread && (
                           <span
                             aria-label="Unread messages"
-                            className="inline-block h-2.5 w-2.5 rounded-full bg-sky-400 shrink-0"
+                            className="inline-block h-2.5 w-2.5 rounded-full bg-[#4FC3F7] shadow-[0_0_8px_rgba(79,195,247,0.8)] shrink-0"
                           />
                         )}
                       </div>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-[#8FA3C7]">
                         {contact.relationship}
                       </p>
                       {lastMsg && (
-                        <p className="mt-1 truncate text-xs text-slate-300">
+                        <p className="mt-1 truncate text-xs text-[#E8F0FF]/80">
                           {lastMsg.sender === 'astronaut' ? 'You: ' : ''}
                           {lastMsg.text}
                         </p>
@@ -313,24 +319,24 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
 
         {/* Right: Chat window */}
         {selectedContact && (
-          <div className="flex min-h-[460px] flex-col rounded-2xl border border-slate-800/90 bg-[#10192D] shadow-lg shadow-black/20">
+          <div className="glass-panel flex min-h-[460px] flex-col">
             {/* Chat Header */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 px-5 py-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[rgba(120,180,255,0.16)] px-5 py-4">
               <div className="flex items-center gap-3">
                 <div
                   aria-hidden="true"
                   className={`flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold shrink-0 ${
                     AVATAR_TONES[selectedContact.id] ??
-                    'bg-slate-700 text-slate-100 border-slate-600'
+                    'bg-slate-700 text-[#E8F0FF] border-slate-600'
                   }`}
                 >
                   {selectedContact.initials}
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-slate-50">
+                  <h2 className="text-base font-semibold text-[#E8F0FF]">
                     {selectedContact.name}
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-[#8FA3C7]">
                     {selectedContact.relationship}
                   </p>
                 </div>
@@ -342,9 +348,9 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
                   onClick={() => setPrivacyOpen((prev) => !prev)}
                   aria-expanded={privacyOpen}
                   aria-haspopup="dialog"
-                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-800/75 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(10,20,46,0.55)] px-3 py-1.5 text-xs font-medium text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
                 >
-                  <Lock className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />
+                  <Lock className="h-3.5 w-3.5 text-[#4FC3F7]" aria-hidden="true" />
                   <span>End-to-end encrypted</span>
                 </button>
 
@@ -352,14 +358,15 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
                   <div
                     role="dialog"
                     aria-label="Encryption and privacy note"
-                    className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-slate-700/90 bg-[#0B1324] p-4 shadow-2xl shadow-black/70 z-30"
+                    className="glass-panel absolute right-0 mt-2 w-80 max-w-[calc(100vw-3rem)] p-4 z-30"
+                    style={{ background: 'rgba(11, 21, 51, 0.92)' }}
                   >
-                    <p className="text-xs leading-relaxed text-slate-100 sm:text-sm">
+                    <p className="text-xs leading-relaxed text-[#E8F0FF] sm:text-sm">
                       In ORBITAL&apos;s design, personal messages are end-to-end
                       encrypted: only you and your contact can read them. They
                       are never analyzed and are not part of your health data.
                     </p>
-                    <p className="mt-2.5 border-t border-slate-800 pt-2.5 text-[11px] leading-relaxed text-slate-400">
+                    <p className="mt-2.5 border-t border-[rgba(120,180,255,0.16)] pt-2.5 text-[11px] leading-relaxed text-[#8FA3C7]">
                       Prototype: encryption is part of the design and is not
                       implemented in this demo.
                     </p>
@@ -382,14 +389,14 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
                     <div
                       className={`max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:text-[15px] ${
                         isOwn
-                          ? 'rounded-br-md bg-sky-500/20 border border-sky-400/35 text-slate-50'
-                          : 'rounded-bl-md bg-[#162238] border border-slate-700/70 text-slate-100'
+                          ? 'rounded-br-md border border-[#4FC3F7]/40 bg-[#4FC3F7]/18 text-[#E8F0FF]'
+                          : 'rounded-bl-md border border-[rgba(120,180,255,0.2)] bg-[rgba(10,20,46,0.62)] text-[#E8F0FF]'
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{msg.text}</p>
                     </div>
 
-                    <div className="mt-1.5 flex flex-wrap items-center gap-2 px-1 text-[11px] text-slate-400">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-2 px-1 text-[11px] text-[#8FA3C7]">
                       <span className="font-mono-tabular">
                         Flight day {msg.flight_day} · {msg.timestamp}
                       </span>
@@ -419,7 +426,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
             {/* Composer */}
             <form
               onSubmit={handleSendMessage}
-              className="flex items-center gap-3 border-t border-slate-800/80 px-4 py-3.5 sm:px-5"
+              className="flex items-center gap-3 border-t border-[rgba(120,180,255,0.16)] px-4 py-3.5 sm:px-5"
             >
               <label htmlFor="circle-message-input" className="sr-only">
                 Message {selectedContact.name}
@@ -430,12 +437,12 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={`Write a message to ${selectedContact.name}...`}
-                className="min-h-[44px] flex-1 rounded-xl border border-slate-700/80 bg-[#09101E] px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-sky-400 focus:outline-none sm:text-base"
+                className="min-h-[44px] flex-1 rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(5,11,26,0.65)] px-4 py-2 text-sm text-[#E8F0FF] placeholder-[#8FA3C7]/70 focus:border-[#4FC3F7] focus:outline-none sm:text-base"
               />
               <button
                 type="submit"
                 disabled={!draft.trim()}
-                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer shrink-0"
+                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-[#4FC3F7] px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors duration-150 hover:bg-[#7DD3FC] disabled:cursor-not-allowed disabled:bg-slate-700/70 disabled:text-[#8FA3C7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer shrink-0"
               >
                 <Send className="h-4 w-4" aria-hidden="true" />
                 <span>Send</span>
@@ -446,7 +453,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
       </div>
 
       {/* Bottom privacy & simulation note */}
-      <footer className="mt-8 border-t border-slate-800/70 pt-4 text-center text-xs leading-relaxed text-slate-400">
+      <footer className="mt-8 border-t border-[rgba(120,180,255,0.16)] pt-4 text-center text-xs leading-relaxed text-[#8FA3C7]">
         Simulated contacts and messages. Personal messages are not health data
         and are never analyzed.
       </footer>

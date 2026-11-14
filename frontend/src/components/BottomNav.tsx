@@ -58,22 +58,25 @@ export function BottomNav({ route, profile, onNavigate }: BottomNavProps) {
   return (
     <nav
       aria-label="Primary navigation"
-      className="sticky bottom-0 z-20 border-t border-slate-800/80 bg-[#0A101E]/95 backdrop-blur-sm"
+      className="glass-bar sticky bottom-0 z-20 border-t"
     >
-      <div className="mx-auto flex max-w-xl items-center justify-around gap-1 px-3 py-2">
+      <div className="mx-auto flex max-w-xl items-center justify-around gap-1.5 px-3 py-2">
         {items.map(({ id, label, path, active, Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => onNavigate(path)}
             aria-current={active ? 'page' : undefined}
-            className={`flex min-h-[44px] min-w-[78px] items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 sm:px-4 ${
+            className={`flex min-h-[44px] min-w-[78px] items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] sm:px-4 ${
               active
-                ? 'bg-slate-800/90 text-slate-50 border border-slate-700/80'
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-100 border border-transparent'
+                ? 'glass-nav-active'
+                : 'text-[#8FA3C7] hover:bg-white/5 hover:text-[#E8F0FF] border border-transparent'
             }`}
           >
-            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon
+              className={`h-4 w-4 shrink-0 ${active ? 'text-[#4FC3F7]' : ''}`}
+              aria-hidden="true"
+            />
             <span>{label}</span>
           </button>
         ))}

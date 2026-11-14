@@ -96,9 +96,9 @@ function IndicatorCard({
     if (series.indicator === 'blood_pressure') {
       const bp = series as BloodPressureIndicatorSeries;
       return (
-        <p className="mt-1.5 text-sm text-slate-300">
+        <p className="mt-1.5 text-sm text-[#8FA3C7]">
           Your baseline:{' '}
-          <span className="font-mono-tabular font-medium text-slate-100">
+          <span className="font-mono-tabular font-medium text-[#E8F0FF]">
             {bp.baseline_low_systolic}–{bp.baseline_high_systolic} /{' '}
             {bp.baseline_low_diastolic}–{bp.baseline_high_diastolic} mmHg
           </span>
@@ -108,9 +108,9 @@ function IndicatorCard({
 
     const num = series as NumericIndicatorSeries;
     return (
-      <p className="mt-1.5 text-sm text-slate-300">
+      <p className="mt-1.5 text-sm text-[#8FA3C7]">
         Your baseline:{' '}
-        <span className="font-mono-tabular font-medium text-slate-100">
+        <span className="font-mono-tabular font-medium text-[#E8F0FF]">
           {num.baseline_low}–{num.baseline_high}
           {indicator.unit ? ` ${indicator.unit}` : ''}
         </span>
@@ -120,16 +120,13 @@ function IndicatorCard({
 
   if (isPassenger) {
     return (
-      <article
-        className="rounded-3xl bg-[#10192D] p-6 shadow-lg shadow-black/25 sm:p-7"
-        style={{ border: `1.5px solid ${indStyle.surfaceBorder}` }}
-      >
+      <article className="glass-panel p-6 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-slate-100">
+            <h2 className="text-xl font-semibold text-[#E8F0FF]">
               {indicator.name}
             </h2>
-            <p className="font-mono-tabular mt-2 text-4xl font-bold tracking-tight text-slate-50">
+            <p className="font-mono-tabular mt-2 text-4xl font-bold tracking-tight text-[#E8F0FF]">
               {formatIndicatorValue(indicator)}
             </p>
           </div>
@@ -154,10 +151,7 @@ function IndicatorCard({
       : null;
 
   return (
-    <article
-      className="rounded-2xl bg-[#10192D] p-5 shadow-lg shadow-black/25 sm:p-6"
-      style={{ border: `1px solid ${indStyle.surfaceBorder}` }}
-    >
+    <article className="glass-panel p-5 sm:p-6">
       {/* One-line status sentence at top of card strictly from indicator.level */}
       <p
         className="mb-3 text-sm font-medium"
@@ -168,26 +162,26 @@ function IndicatorCard({
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-lg font-semibold text-slate-100">
+          <h2 className="text-lg font-semibold text-[#E8F0FF]">
             {indicator.name}
           </h2>
 
           {explanation && (
-            <div className="mt-2 space-y-1 text-sm leading-relaxed text-slate-300">
+            <div className="mt-2 space-y-1 text-sm leading-relaxed text-[#8FA3C7]">
               <p>
-                <span className="font-medium text-slate-200">
+                <span className="font-medium text-[#E8F0FF]">
                   What it measures:
                 </span>{' '}
                 {explanation.measures}
               </p>
               <p>
-                <span className="font-medium text-slate-200">
+                <span className="font-medium text-[#E8F0FF]">
                   Why it matters in space:
                 </span>{' '}
                 {explanation.matters}
               </p>
-              <p className="text-xs text-slate-400 pt-0.5">
-                <span className="font-medium text-slate-300">
+              <p className="pt-0.5 text-xs text-[#8FA3C7]">
+                <span className="font-medium text-[#E8F0FF]/90">
                   Measured with:
                 </span>{' '}
                 {explanation.measuredWith}
@@ -195,7 +189,7 @@ function IndicatorCard({
             </div>
           )}
 
-          <p className="font-mono-tabular mt-3 text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
+          <p className="font-mono-tabular mt-3 text-3xl font-bold tracking-tight text-[#E8F0FF] sm:text-4xl">
             {formatIndicatorValue(indicator)}
           </p>
           {renderBaselineText()}
@@ -203,7 +197,7 @@ function IndicatorCard({
 
         <div className="flex flex-col items-start gap-2 sm:items-end shrink-0">
           <StatusBadge level={indicator.level} variant="pill" />
-          <p className="text-xs text-slate-400 sm:text-right">
+          <p className="text-xs text-[#8FA3C7] sm:text-right">
             Threshold source: {indicator.threshold_source}
           </p>
         </div>
@@ -211,9 +205,9 @@ function IndicatorCard({
 
       {/* Horizontal career limit progress bar for radiation_dose */}
       {radiationValue !== null && radiationLimit !== null && (
-        <div className="mt-4 rounded-xl border border-slate-800/80 bg-[#0B1222] p-4">
+        <div className="glass-panel-soft mt-4 p-4">
           <div className="flex items-center justify-between gap-2 text-xs sm:text-sm">
-            <span className="font-mono-tabular font-medium text-slate-200">
+            <span className="font-mono-tabular font-medium text-[#E8F0FF]">
               {radiationValue} of {radiationLimit} mSv career limit
             </span>
           </div>
@@ -223,7 +217,7 @@ function IndicatorCard({
             aria-valuemin={0}
             aria-valuemax={radiationLimit}
             aria-label={`${radiationValue} of ${radiationLimit} mSv career limit`}
-            className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-slate-800"
+            className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-[rgba(5,11,26,0.7)]"
           >
             <div
               className="h-full rounded-full transition-all duration-300"
@@ -256,17 +250,17 @@ export function BlockDetailPage({
   if (!block) {
     return (
       <section className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-5 py-10 sm:px-8">
-        <div className="rounded-2xl border border-slate-800/90 bg-[#10192D] p-8 shadow-xl shadow-black/25">
-          <h1 className="text-2xl font-semibold text-slate-50">
+        <div className="glass-panel p-8">
+          <h1 className="text-2xl font-semibold text-[#E8F0FF]">
             Block not found
           </h1>
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-[#8FA3C7]">
             No physiological block matches &ldquo;{blockId}&rdquo;.
           </p>
           <button
             type="button"
             onClick={() => onNavigate('/body')}
-            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-4 py-2 text-sm font-medium text-slate-100 hover:bg-slate-700/80 cursor-pointer"
+            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-[rgba(120,180,255,0.25)] bg-[rgba(20,35,70,0.65)] px-4 py-2 text-sm font-medium text-[#E8F0FF] hover:border-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Body map</span>
@@ -291,7 +285,7 @@ export function BlockDetailPage({
         <button
           type="button"
           onClick={() => onNavigate('/body')}
-          className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+          className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>Body map</span>
@@ -299,7 +293,7 @@ export function BlockDetailPage({
 
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1
-            className={`font-semibold tracking-tight text-slate-50 ${
+            className={`font-semibold tracking-tight text-[#E8F0FF] ${
               isPassenger ? 'text-3xl sm:text-4xl' : 'text-2xl sm:text-3xl'
             }`}
           >
@@ -314,7 +308,7 @@ export function BlockDetailPage({
             {block.nasa_risk.map((risk) => (
               <span
                 key={risk}
-                className="rounded-md border border-slate-700/70 bg-slate-800/75 px-2.5 py-1 text-xs text-slate-300"
+                className="rounded-lg border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.55)] px-2.5 py-1 text-xs text-[#8FA3C7]"
               >
                 {risk}
               </span>
@@ -324,12 +318,13 @@ export function BlockDetailPage({
 
         {/* Recommendation / Passenger Simple Explanation Box */}
         <div
-          className={`mt-5 flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between ${
-            isPassenger ? 'rounded-3xl p-6' : 'rounded-2xl'
+          className={`mt-5 flex flex-col gap-3 rounded-[20px] px-5 py-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between ${
+            isPassenger ? 'p-6' : ''
           }`}
           style={{
             backgroundColor: blockStyle.surfaceBg,
-            border: `1.5px solid ${blockStyle.surfaceBorder}`,
+            border: `1px solid ${blockStyle.surfaceBorder}`,
+            boxShadow: '0 0 24px rgba(60, 140, 255, 0.12)',
           }}
         >
           {isPassenger ? (
@@ -340,12 +335,12 @@ export function BlockDetailPage({
               >
                 {blockStyle.statusSentence}
               </p>
-              <p className="mt-1.5 text-lg leading-relaxed text-slate-100">
+              <p className="mt-1.5 text-lg leading-relaxed text-[#E8F0FF]">
                 {block.simple_explanation ?? block.recommendation}
               </p>
             </div>
           ) : (
-            <p className="text-base font-medium leading-relaxed text-slate-100">
+            <p className="text-base font-medium leading-relaxed text-[#E8F0FF]">
               {block.recommendation}
             </p>
           )}
@@ -354,7 +349,7 @@ export function BlockDetailPage({
             <button
               type="button"
               onClick={() => onOpenTips(block.id)}
-              className="inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-xl border border-slate-200/25 bg-[#0D1526]/85 px-4 py-2 text-sm font-semibold text-slate-100 transition-colors hover:border-sky-400/60 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              className="inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-xl border border-[rgba(120,180,255,0.3)] bg-[rgba(10,20,46,0.7)] px-4 py-2 text-sm font-semibold text-[#4FC3F7] transition-colors hover:border-[#4FC3F7] hover:bg-[#4FC3F7]/15 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               See tips
             </button>
@@ -389,8 +384,8 @@ export function BlockDetailPage({
                 key={action.label}
                 type="button"
                 onClick={() => onNavigate(action.path)}
-                className={`inline-flex min-h-[46px] items-center justify-center gap-2.5 border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer ${
-                  isPassenger ? 'rounded-2xl text-base' : 'rounded-xl'
+                className={`glass-card-interactive inline-flex min-h-[46px] items-center justify-center gap-2.5 px-5 py-2.5 text-sm font-semibold text-[#4FC3F7] hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer ${
+                  isPassenger ? 'text-base' : ''
                 }`}
               >
                 <span>{action.label}</span>
@@ -399,10 +394,10 @@ export function BlockDetailPage({
                     className="rounded-md px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide"
                     style={{
                       backgroundColor: isOverdue
-                        ? 'rgba(230, 126, 34, 0.25)'
-                        : 'rgba(241, 196, 15, 0.22)',
-                      color: isOverdue ? '#EB984E' : '#F4D03F',
-                      border: `1px solid ${isOverdue ? 'rgba(230, 126, 34, 0.5)' : 'rgba(241, 196, 15, 0.45)'}`,
+                        ? 'rgba(230, 126, 34, 0.2)'
+                        : 'rgba(241, 196, 15, 0.2)',
+                      color: isOverdue ? '#E67E22' : '#F1C40F',
+                      border: `1px solid ${isOverdue ? '#E67E22' : '#F1C40F'}`,
                     }}
                   >
                     Due
@@ -415,7 +410,7 @@ export function BlockDetailPage({
       )}
 
       {/* 4. Footer */}
-      <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
+      <footer className="mt-10 border-t border-[rgba(120,180,255,0.16)] pt-5 text-center text-xs leading-relaxed text-[#8FA3C7]">
         <span>
           {isPassenger
             ? 'ORBITAL guides, it does not diagnose. All data shown is simulated.'
@@ -424,7 +419,7 @@ export function BlockDetailPage({
         <button
           type="button"
           onClick={() => onNavigate('/alerts-info')}
-          className="font-medium text-slate-300 underline decoration-slate-600 underline-offset-4 transition-colors hover:text-slate-100 hover:decoration-slate-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+          className="font-medium text-[#E8F0FF] underline decoration-[#8FA3C7]/50 underline-offset-4 transition-colors hover:text-[#4FC3F7] hover:decoration-[#4FC3F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
         >
           How alerts work
         </button>

@@ -146,8 +146,8 @@ export function BodySilhouette({
           cx="140"
           cy="68"
           r="42"
-          fill="#0E172A"
-          stroke="#475569"
+          fill="rgba(14, 26, 56, 0.85)"
+          stroke="rgba(120, 180, 255, 0.35)"
           strokeWidth="2.2"
         />
         {/* Helmet visor inner frame */}
@@ -157,8 +157,8 @@ export function BodySilhouette({
           width="64"
           height="54"
           rx="27"
-          fill="#09101E"
-          stroke="#334155"
+          fill="rgba(7, 15, 36, 0.9)"
+          stroke="rgba(120, 180, 255, 0.25)"
           strokeWidth="1.5"
         />
         {/* Neck ring collar */}
@@ -168,8 +168,8 @@ export function BodySilhouette({
           width="52"
           height="13"
           rx="6.5"
-          fill="#111C33"
-          stroke="#475569"
+          fill="rgba(20, 35, 70, 0.85)"
+          stroke="rgba(120, 180, 255, 0.35)"
           strokeWidth="1.8"
         />
         {/* Torso, arms, and legs generic suit silhouette */}
@@ -201,8 +201,8 @@ export function BodySilhouette({
              C 224 140, 212 127, 196 123
              L 168 117
              Z"
-          fill="#0E172A"
-          stroke="#475569"
+          fill="rgba(14, 26, 56, 0.85)"
+          stroke="rgba(120, 180, 255, 0.35)"
           strokeWidth="2.2"
           strokeLinejoin="round"
         />
@@ -212,7 +212,7 @@ export function BodySilhouette({
           y1="242"
           x2="192"
           y2="242"
-          stroke="#334155"
+          stroke="rgba(120, 180, 255, 0.25)"
           strokeWidth="1.6"
         />
         <line
@@ -220,7 +220,7 @@ export function BodySilhouette({
           y1="364"
           x2="128"
           y2="364"
-          stroke="#334155"
+          stroke="rgba(120, 180, 255, 0.25)"
           strokeWidth="1.5"
         />
         <line
@@ -228,7 +228,7 @@ export function BodySilhouette({
           y1="364"
           x2="194"
           y2="364"
-          stroke="#334155"
+          stroke="rgba(120, 180, 255, 0.25)"
           strokeWidth="1.5"
         />
       </g>

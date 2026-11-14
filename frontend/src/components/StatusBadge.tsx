@@ -21,8 +21,10 @@ export function StatusBadge({
       <span
         className="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-bold tracking-wide whitespace-nowrap shrink-0"
         style={{
-          backgroundColor: style.color,
+          backgroundColor: style.pillBg,
           color: style.pillTextColor,
+          border: `1px solid ${style.color}`,
+          boxShadow: style.pillGlow,
         }}
       >
         {style.label}
@@ -32,11 +34,12 @@ export function StatusBadge({
 
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-lg px-2.5 py-1 text-sm font-medium whitespace-nowrap shrink-0"
+      className="inline-flex items-center gap-2 rounded-xl px-3 py-1 text-sm font-medium whitespace-nowrap shrink-0 backdrop-blur-md"
       style={{
-        backgroundColor: style.surfaceBg,
-        border: `1px solid ${style.surfaceBorder}`,
-        color: style.textColor,
+        backgroundColor: style.pillBg,
+        border: `1px solid ${style.color}`,
+        color: style.pillTextColor,
+        boxShadow: style.pillGlow,
       }}
     >
       <span

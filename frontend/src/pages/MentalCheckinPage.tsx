@@ -429,7 +429,7 @@ export function MentalCheckinPage({
           <button
             type="button"
             onClick={() => onNavigate('/block/mental_health')}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-400 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#8FA3C7] transition-colors duration-150 hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4FC3F7] cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>Mental Health</span>
@@ -437,10 +437,10 @@ export function MentalCheckinPage({
 
           {!showIntro && (
             <>
-              <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+              <h1 className="mt-2 text-2xl font-semibold tracking-tight text-[#E8F0FF] sm:text-3xl">
                 Daily check-in
               </h1>
-              <p className="mt-1.5 text-base text-slate-300">
+              <p className="mt-1.5 text-base text-[#8FA3C7]">
                 Takes less than 30 seconds.
               </p>
             </>
@@ -449,7 +449,7 @@ export function MentalCheckinPage({
 
         {!saved && !showIntro && (
           <div className="flex items-center gap-3">
-            <p className="font-mono-tabular text-sm font-medium text-slate-300">
+            <p className="font-mono-tabular text-sm font-medium text-[#E8F0FF]">
               {answeredCount} of 4 answered
             </p>
             <button
@@ -457,7 +457,7 @@ export function MentalCheckinPage({
               onClick={() => setShowIntro(true)}
               aria-label="How this check-in works"
               title="How this check-in works"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700/80 bg-slate-800/80 text-slate-300 transition-colors hover:border-sky-400/60 hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(120,180,255,0.24)] bg-[rgba(20,35,70,0.65)] text-[#8FA3C7] transition-colors hover:border-[#4FC3F7] hover:text-[#E8F0FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               <HelpCircle className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -495,20 +495,20 @@ export function MentalCheckinPage({
           />
         </div>
       ) : saved ? (
-        <div className="mt-8 rounded-2xl border border-slate-700/80 bg-[#10192D] p-8 shadow-xl shadow-black/25">
+        <div className="glass-panel mt-8 p-8">
           <div className="flex items-start gap-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-500/15 text-sky-300 shrink-0">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(79,195,247,0.18)] text-[#4FC3F7] shrink-0">
               <Check className="h-5 w-5" aria-hidden="true" />
             </span>
             <div>
-              <p className="text-lg font-medium leading-relaxed text-slate-100">
+              <p className="text-lg font-medium leading-relaxed text-[#E8F0FF]">
                 Saved. Your answers will be compared with your personal
                 baseline.
               </p>
               <button
                 type="button"
                 onClick={() => onNavigate('/block/mental_health')}
-                className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-2.5 text-sm font-medium text-slate-100 transition-colors hover:bg-slate-700/80 cursor-pointer"
+                className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[rgba(120,180,255,0.24)] bg-[rgba(10,20,46,0.58)] px-5 py-2.5 text-sm font-medium text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] hover:bg-[rgba(24,43,86,0.7)] cursor-pointer"
               >
                 Return to Mental Health
               </button>
@@ -518,7 +518,7 @@ export function MentalCheckinPage({
       ) : (
         <form
           onSubmit={handleSave}
-          className="mt-6 rounded-2xl border border-slate-800/90 bg-[#10192D] p-5 shadow-xl shadow-black/25 sm:p-8"
+          className="glass-panel mt-6 p-5 sm:p-8"
         >
           <div className="space-y-8">
             {QUESTIONS.map((question) => {
@@ -528,14 +528,14 @@ export function MentalCheckinPage({
               return (
                 <div
                   key={question.key}
-                  className="border-b border-slate-800/80 pb-7 last:border-b-0 last:pb-0"
+                  className="border-b border-[rgba(120,180,255,0.14)] pb-7 last:border-b-0 last:pb-0"
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <h2 className="text-base font-semibold text-slate-100 sm:text-lg">
+                    <h2 className="text-base font-semibold text-[#E8F0FF] sm:text-lg">
                       {question.label}
                     </h2>
                     {selected === null && (
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-[#8FA3C7]">
                         Select 0 to 10
                       </span>
                     )}
@@ -607,7 +607,7 @@ export function MentalCheckinPage({
                   </div>
 
                   {/* Anchor labels under 0 and 10 */}
-                  <div className="mt-2.5 flex items-center justify-between gap-4 text-xs sm:text-sm text-slate-300">
+                  <div className="mt-2.5 flex items-center justify-between gap-4 text-xs sm:text-sm text-[#8FA3C7]">
                     <span>{question.leftAnchor}</span>
                     <span className="text-right">{question.rightAnchor}</span>
                   </div>
@@ -620,17 +620,17 @@ export function MentalCheckinPage({
             <p className="mt-5 text-sm text-rose-300">{errorMessage}</p>
           )}
 
-          <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-slate-800/80 pt-5">
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-[rgba(120,180,255,0.14)] pt-5">
             <button
               type="submit"
               disabled={!allAnswered || saving}
-              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-[#4FC3F7] px-6 py-3 text-base font-semibold text-[#050B1A] shadow-[0_0_20px_rgba(79,195,247,0.3)] transition-colors duration-150 hover:bg-[#7AD6FA] disabled:cursor-not-allowed disabled:bg-[rgba(120,180,255,0.12)] disabled:text-[#8FA3C7] disabled:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
             >
               {saving ? 'Saving...' : 'Save check-in'}
             </button>
 
             {!allAnswered && (
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-[#8FA3C7]">
                 Answer all four questions to save your check-in.
               </span>
             )}

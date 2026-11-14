@@ -38,44 +38,52 @@ export const LEVEL_STYLES: Record<
     surfaceBg: string;
     surfaceBorder: string;
     textColor: string;
+    pillBg: string;
     pillTextColor: string;
+    pillGlow?: string;
   }
 > = {
   green: {
     color: '#2ECC71',
     label: 'Green · Normal',
     statusSentence: 'Within the expected range.',
-    surfaceBg: 'rgba(46, 204, 113, 0.12)',
-    surfaceBorder: 'rgba(46, 204, 113, 0.35)',
+    surfaceBg: 'rgba(46, 204, 113, 0.14)',
+    surfaceBorder: 'rgba(46, 204, 113, 0.38)',
     textColor: '#58D68D',
-    pillTextColor: '#052E16',
+    pillBg: 'rgba(46, 204, 113, 0.2)',
+    pillTextColor: '#2ECC71',
   },
   yellow: {
     color: '#F1C40F',
     label: 'Yellow · Watch',
     statusSentence: 'Changing from your usual values. Keep an eye on it.',
-    surfaceBg: 'rgba(241, 196, 15, 0.12)',
-    surfaceBorder: 'rgba(241, 196, 15, 0.38)',
+    surfaceBg: 'rgba(241, 196, 15, 0.14)',
+    surfaceBorder: 'rgba(241, 196, 15, 0.42)',
     textColor: '#F4D03F',
-    pillTextColor: '#0F172A',
+    pillBg: 'rgba(241, 196, 15, 0.2)',
+    pillTextColor: '#F1C40F',
   },
   orange: {
     color: '#E67E22',
     label: 'Orange · Attention',
     statusSentence: 'Needs attention.',
-    surfaceBg: 'rgba(230, 126, 34, 0.14)',
-    surfaceBorder: 'rgba(230, 126, 34, 0.42)',
+    surfaceBg: 'rgba(230, 126, 34, 0.16)',
+    surfaceBorder: 'rgba(230, 126, 34, 0.45)',
     textColor: '#EB984E',
-    pillTextColor: '#0F172A',
+    pillBg: 'rgba(230, 126, 34, 0.2)',
+    pillTextColor: '#E67E22',
+    pillGlow: '0 0 14px rgba(230, 126, 34, 0.45)',
   },
   red: {
     color: '#E74C3C',
     label: 'Red · Urgent',
     statusSentence: 'Urgent attention needed.',
-    surfaceBg: 'rgba(231, 76, 60, 0.16)',
-    surfaceBorder: 'rgba(231, 76, 60, 0.48)',
-    textColor: '#EC7063',
-    pillTextColor: '#FFFFFF',
+    surfaceBg: 'rgba(231, 76, 60, 0.18)',
+    surfaceBorder: 'rgba(231, 76, 60, 0.5)',
+    textColor: '#F1948A',
+    pillBg: 'rgba(231, 76, 60, 0.2)',
+    pillTextColor: '#E74C3C',
+    pillGlow: '0 0 16px rgba(231, 76, 60, 0.55)',
   },
 };
 
