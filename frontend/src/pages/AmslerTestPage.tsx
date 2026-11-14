@@ -12,12 +12,12 @@ import {
 import { useState } from 'react';
 import { TestIntroCard } from '../components/TestIntroCard';
 import { saveAmslerResult } from '../data/source';
-import type { Astronaut } from '../types/orbital';
+import type { Astronaut, OrbitalStatus } from '../types/orbital';
 
 interface AmslerTestPageProps {
   astronaut: Astronaut;
   onNavigate: (path: string) => void;
-  onTestCompleted?: () => void;
+  onTestCompleted?: (updatedStatus?: OrbitalStatus | null) => void;
 }
 
 type TestStep =
@@ -89,7 +89,7 @@ export function AmslerTestPage({
     setSaving(true);
     setErrorMessage(null);
     try {
-      await saveAmslerResult(
+      const updatedStatus = await saveAmslerResult(
         {
           flight_day: astronaut.flight_day,
           eye: currentEye,
@@ -103,7 +103,7 @@ export function AmslerTestPage({
       if (currentEye === 'right') {
         setStep('intro-left');
       } else {
-        onTestCompleted?.();
+        onTestCompleted?.(updatedStatus);
         setStep('complete');
       }
     } catch {

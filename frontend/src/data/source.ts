@@ -3,6 +3,8 @@
 import type {
   AmslerResultPayload,
   CircleData,
+  DataSourceKind,
+  DemoScenario,
   HealthLevel,
   Indicator,
   IndicatorSeries,
@@ -24,10 +26,128 @@ import {
 
 export { MOCK_ESCALATION_BY_LEVEL, MOCK_PASSENGER_ESCALATION_BY_LEVEL };
 
-const DEMO_MODE = true;
+interface DemoScenarioBundle {
+  status: OrbitalStatus;
+  series: Record<string, IndicatorSeries>;
+}
+
+interface DemoFileShape {
+  default_scenario: string;
+  scenarios: Record<string, DemoScenarioBundle>;
+}
+
+const API_BASE_URL = 'http://localhost:8000';
+const API_TIMEOUT_MS = 1500;
+
+const demoFiles = import.meta.glob('./demo.json', {
+  eager: true,
+  import: 'default',
+});
+const demoData = demoFiles['./demo.json'] as DemoFileShape | undefined;
+
 const inMemorySelfReports: SelfReportPayload[] = [];
 const inMemoryAmslerResults: AmslerResultPayload[] = [];
 const inMemoryPvtSessions: PvtSessionPayload[] = [];
+
+let currentScenario: DemoScenario = 'deterioration';
+let currentCrewDataSource: DataSourceKind = demoData ? 'demo' : 'mock';
+
+const dataSourceListeners = new Set<() => void>();
+const statusUpdateListeners = new Set<(status: OrbitalStatus) => void>();
+
+function notifyDataSourceListeners(): void {
+  dataSourceListeners.forEach((listener) => listener());
+}
+
+function notifyStatusUpdateListeners(status: OrbitalStatus): void {
+  statusUpdateListeners.forEach((listener) => listener(status));
+}
+
+function setCrewDataSource(next: DataSourceKind): void {
+  if (currentCrewDataSource !== next) {
+    currentCrewDataSource = next;
+    notifyDataSourceListeners();
+  }
+}
+
+export function subscribeDataSource(listener: () => void): () => void {
+  dataSourceListeners.add(listener);
+  return () => {
+    dataSourceListeners.delete(listener);
+  };
+}
+
+export function subscribeStatusUpdates(
+  listener: (status: OrbitalStatus) => void,
+): () => void {
+  statusUpdateListeners.add(listener);
+  return () => {
+    statusUpdateListeners.delete(listener);
+  };
+}
+
+export function getDataSourceKind(
+  profile: UserProfile = 'crew',
+): DataSourceKind {
+  if (profile === 'passenger') {
+    return 'mock';
+  }
+  return currentCrewDataSource;
+}
+
+export function getDataSourceLabel(profile: UserProfile = 'crew'): string {
+  const kind = getDataSourceKind(profile);
+  if (kind === 'api') {
+    return 'Live core (API)';
+  }
+  if (kind === 'demo') {
+    return 'Demo file';
+  }
+  return 'Mock data';
+}
+
+export function getCurrentScenario(): DemoScenario {
+  return currentScenario;
+}
+
+function getDemoScenarioEntry(): DemoScenarioBundle | undefined {
+  if (!demoData?.scenarios) {
+    return undefined;
+  }
+  return (
+    demoData.scenarios[currentScenario] ??
+    demoData.scenarios[demoData.default_scenario] ??
+    Object.values(demoData.scenarios)[0]
+  );
+}
+
+function isOrbitalStatus(value: unknown): value is OrbitalStatus {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+  const candidate = value as Partial<OrbitalStatus>;
+  return (
+    Array.isArray(candidate.blocks) &&
+    typeof candidate.astronaut?.id === 'string'
+  );
+}
+
+async function fetchWithTimeout(
+  url: string,
+  options: RequestInit = {},
+  timeoutMs = API_TIMEOUT_MS,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
 
 export const LEVEL_STYLES: Record<
   HealthLevel,
@@ -203,7 +323,10 @@ export const DATA_SOURCE_GROUPS: Array<{
 ];
 
 export function getDemoStatus(profile: UserProfile = 'crew'): OrbitalStatus {
-  return profile === 'passenger' ? mockStatusPassenger : mockStatus;
+  if (profile === 'passenger') {
+    return mockStatusPassenger;
+  }
+  return getDemoScenarioEntry()?.status ?? mockStatus;
 }
 
 export function getDemoCircleData(): CircleData {
@@ -218,18 +341,34 @@ export async function getStatus(
   profile: UserProfile = 'crew',
   astronautId?: string,
 ): Promise<OrbitalStatus> {
-  if (DEMO_MODE) {
-    return getDemoStatus(profile);
+  if (profile === 'passenger') {
+    return mockStatusPassenger;
   }
 
-  const resolvedId = astronautId ?? (profile === 'passenger' ? 'P1' : 'A1');
-  const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(resolvedId)}/status?profile=${encodeURIComponent(profile)}`,
-  );
-  if (!response.ok) {
-    throw new Error(`Status request failed with code ${response.status}`);
+  const resolvedId = astronautId ?? 'A1';
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/status`,
+    );
+    if (response.ok) {
+      const data: unknown = await response.json();
+      if (isOrbitalStatus(data)) {
+        setCrewDataSource('api');
+        return data;
+      }
+    }
+  } catch {
+    // Fall back to demoData or mockStatus
   }
-  return (await response.json()) as OrbitalStatus;
+
+  const demoEntry = getDemoScenarioEntry();
+  if (demoEntry?.status) {
+    setCrewDataSource('demo');
+    return demoEntry.status;
+  }
+
+  setCrewDataSource('mock');
+  return mockStatus;
 }
 
 export async function fetchOrbitalStatus(
@@ -239,13 +378,47 @@ export async function fetchOrbitalStatus(
   return getStatus(profile, astronautId);
 }
 
+export async function switchDemoScenario(
+  scenario: DemoScenario,
+): Promise<OrbitalStatus> {
+  currentScenario = scenario;
+
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/scenarios/${encodeURIComponent(scenario)}`,
+      { method: 'POST' },
+    );
+    if (response.ok) {
+      setCrewDataSource('api');
+      const data: unknown = await response.json().catch(() => null);
+      const nextStatus = isOrbitalStatus(data) ? data : await getStatus('crew');
+      notifyStatusUpdateListeners(nextStatus);
+      return nextStatus;
+    }
+  } catch {
+    // API unavailable: switch demoData scenario locally
+  }
+
+  const demoEntry = getDemoScenarioEntry();
+  if (demoEntry?.status) {
+    setCrewDataSource('demo');
+    notifyStatusUpdateListeners(demoEntry.status);
+    return demoEntry.status;
+  }
+
+  setCrewDataSource('mock');
+  notifyStatusUpdateListeners(mockStatus);
+  return mockStatus;
+}
+
 export function getDemoSeries(
   indicatorId: string,
   profile: UserProfile = 'crew',
 ): IndicatorSeries | undefined {
-  return profile === 'passenger'
-    ? mockSeriesPassenger[indicatorId]
-    : mockSeries[indicatorId];
+  if (profile === 'passenger') {
+    return mockSeriesPassenger[indicatorId];
+  }
+  return getDemoScenarioEntry()?.series?.[indicatorId] ?? mockSeries[indicatorId];
 }
 
 export async function getSeries(
@@ -253,100 +426,130 @@ export async function getSeries(
   profile: UserProfile = 'crew',
   astronautId?: string,
 ): Promise<IndicatorSeries> {
-  if (DEMO_MODE) {
-    const series = getDemoSeries(indicatorId, profile);
+  if (profile === 'passenger') {
+    const series = mockSeriesPassenger[indicatorId];
     if (!series) {
       throw new Error(`No series data found for indicator "${indicatorId}"`);
     }
     return series;
   }
 
-  const resolvedId = astronautId ?? (profile === 'passenger' ? 'P1' : 'A1');
-  const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(resolvedId)}/series/${encodeURIComponent(indicatorId)}?profile=${encodeURIComponent(profile)}`,
-  );
-  if (!response.ok) {
-    throw new Error(`Series request failed with code ${response.status}`);
+  const resolvedId = astronautId ?? 'A1';
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/series/${encodeURIComponent(indicatorId)}`,
+    );
+    if (response.ok) {
+      const data = (await response.json()) as IndicatorSeries;
+      setCrewDataSource('api');
+      return data;
+    }
+  } catch {
+    // Fall back to demoData or mockSeries
   }
-  return (await response.json()) as IndicatorSeries;
+
+  const demoEntry = getDemoScenarioEntry();
+  if (demoEntry?.series?.[indicatorId]) {
+    setCrewDataSource('demo');
+    return demoEntry.series[indicatorId];
+  }
+
+  if (!demoData) {
+    setCrewDataSource('mock');
+  }
+  const fallback = mockSeries[indicatorId];
+  if (!fallback) {
+    throw new Error(`No series data found for indicator "${indicatorId}"`);
+  }
+  return fallback;
+}
+
+async function postSelfReportPayload(
+  payload: SelfReportPayload | AmslerResultPayload | PvtSessionPayload,
+  astronautId: string,
+): Promise<OrbitalStatus | null> {
+  if (astronautId === 'P1') {
+    return null;
+  }
+
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    if (response.ok) {
+      setCrewDataSource('api');
+      const data: unknown = await response.json().catch(() => null);
+      if (isOrbitalStatus(data)) {
+        notifyStatusUpdateListeners(data);
+        return data;
+      }
+      if (
+        data &&
+        typeof data === 'object' &&
+        isOrbitalStatus((data as { status?: unknown }).status)
+      ) {
+        const nested = (data as { status: OrbitalStatus }).status;
+        notifyStatusUpdateListeners(nested);
+        return nested;
+      }
+      const refreshed = await getStatus('crew', astronautId);
+      notifyStatusUpdateListeners(refreshed);
+      return refreshed;
+    }
+  } catch {
+    // API unreachable: caller keeps in-memory behavior
+  }
+
+  return null;
 }
 
 export async function saveSelfReport(
   report: SelfReportPayload,
   astronautId = 'A1',
-): Promise<void> {
-  if (DEMO_MODE) {
-    inMemorySelfReports.push({ ...report });
-    return;
+): Promise<OrbitalStatus | null> {
+  const updated = await postSelfReportPayload(report, astronautId);
+  if (updated) {
+    return updated;
   }
-
-  const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(report),
-    },
-  );
-  if (!response.ok) {
-    throw new Error(`Self-report request failed with code ${response.status}`);
-  }
+  inMemorySelfReports.push({ ...report });
+  return null;
 }
 
 export async function saveAmslerResult(
   result: AmslerResultPayload,
   astronautId = 'A1',
-): Promise<void> {
-  if (DEMO_MODE) {
-    inMemoryAmslerResults.push({
-      ...result,
-      cells: result.cells.map(([r, c]) => [r, c]),
-    });
-    return;
+): Promise<OrbitalStatus | null> {
+  const updated = await postSelfReportPayload(result, astronautId);
+  if (updated) {
+    return updated;
   }
-
-  const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(result),
-    },
-  );
-  if (!response.ok) {
-    throw new Error(`Amsler test save failed with code ${response.status}`);
-  }
+  inMemoryAmslerResults.push({
+    ...result,
+    cells: result.cells.map(([r, c]) => [r, c]),
+  });
+  return null;
 }
 
 export async function savePvtSession(
   session: PvtSessionPayload,
   astronautId = 'A1',
-): Promise<void> {
-  if (DEMO_MODE) {
-    inMemoryPvtSessions.push({
-      ...session,
-      reaction_times_ms: [...session.reaction_times_ms],
-    });
-    return;
+): Promise<OrbitalStatus | null> {
+  const updated = await postSelfReportPayload(session, astronautId);
+  if (updated) {
+    return updated;
   }
-
-  const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(session),
-    },
-  );
-  if (!response.ok) {
-    throw new Error(`PVT session save failed with code ${response.status}`);
-  }
+  inMemoryPvtSessions.push({
+    ...session,
+    reaction_times_ms: [...session.reaction_times_ms],
+  });
+  return null;
 }
 
 export function markTestCompletedInMemory(

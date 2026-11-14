@@ -39,7 +39,14 @@ function formatTickWithUnit(val: number, unit: string): string {
 function getYDomain(values: number[]): { min: number; max: number } {
   const rawMin = Math.min(...values);
   const rawMax = Math.max(...values);
-  const span = rawMax - rawMin || 1;
+  const span = rawMax - rawMin;
+  if (span === 0) {
+    const pad = rawMax === 0 ? 1.5 : Math.max(1, Math.abs(rawMax) * 0.2);
+    return {
+      min: Math.max(0, rawMin - pad),
+      max: rawMax + pad,
+    };
+  }
   const pad = span * 0.24;
   const min = Math.max(0, rawMin - pad);
   const max = rawMax + pad;
@@ -84,8 +91,19 @@ function VisionAmslerHistory({
         )}
       </div>
 
-      <div className="grid grid-cols-7 gap-2 sm:grid-cols-14">
-        {series.points.map((point, idx) => {
+      {series.points.length === 0 ? (
+        <p className="rounded-xl border border-[rgba(120,180,255,0.16)] bg-[rgba(10,20,46,0.52)] px-4 py-3 text-xs text-[#8FA3C7]">
+          No screening results recorded yet.
+        </p>
+      ) : (
+        <div
+          className={`grid gap-2 ${
+            series.points.length <= 7
+              ? 'grid-cols-4 sm:grid-cols-7'
+              : 'grid-cols-7 sm:grid-cols-14'
+          }`}
+        >
+          {series.points.map((point, idx) => {
           const style = LEVEL_STYLES[point.level];
           const isHovered = hoveredIdx === idx;
           const isToday = idx === series.points.length - 1;
@@ -128,7 +146,8 @@ function VisionAmslerHistory({
             </button>
           );
         })}
-      </div>
+        </div>
+      )}
 
       <p className="mt-2.5 text-center text-xs text-[#8FA3C7]">
         Flight day · Icons = daily results (color = level)
@@ -148,6 +167,12 @@ function BloodPressureChart({
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const points = series.points;
+
+  if (points.length === 0) {
+    return (
+      <p className="mt-5 text-xs text-[#8FA3C7]">No readings recorded yet.</p>
+    );
+  }
 
   const allValues = [
     series.baseline_low_systolic,
@@ -345,29 +370,33 @@ function BloodPressureChart({
           )}
 
           {/* Systolic & Diastolic glowing trend lines */}
-          <polyline
-            fill="none"
-            stroke="#7DD3FC"
-            strokeWidth="2"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            points={sysPolyline}
-            style={{
-              filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
-            }}
-          />
-          <polyline
-            fill="none"
-            stroke="#8FA3C7"
-            strokeWidth="1.8"
-            strokeDasharray="5 4"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            points={diaPolyline}
-            style={{
-              filter: 'drop-shadow(0 0 4px rgba(143, 163, 199, 0.4))',
-            }}
-          />
+          {points.length > 1 && (
+            <>
+              <polyline
+                fill="none"
+                stroke="#7DD3FC"
+                strokeWidth="2"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                points={sysPolyline}
+                style={{
+                  filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
+                }}
+              />
+              <polyline
+                fill="none"
+                stroke="#8FA3C7"
+                strokeWidth="1.8"
+                strokeDasharray="5 4"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                points={diaPolyline}
+                style={{
+                  filter: 'drop-shadow(0 0 4px rgba(143, 163, 199, 0.4))',
+                }}
+              />
+            </>
+          )}
 
           {/* Points & X-axis labels */}
           {points.map((p, i) => {
@@ -439,20 +468,33 @@ function BloodPressureChart({
                   strokeWidth={isToday ? 2 : 1.8}
                 />
 
-                <rect
-                  x={x - PLOT_WIDTH / (points.length * 2)}
-                  y={MARGIN.top}
-                  width={PLOT_WIDTH / points.length}
-                  height={PLOT_HEIGHT + 24}
-                  fill="transparent"
-                  tabIndex={0}
-                  aria-label={`Flight day ${p.flight_day}${isToday ? ' (Today)' : ''}: ${p.systolic}/${p.diastolic} ${unit}, ${LEVEL_STYLES[p.level].label}`}
-                  onMouseEnter={() => setHoveredIdx(i)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                  onFocus={() => setHoveredIdx(i)}
-                  onBlur={() => setHoveredIdx(null)}
-                  className="cursor-crosshair focus:outline-none"
-                />
+                {(() => {
+                  const step =
+                    points.length <= 1
+                      ? PLOT_WIDTH
+                      : PLOT_WIDTH / (points.length - 1);
+                  const hitLeft = Math.max(MARGIN.left, x - step / 2);
+                  const hitRight = Math.min(
+                    MARGIN.left + PLOT_WIDTH,
+                    x + step / 2,
+                  );
+                  return (
+                    <rect
+                      x={hitLeft}
+                      y={MARGIN.top}
+                      width={Math.max(8, hitRight - hitLeft)}
+                      height={PLOT_HEIGHT + 24}
+                      fill="transparent"
+                      tabIndex={0}
+                      aria-label={`Flight day ${p.flight_day}${isToday ? ' (Today)' : ''}: ${p.systolic}/${p.diastolic} ${unit}, ${LEVEL_STYLES[p.level].label}`}
+                      onMouseEnter={() => setHoveredIdx(i)}
+                      onMouseLeave={() => setHoveredIdx(null)}
+                      onFocus={() => setHoveredIdx(i)}
+                      onBlur={() => setHoveredIdx(null)}
+                      className="cursor-crosshair focus:outline-none"
+                    />
+                  );
+                })()}
               </g>
             );
           })}
@@ -491,6 +533,12 @@ function NumericTrendChart({
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const points = series.points;
+
+  if (points.length === 0) {
+    return (
+      <p className="mt-5 text-xs text-[#8FA3C7]">No readings recorded yet.</p>
+    );
+  }
 
   const allValues = [
     series.baseline_low,
@@ -660,17 +708,19 @@ function NumericTrendChart({
           )}
 
           {/* Glowing trend polyline */}
-          <polyline
-            fill="none"
-            stroke="#7DD3FC"
-            strokeWidth="2"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            points={polyline}
-            style={{
-              filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
-            }}
-          />
+          {points.length > 1 && (
+            <polyline
+              fill="none"
+              stroke="#7DD3FC"
+              strokeWidth="2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              points={polyline}
+              style={{
+                filter: 'drop-shadow(0 0 5px rgba(79, 195, 247, 0.6))',
+              }}
+            />
+          )}
 
           {/* Individual points colored by own level */}
           {points.map((p, i) => {
@@ -726,20 +776,33 @@ function NumericTrendChart({
                   strokeWidth={isToday ? 2 : 1.8}
                 />
 
-                <rect
-                  x={x - PLOT_WIDTH / (points.length * 2)}
-                  y={MARGIN.top}
-                  width={PLOT_WIDTH / points.length}
-                  height={PLOT_HEIGHT + 24}
-                  fill="transparent"
-                  tabIndex={0}
-                  aria-label={`Flight day ${p.flight_day}${isToday ? ' (Today)' : ''}: ${p.value} ${unit}, ${LEVEL_STYLES[p.level].label}`}
-                  onMouseEnter={() => setHoveredIdx(i)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                  onFocus={() => setHoveredIdx(i)}
-                  onBlur={() => setHoveredIdx(null)}
-                  className="cursor-crosshair focus:outline-none"
-                />
+                {(() => {
+                  const step =
+                    points.length <= 1
+                      ? PLOT_WIDTH
+                      : PLOT_WIDTH / (points.length - 1);
+                  const hitLeft = Math.max(MARGIN.left, x - step / 2);
+                  const hitRight = Math.min(
+                    MARGIN.left + PLOT_WIDTH,
+                    x + step / 2,
+                  );
+                  return (
+                    <rect
+                      x={hitLeft}
+                      y={MARGIN.top}
+                      width={Math.max(8, hitRight - hitLeft)}
+                      height={PLOT_HEIGHT + 24}
+                      fill="transparent"
+                      tabIndex={0}
+                      aria-label={`Flight day ${p.flight_day}${isToday ? ' (Today)' : ''}: ${p.value} ${unit}, ${LEVEL_STYLES[p.level].label}`}
+                      onMouseEnter={() => setHoveredIdx(i)}
+                      onMouseLeave={() => setHoveredIdx(null)}
+                      onFocus={() => setHoveredIdx(i)}
+                      onBlur={() => setHoveredIdx(null)}
+                      className="cursor-crosshair focus:outline-none"
+                    />
+                  );
+                })()}
               </g>
             );
           })}

@@ -7,9 +7,14 @@ import { SpaceBackdrop } from './components/SpaceBackdrop';
 import { TipsDrawer } from './components/TipsDrawer';
 import { TopBar } from './components/TopBar';
 import {
+  getCurrentScenario,
+  getDataSourceLabel,
   getDemoStatus,
   getStatus,
   markTestCompletedInMemory,
+  subscribeDataSource,
+  subscribeStatusUpdates,
+  switchDemoScenario,
 } from './data/source';
 import { AlertsInfoPage } from './pages/AlertsInfoPage';
 import { AmslerTestPage } from './pages/AmslerTestPage';
@@ -22,7 +27,12 @@ import { MentalCheckinPage } from './pages/MentalCheckinPage';
 import { MentalJournalPage } from './pages/MentalJournalPage';
 import { MomentsPage } from './pages/MomentsPage';
 import { PvtTestPage } from './pages/PvtTestPage';
-import type { AppRoute, OrbitalStatus, UserProfile } from './types/orbital';
+import type {
+  AppRoute,
+  DemoScenario,
+  OrbitalStatus,
+  UserProfile,
+} from './types/orbital';
 
 const PROFILE_STORAGE_KEY = 'orbital_user_profile_v1';
 
@@ -155,7 +165,35 @@ export default function App() {
     ),
   });
 
+  const [scenario, setScenario] = useState<DemoScenario>(() =>
+    getCurrentScenario(),
+  );
+  const [scenarioLoading, setScenarioLoading] = useState(false);
+  const [dataSourceLabel, setDataSourceLabel] = useState<string>(() =>
+    getDataSourceLabel(readStoredProfile()),
+  );
+  const [dataRevision, setDataRevision] = useState(0);
+
   const status = statusByProfile[profile];
+
+  useEffect(() => {
+    setDataSourceLabel(getDataSourceLabel(profile));
+    const unsubscribeSource = subscribeDataSource(() => {
+      setDataSourceLabel(getDataSourceLabel(profile));
+    });
+    const unsubscribeStatus = subscribeStatusUpdates((nextCrewStatus) => {
+      setStatusByProfile((prev) => ({
+        ...prev,
+        crew: nextCrewStatus,
+      }));
+      setDataRevision((prev) => prev + 1);
+      setDataSourceLabel(getDataSourceLabel(profile));
+    });
+    return () => {
+      unsubscribeSource();
+      unsubscribeStatus();
+    };
+  }, [profile]);
 
   useEffect(() => {
     let active = true;
@@ -164,17 +202,14 @@ export default function App() {
         if (active) {
           setStatusByProfile((prev) => ({
             ...prev,
-            [profile]: {
-              ...nextStatus,
-              // Preserve any in-memory completed tests & earned stars during demo session
-              tests: prev[profile].tests,
-              rewards: prev[profile].rewards,
-            },
+            [profile]: nextStatus,
           }));
+          setDataSourceLabel(getDataSourceLabel(profile));
+          setDataRevision((prev) => prev + 1);
         }
       })
       .catch(() => {
-        // Keep simulated fallback status if live local backend is offline
+        // Keep fallback status if unavailable
       });
     return () => {
       active = false;
@@ -248,15 +283,40 @@ export default function App() {
     setProfile(nextProfile);
   };
 
-  const handleTestCompleted = (testId: string) => {
+  const handleSelectScenario = async (nextScenario: DemoScenario) => {
+    if (scenarioLoading) {
+      return;
+    }
+    setScenario(nextScenario);
+    setScenarioLoading(true);
+    try {
+      const nextStatus = await switchDemoScenario(nextScenario);
+      setStatusByProfile((prev) => ({
+        ...prev,
+        crew: nextStatus,
+      }));
+      setDataRevision((prev) => prev + 1);
+      setDataSourceLabel(getDataSourceLabel(profile));
+    } finally {
+      setScenarioLoading(false);
+    }
+  };
+
+  const handleTestCompleted = (
+    testId: string,
+    updatedStatus?: OrbitalStatus | null,
+  ) => {
     const currentStatus = statusByProfile[profile];
-    const nextStatus = markTestCompletedInMemory(currentStatus, testId);
+    const nextStatus = updatedStatus ?? markTestCompletedInMemory(currentStatus, testId);
     const nextStars = nextStatus.rewards.stars;
 
     setStatusByProfile((prev) => ({
       ...prev,
       [profile]: nextStatus,
     }));
+    if (updatedStatus) {
+      setDataRevision((prev) => prev + 1);
+    }
 
     // Check first-time milestone unlocks
     const seen = seenMilestonesRef.current[profile];
@@ -325,6 +385,7 @@ export default function App() {
             status={status}
             profile={profile}
             blockId={effectiveRoute.blockId}
+            dataRevision={dataRevision}
             onNavigate={navigate}
             onOpenTips={handleOpenTips}
           />
@@ -334,7 +395,9 @@ export default function App() {
           <MentalCheckinPage
             astronaut={status.astronaut}
             onNavigate={navigate}
-            onTestCompleted={() => handleTestCompleted('checkin')}
+            onTestCompleted={(updatedStatus) =>
+              handleTestCompleted('checkin', updatedStatus)
+            }
           />
         );
       case 'mental-journal':
@@ -351,7 +414,9 @@ export default function App() {
           <AmslerTestPage
             astronaut={status.astronaut}
             onNavigate={navigate}
-            onTestCompleted={() => handleTestCompleted('amsler')}
+            onTestCompleted={(updatedStatus) =>
+              handleTestCompleted('amsler', updatedStatus)
+            }
           />
         );
       case 'test-pvt':
@@ -391,6 +456,10 @@ export default function App() {
           simulated={status.simulated}
           profile={profile}
           tests={status.tests}
+          dataSourceLabel={dataSourceLabel}
+          scenario={scenario}
+          scenarioLoading={scenarioLoading}
+          onSelectScenario={handleSelectScenario}
           onChangeProfile={handleChangeProfile}
           onNavigateHome={() => navigate('/')}
           onNavigate={navigate}

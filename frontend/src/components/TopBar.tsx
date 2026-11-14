@@ -1,30 +1,51 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { Bell } from 'lucide-react';
+import { Bell, Settings } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { Astronaut, ScheduledTest, UserProfile } from '../types/orbital';
+import type {
+  Astronaut,
+  DemoScenario,
+  ScheduledTest,
+  UserProfile,
+} from '../types/orbital';
 
 interface TopBarProps {
   astronaut: Astronaut;
   simulated: boolean;
   profile: UserProfile;
   tests: ScheduledTest[];
+  dataSourceLabel: string;
+  scenario: DemoScenario;
+  scenarioLoading?: boolean;
+  onSelectScenario: (scenario: DemoScenario) => void;
   onChangeProfile: (profile: UserProfile) => void;
   onNavigateHome: () => void;
   onNavigate: (path: string) => void;
 }
+
+const SCENARIO_OPTIONS: Array<{ id: DemoScenario; label: string }> = [
+  { id: 'healthy', label: 'Healthy' },
+  { id: 'deterioration', label: 'Deterioration' },
+  { id: 'emergency', label: 'Emergency' },
+];
 
 export function TopBar({
   astronaut,
   simulated,
   profile,
   tests,
+  dataSourceLabel,
+  scenario,
+  scenarioLoading = false,
+  onSelectScenario,
   onChangeProfile,
   onNavigateHome,
   onNavigate,
 }: TopBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
+  const settingsContainerRef = useRef<HTMLDivElement | null>(null);
 
   const visibleTests =
     profile === 'passenger'
@@ -34,22 +55,32 @@ export function TopBar({
   const dueCount = dueTests.length;
 
   useEffect(() => {
-    if (!menuOpen) {
+    if (!menuOpen && !settingsOpen) {
       return;
     }
 
     const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
       if (
+        menuOpen &&
         menuContainerRef.current &&
-        !menuContainerRef.current.contains(event.target as Node)
+        !menuContainerRef.current.contains(target)
       ) {
         setMenuOpen(false);
+      }
+      if (
+        settingsOpen &&
+        settingsContainerRef.current &&
+        !settingsContainerRef.current.contains(target)
+      ) {
+        setSettingsOpen(false);
       }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setMenuOpen(false);
+        setSettingsOpen(false);
       }
     };
 
@@ -59,7 +90,7 @@ export function TopBar({
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [menuOpen]);
+  }, [menuOpen, settingsOpen]);
 
   return (
     <header className="glass-bar sticky top-0 z-20 border-b">
@@ -142,6 +173,7 @@ export function TopBar({
               aria-pressed={profile === 'crew'}
               onClick={() => {
                 setMenuOpen(false);
+                setSettingsOpen(false);
                 onChangeProfile('crew');
               }}
               className={`rounded-[12px] px-2.5 py-1 text-xs font-medium transition-all whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-[#4FC3F7] ${
@@ -157,6 +189,7 @@ export function TopBar({
               aria-pressed={profile === 'passenger'}
               onClick={() => {
                 setMenuOpen(false);
+                setSettingsOpen(false);
                 onChangeProfile('passenger');
               }}
               className={`rounded-[12px] px-2.5 py-1 text-xs font-medium transition-all whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-[#4FC3F7] ${
@@ -182,7 +215,10 @@ export function TopBar({
           <div ref={menuContainerRef} className="relative">
             <button
               type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
+              onClick={() => {
+                setSettingsOpen(false);
+                setMenuOpen((prev) => !prev);
+              }}
               aria-expanded={menuOpen}
               aria-haspopup="true"
               aria-label={
@@ -257,6 +293,90 @@ export function TopBar({
                       </li>
                     ))}
                   </ul>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div ref={settingsContainerRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                setSettingsOpen((prev) => !prev);
+              }}
+              aria-expanded={settingsOpen}
+              aria-haspopup="true"
+              aria-label="Data source and scenario settings"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(20,35,70,0.55)] text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] hover:bg-[rgba(28,48,96,0.7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer"
+            >
+              <Settings className="h-4 w-4" aria-hidden="true" />
+            </button>
+
+            {settingsOpen && (
+              <div
+                role="region"
+                aria-label="Settings"
+                className="glass-panel absolute right-0 mt-2 w-80 max-w-[calc(100vw-2.5rem)] p-4 z-30"
+              >
+                <div className="border-b border-[rgba(120,180,255,0.18)] pb-2.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#E8F0FF]">
+                    Settings
+                  </p>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <span className="text-xs font-medium text-[#8FA3C7]">
+                    Data source
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-[rgba(120,180,255,0.22)] bg-[rgba(10,20,46,0.65)] px-2.5 py-1 text-xs font-medium text-[#E8F0FF]">
+                    <span
+                      aria-hidden="true"
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{
+                        backgroundColor:
+                          dataSourceLabel === 'Live core (API)'
+                            ? '#2ECC71'
+                            : dataSourceLabel === 'Demo file'
+                              ? '#4FC3F7'
+                              : '#8FA3C7',
+                      }}
+                    />
+                    <span>{dataSourceLabel}</span>
+                  </span>
+                </div>
+
+                {profile === 'crew' && (
+                  <div className="mt-4 border-t border-[rgba(120,180,255,0.14)] pt-3.5">
+                    <p className="text-xs font-medium text-[#8FA3C7]">
+                      Demo scenario
+                    </p>
+                    <div
+                      role="group"
+                      aria-label="Demo scenario"
+                      className="glass-panel-soft mt-2 grid grid-cols-3 gap-1 p-1"
+                    >
+                      {SCENARIO_OPTIONS.map((option) => {
+                        const active = scenario === option.id;
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            disabled={scenarioLoading}
+                            aria-pressed={active}
+                            onClick={() => onSelectScenario(option.id)}
+                            className={`rounded-[11px] px-2 py-1.5 text-xs font-medium transition-all cursor-pointer disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-[#4FC3F7] ${
+                              active
+                                ? 'glass-nav-active'
+                                : 'text-[#8FA3C7] hover:text-[#E8F0FF] border border-transparent'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
               </div>
             )}

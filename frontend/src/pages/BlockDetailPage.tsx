@@ -25,6 +25,7 @@ interface BlockDetailPageProps {
   status: OrbitalStatus;
   profile: UserProfile;
   blockId: string;
+  dataRevision?: number;
   onNavigate: (path: string) => void;
   onOpenTips: (blockId: string) => void;
 }
@@ -58,10 +59,12 @@ function IndicatorCard({
   indicator,
   astronautId,
   profile,
+  dataRevision = 0,
 }: {
   indicator: Indicator;
   astronautId: string;
   profile: UserProfile;
+  dataRevision?: number;
 }) {
   const isPassenger = profile === 'passenger';
   const [series, setSeries] = useState<IndicatorSeries | undefined>(() =>
@@ -83,7 +86,7 @@ function IndicatorCard({
     return () => {
       active = false;
     };
-  }, [indicator.id, profile, astronautId]);
+  }, [indicator.id, profile, astronautId, dataRevision]);
 
   const indStyle = LEVEL_STYLES[indicator.level];
   const explanation = INDICATOR_EXPLANATIONS[indicator.id];
@@ -239,6 +242,7 @@ export function BlockDetailPage({
   status,
   profile,
   blockId,
+  dataRevision = 0,
   onNavigate,
   onOpenTips,
 }: BlockDetailPageProps) {
@@ -365,6 +369,7 @@ export function BlockDetailPage({
             indicator={indicator}
             astronautId={status.astronaut.id}
             profile={profile}
+            dataRevision={dataRevision}
           />
         ))}
       </div>

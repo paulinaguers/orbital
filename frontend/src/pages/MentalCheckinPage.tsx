@@ -11,12 +11,12 @@ import {
 import { useState } from 'react';
 import { TestIntroCard } from '../components/TestIntroCard';
 import { saveSelfReport } from '../data/source';
-import type { Astronaut } from '../types/orbital';
+import type { Astronaut, OrbitalStatus } from '../types/orbital';
 
 interface MentalCheckinPageProps {
   astronaut: Astronaut;
   onNavigate: (path: string) => void;
-  onTestCompleted?: () => void;
+  onTestCompleted?: (updatedStatus?: OrbitalStatus | null) => void;
 }
 
 type ScoreKey =
@@ -403,7 +403,7 @@ export function MentalCheckinPage({
     setSaving(true);
     setErrorMessage(null);
     try {
-      await saveSelfReport(
+      const updatedStatus = await saveSelfReport(
         {
           flight_day: astronaut.flight_day,
           mood_score: scores.mood_score!,
@@ -413,7 +413,7 @@ export function MentalCheckinPage({
         },
         astronaut.id,
       );
-      onTestCompleted?.();
+      onTestCompleted?.(updatedStatus);
       setSaved(true);
     } catch {
       setErrorMessage('Could not save your check-in. Please try again.');
