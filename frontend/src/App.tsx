@@ -7,6 +7,7 @@ import { fetchOrbitalStatus, getDemoStatus } from './data/source';
 import { AmslerTestPage } from './pages/AmslerTestPage';
 import { BlockDetailPage } from './pages/BlockDetailPage';
 import { BodyMapPage } from './pages/BodyMapPage';
+import { CirclePage } from './pages/CirclePage';
 import { HomePage } from './pages/HomePage';
 import { MentalBreathingPage } from './pages/MentalBreathingPage';
 import { MentalCheckinPage } from './pages/MentalCheckinPage';
@@ -159,10 +160,9 @@ export default function App() {
       }
       case 'circle':
         return (
-          <PlaceholderPage
-            title="My Circle"
-            routeLabel="/circle"
-            onBack={() => navigate('/')}
+          <CirclePage
+            currentFlightDay={status.astronaut.flight_day}
+            onNavigate={navigate}
           />
         );
       case 'alerts-info':

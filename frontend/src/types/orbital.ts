@@ -113,6 +113,39 @@ export interface PvtSessionPayload {
   duration_s: 60;
 }
 
+export interface CircleLink {
+  status: 'offline' | 'connected';
+  next_window_utc: string;
+  window_duration_min: number;
+  one_way_delay_min: number;
+}
+
+export type MessageDeliveryStatus = 'delivered' | 'queued' | 'sent';
+
+export interface CircleMessage {
+  id: string;
+  sender: 'contact' | 'astronaut';
+  text: string;
+  timestamp: string;
+  flight_day: number;
+  deliveryStatus?: MessageDeliveryStatus;
+}
+
+export interface CircleContact {
+  id: string;
+  name: string;
+  initials: string;
+  relationship: string;
+  unread: boolean;
+  messages: CircleMessage[];
+}
+
+export interface CircleData {
+  simulated: boolean;
+  link: CircleLink;
+  contacts: CircleContact[];
+}
+
 export type AppRoute =
   | { page: 'home' }
   | { page: 'body' }

@@ -2,6 +2,7 @@
 
 import type {
   AmslerResultPayload,
+  CircleData,
   HealthLevel,
   Indicator,
   IndicatorSeries,
@@ -9,6 +10,7 @@ import type {
   PvtSessionPayload,
   SelfReportPayload,
 } from '../types/orbital';
+import { mockCircle } from './mockCircle';
 import { mockSeries } from './mockSeries';
 import { mockStatus } from './mockStatus';
 
@@ -120,6 +122,10 @@ export const INDICATOR_EXPLANATIONS: Record<
 
 export function getDemoStatus(): OrbitalStatus {
   return mockStatus;
+}
+
+export function getDemoCircleData(): CircleData {
+  return mockCircle;
 }
 
 export async function fetchOrbitalStatus(

@@ -1,0 +1,173 @@
+// Generated with SI assistance (Claude), reviewed by the ORBITAL team.
+
+import type { CircleData } from '../types/orbital';
+
+const FORTY_SEVEN_MINUTES_MS = 47 * 60 * 1000;
+
+export const mockCircle: CircleData = {
+  simulated: true,
+  link: {
+    status: 'offline',
+    next_window_utc: new Date(Date.now() + FORTY_SEVEN_MINUTES_MS).toISOString(),
+    window_duration_min: 30,
+    one_way_delay_min: 12,
+  },
+  contacts: [
+    {
+      id: 'maya',
+      name: 'Maya Rivera',
+      initials: 'MR',
+      relationship: 'Sister',
+      unread: true,
+      messages: [
+        {
+          id: 'maya-1',
+          sender: 'contact',
+          text: 'Hey! Just finished Sunday brunch with Mom and Dad. We saved a video of Leo trying to bake pancakes for you.',
+          timestamp: '14:10 UTC',
+          flight_day: 39,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'maya-2',
+          sender: 'astronaut',
+          text: 'Tell Leo I expect a full pancake review when I get back. Things are steady here on day 40.',
+          timestamp: '09:42 UTC',
+          flight_day: 40,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'maya-3',
+          sender: 'contact',
+          text: 'He promises to practice every weekend until landing. Did you get a chance to see the aurora photo I attached earlier?',
+          timestamp: '19:15 UTC',
+          flight_day: 41,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'maya-4',
+          sender: 'contact',
+          text: 'Thinking of you today! Let me know how your week is going whenever the next link opens.',
+          timestamp: '07:30 UTC',
+          flight_day: 42,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'jordan',
+      name: 'Jordan Lee',
+      initials: 'JL',
+      relationship: 'Partner',
+      unread: true,
+      messages: [
+        {
+          id: 'jordan-1',
+          sender: 'astronaut',
+          text: 'Quiet evening shift here. Listening to the playlist you made for the transit leg.',
+          timestamp: '21:05 UTC',
+          flight_day: 38,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'jordan-2',
+          sender: 'contact',
+          text: 'Added three new acoustic tracks to it for next week. Also repotted the monstera—it finally put out a new leaf.',
+          timestamp: '16:40 UTC',
+          flight_day: 39,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'jordan-3',
+          sender: 'astronaut',
+          text: 'Glad the plant is thriving under your care! Hope work has been lighter this week.',
+          timestamp: '11:18 UTC',
+          flight_day: 40,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'jordan-4',
+          sender: 'contact',
+          text: 'Much calmer now. Made chamomile tea and watched the sunset from the balcony tonight. Missing you.',
+          timestamp: '22:50 UTC',
+          flight_day: 41,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'jordan-5',
+          sender: 'contact',
+          text: 'Have a restful sleep window tonight, Alex.',
+          timestamp: '06:15 UTC',
+          flight_day: 42,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'sam',
+      name: 'Sam Rivera',
+      initials: 'SR',
+      relationship: 'Dad',
+      unread: false,
+      messages: [
+        {
+          id: 'sam-1',
+          sender: 'contact',
+          text: 'Morning Alex. Finally fixed the garden gate latch after putting it off for two months.',
+          timestamp: '13:20 UTC',
+          flight_day: 37,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'sam-2',
+          sender: 'astronaut',
+          text: 'Nice work, Dad! That latch had been sticking since last spring.',
+          timestamp: '18:05 UTC',
+          flight_day: 38,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'sam-3',
+          sender: 'contact',
+          text: 'We are all cheering you on from down here. Take care of yourself up there.',
+          timestamp: '15:50 UTC',
+          flight_day: 41,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'ana',
+      name: 'Dr. Ana Costa',
+      initials: 'AC',
+      relationship: 'Family support team',
+      unread: false,
+      messages: [
+        {
+          id: 'ana-1',
+          sender: 'contact',
+          text: 'Hi Alex, just checking in to remind you your family care package audio files are uploaded to your personal folder.',
+          timestamp: '10:00 UTC',
+          flight_day: 36,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'ana-2',
+          sender: 'astronaut',
+          text: 'Received them—thank you, Ana. The recordings were really comforting.',
+          timestamp: '16:12 UTC',
+          flight_day: 37,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'ana-3',
+          sender: 'contact',
+          text: 'Glad to hear that. Reach out anytime if you want us to coordinate a family Q&A recording for next week.',
+          timestamp: '11:30 UTC',
+          flight_day: 40,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+  ],
+};
