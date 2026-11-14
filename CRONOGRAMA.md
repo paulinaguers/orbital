@@ -48,7 +48,7 @@ Agenda de trabajo del evento. La lee el agente `coordinador` (comando `/estado`)
 | --- | --- | --- |
 | A · Datos y motor | Estructura `backend/`; formato de datos (tablas `measurements`, `self_reports`, `baselines`, `alerts`, `injected_anomalies`; nombres en inglés); simulador con ruido realista, ritmo día/noche y **anomalías inyectadas con fecha** | Simulador que genera un CSV/SQLite de un astronauta de 60+ días, con test |
 | B · Pantallas | Maqueta de la pantalla principal desde el dashboard elegido (artifact de diseño); prompts para Google AI Studio. **Cada tarjeta muestra el riesgo oficial de NASA que vigila** (ej. "NASA HRP risk: SANS") y su umbral con fuente. **Sin logos de NASA ni de la CSA.** Textos de la app en inglés | Maqueta aprobada por el equipo |
-| C · Contenido | Textos de cada alerta (verde/amarillo/naranja/rojo) y recomendación por indicador, desde la skill clínica; criterios de los casos de prueba clínicos | Archivo de textos de alertas y lista de casos de prueba |
+| C · Contenido | Textos de cada alerta (verde/amarillo/naranja/rojo) y recomendación por indicador, desde la skill clínica; criterios de los casos de prueba clínicos | [x] Archivo de textos de alertas (`docs/content/alert_texts.md`, `5ab5c33`) · [x] Lista de casos de prueba (`data/clinical_test_cases.csv`, `f223c75`) (13 open team decisions) |
 
 - [ ] **11:00 · `/estado`**
 - [ ] **13:00 · `/estado`** (antes del almuerzo)
@@ -113,3 +113,9 @@ Agenda de trabajo del evento. La lee el agente `coordinador` (comando `/estado`)
 ## Registro del coordinador
 
 <!-- El agente coordinador agrega aquí un resumen breve en cada punto de control -->
+
+**[sáb 12:41] Control (Bloque 1, faltan 19 min; el control de las 11:00 no se hizo)**
+- Arranque a medias: la configuración se subió a las 11:31 (unos 60 min tarde) y el contexto NASA a las 12:25. Faltan `LICENSE`, `docs/guias-nasa/`, dashboards, los 7 indicadores, el dashboard base y la entrada de bitácora.
+- A: no hay `backend/` ni simulador (unos 130 min de atraso). B y C: no hay nada en el repo; no se puede verificar.
+- Riesgo alto para el CORTE 1 (19:00). Recortes propuestos: solo CSV (sin SQLite), sin `self_reports` en el simulador, y ML afuera si a las 17:00 el núcleo no tiene los tests en verde.
+- Acción: cerrar el arranque antes de las 13:00, A define el formato de datos para B y todo se sube al repo. Próximo control: 13:00.
