@@ -15,6 +15,7 @@ import type {
   UserProfile,
 } from '../types/orbital';
 import { mockCircle } from './mockCircle';
+import { mockCirclePassenger } from './mockCirclePassenger';
 import { mockMoments } from './mockMoments';
 import { mockSeries } from './mockSeries';
 import { mockSeriesPassenger } from './mockSeriesPassenger';
@@ -119,6 +120,14 @@ function getDemoScenarioEntry(): DemoScenarioBundle | undefined {
     demoData.scenarios[demoData.default_scenario] ??
     Object.values(demoData.scenarios)[0]
   );
+}
+
+function isLocalhostRuntime(): boolean {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  const hostname = window.location.hostname;
+  return hostname === 'localhost' || hostname === '127.0.0.1';
 }
 
 function isOrbitalStatus(value: unknown): value is OrbitalStatus {
@@ -329,8 +338,8 @@ export function getDemoStatus(profile: UserProfile = 'crew'): OrbitalStatus {
   return getDemoScenarioEntry()?.status ?? mockStatus;
 }
 
-export function getDemoCircleData(): CircleData {
-  return mockCircle;
+export function getDemoCircleData(profile: UserProfile = 'crew'): CircleData {
+  return profile === 'passenger' ? mockCirclePassenger : mockCircle;
 }
 
 export function getDemoMomentsData(): MomentsData {
@@ -346,19 +355,21 @@ export async function getStatus(
   }
 
   const resolvedId = astronautId ?? 'A1';
-  try {
-    const response = await fetchWithTimeout(
-      `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/status`,
-    );
-    if (response.ok) {
-      const data: unknown = await response.json();
-      if (isOrbitalStatus(data)) {
-        setCrewDataSource('api');
-        return data;
+  if (isLocalhostRuntime()) {
+    try {
+      const response = await fetchWithTimeout(
+        `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/status`,
+      );
+      if (response.ok) {
+        const data: unknown = await response.json();
+        if (isOrbitalStatus(data)) {
+          setCrewDataSource('api');
+          return data;
+        }
       }
+    } catch {
+      // Fall back to demoData or mockStatus
     }
-  } catch {
-    // Fall back to demoData or mockStatus
   }
 
   const demoEntry = getDemoScenarioEntry();
@@ -383,20 +394,22 @@ export async function switchDemoScenario(
 ): Promise<OrbitalStatus> {
   currentScenario = scenario;
 
-  try {
-    const response = await fetchWithTimeout(
-      `${API_BASE_URL}/scenarios/${encodeURIComponent(scenario)}`,
-      { method: 'POST' },
-    );
-    if (response.ok) {
-      setCrewDataSource('api');
-      const data: unknown = await response.json().catch(() => null);
-      const nextStatus = isOrbitalStatus(data) ? data : await getStatus('crew');
-      notifyStatusUpdateListeners(nextStatus);
-      return nextStatus;
+  if (isLocalhostRuntime()) {
+    try {
+      const response = await fetchWithTimeout(
+        `${API_BASE_URL}/scenarios/${encodeURIComponent(scenario)}`,
+        { method: 'POST' },
+      );
+      if (response.ok) {
+        setCrewDataSource('api');
+        const data: unknown = await response.json().catch(() => null);
+        const nextStatus = isOrbitalStatus(data) ? data : await getStatus('crew');
+        notifyStatusUpdateListeners(nextStatus);
+        return nextStatus;
+      }
+    } catch {
+      // API unavailable: switch demoData scenario locally
     }
-  } catch {
-    // API unavailable: switch demoData scenario locally
   }
 
   const demoEntry = getDemoScenarioEntry();
@@ -435,17 +448,19 @@ export async function getSeries(
   }
 
   const resolvedId = astronautId ?? 'A1';
-  try {
-    const response = await fetchWithTimeout(
-      `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/series/${encodeURIComponent(indicatorId)}`,
-    );
-    if (response.ok) {
-      const data = (await response.json()) as IndicatorSeries;
-      setCrewDataSource('api');
-      return data;
+  if (isLocalhostRuntime()) {
+    try {
+      const response = await fetchWithTimeout(
+        `${API_BASE_URL}/astronauts/${encodeURIComponent(resolvedId)}/series/${encodeURIComponent(indicatorId)}`,
+      );
+      if (response.ok) {
+        const data = (await response.json()) as IndicatorSeries;
+        setCrewDataSource('api');
+        return data;
+      }
+    } catch {
+      // Fall back to demoData or mockSeries
     }
-  } catch {
-    // Fall back to demoData or mockSeries
   }
 
   const demoEntry = getDemoScenarioEntry();
@@ -468,7 +483,7 @@ async function postSelfReportPayload(
   payload: SelfReportPayload | AmslerResultPayload | PvtSessionPayload,
   astronautId: string,
 ): Promise<OrbitalStatus | null> {
-  if (astronautId === 'P1') {
+  if (astronautId === 'P1' || !isLocalhostRuntime()) {
     return null;
   }
 

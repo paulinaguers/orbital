@@ -431,6 +431,7 @@ export default function App() {
         return (
           <CirclePage
             currentFlightDay={status.astronaut.flight_day}
+            profile={profile}
             onNavigate={navigate}
           />
         );

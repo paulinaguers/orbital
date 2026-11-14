@@ -1,0 +1,165 @@
+// Generated with SI assistance (Claude), reviewed by the ORBITAL team.
+
+import type { CircleData } from '../types/orbital';
+
+const TWELVE_MINUTES_MS = 12 * 60 * 1000;
+
+export const mockCirclePassenger: CircleData = {
+  simulated: true,
+  link: {
+    status: 'offline',
+    next_window_utc: new Date(Date.now() + TWELVE_MINUTES_MS).toISOString(),
+    window_duration_min: 20,
+    one_way_delay_min: 0,
+  },
+  contacts: [
+    {
+      id: 'linda',
+      name: 'Linda Hale',
+      initials: 'LH',
+      relationship: 'Wife',
+      unread: true,
+      messages: [
+        {
+          id: 'linda-1',
+          sender: 'contact',
+          text: 'Still cannot believe you are actually orbiting Earth right now! How was the launch?',
+          timestamp: '18:20 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'linda-2',
+          sender: 'astronaut',
+          text: 'Unreal, Linda. Floating out of my seat for the first time felt like a dream. Watching the coastline roll by from the cupola now.',
+          timestamp: '20:05 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'linda-3',
+          sender: 'contact',
+          text: 'I am so happy for you! What is the view like from up there right now?',
+          timestamp: '07:15 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'linda-4',
+          sender: 'contact',
+          text: 'Also—did you manage to sleep well in zero gravity last night?',
+          timestamp: '08:02 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'emma',
+      name: 'Emma Hale',
+      initials: 'EH',
+      relationship: 'Daughter',
+      unread: true,
+      messages: [
+        {
+          id: 'emma-1',
+          sender: 'contact',
+          text: 'Hi Dad!! Everyone in my science class was watching the livestream of your flight!',
+          timestamp: '19:10 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'emma-2',
+          sender: 'astronaut',
+          text: 'Hey Emma! Wait until you see the sunrise photos from up here—there are 16 sunrises every day.',
+          timestamp: '21:15 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'emma-3',
+          sender: 'contact',
+          text: '16 sunrises?! Can you take lots of photos of Earth for my school project? Especially oceans and clouds!',
+          timestamp: '09:30 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'tom',
+      name: 'Tom Becker',
+      initials: 'TB',
+      relationship: 'Business partner',
+      unread: false,
+      messages: [
+        {
+          id: 'tom-1',
+          sender: 'contact',
+          text: 'Hope the orbital legroom is better than row 24 on our last flight to Chicago.',
+          timestamp: '17:45 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'tom-2',
+          sender: 'astronaut',
+          text: 'Infinite headroom up here, Tom. No overhead bins to bump into either.',
+          timestamp: '21:40 UTC',
+          flight_day: 1,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'tom-3',
+          sender: 'contact',
+          text: 'Haha, enjoy it! The office is suspiciously quiet without you calling into the morning stand-up.',
+          timestamp: '10:12 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+    {
+      id: 'concierge',
+      name: 'Flight Concierge',
+      initials: 'FC',
+      relationship: 'Passenger support team',
+      unread: false,
+      messages: [
+        {
+          id: 'concierge-1',
+          sender: 'contact',
+          text: 'Welcome to Day 2, Robert! Friendly reminder that cabin lunch service opens at 12:30 UTC in the dining bay.',
+          timestamp: '06:30 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'concierge-2',
+          sender: 'contact',
+          text: 'Great photo window coming up over South America and the Andes at 14:15 UTC—observation dome seats are reserved for your group.',
+          timestamp: '08:45 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'concierge-3',
+          sender: 'astronaut',
+          text: 'Got it, thanks! Looking forward to the Andes pass.',
+          timestamp: '09:05 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+        {
+          id: 'concierge-4',
+          sender: 'contact',
+          text: 'Also on today’s schedule: quick 15-minute landing briefing in the lounge at 17:00 UTC before dinner.',
+          timestamp: '09:20 UTC',
+          flight_day: 2,
+          deliveryStatus: 'delivered',
+        },
+      ],
+    },
+  ],
+};

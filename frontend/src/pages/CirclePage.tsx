@@ -11,10 +11,15 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { getDemoCircleData } from '../data/source';
-import type { CircleContact, CircleMessage } from '../types/orbital';
+import type {
+  CircleContact,
+  CircleMessage,
+  UserProfile,
+} from '../types/orbital';
 
 interface CirclePageProps {
   currentFlightDay: number;
+  profile: UserProfile;
   onNavigate: (path: string) => void;
 }
 
@@ -23,6 +28,10 @@ const AVATAR_TONES: Record<string, string> = {
   jordan: 'bg-rose-500/20 text-rose-200 border-rose-400/35',
   sam: 'bg-amber-500/20 text-amber-200 border-amber-400/35',
   ana: 'bg-teal-500/20 text-teal-200 border-teal-400/35',
+  linda: 'bg-rose-500/20 text-rose-200 border-rose-400/35',
+  emma: 'bg-sky-500/20 text-sky-200 border-sky-400/35',
+  tom: 'bg-amber-500/20 text-amber-200 border-amber-400/35',
+  concierge: 'bg-teal-500/20 text-teal-200 border-teal-400/35',
 };
 
 function formatCountdown(ms: number): string {
@@ -39,9 +48,13 @@ function getCurrentUtcTimestamp(): string {
   return `${hh}:${mm} UTC`;
 }
 
-export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
-  const initialData = getDemoCircleData();
-  const [link] = useState(initialData.link);
+export function CirclePage({
+  currentFlightDay,
+  profile,
+  onNavigate,
+}: CirclePageProps) {
+  const initialData = getDemoCircleData(profile);
+  const [link, setLink] = useState(initialData.link);
   const [contacts, setContacts] = useState<CircleContact[]>(() =>
     initialData.contacts.map((c, idx) => ({
       ...c,
@@ -59,6 +72,24 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
   const [remainingMs, setRemainingMs] = useState<number>(() =>
     Math.max(0, targetMs - Date.now()),
   );
+
+  useEffect(() => {
+    const nextData = getDemoCircleData(profile);
+    setLink(nextData.link);
+    setContacts(
+      nextData.contacts.map((c, idx) => ({
+        ...c,
+        unread: idx === 0 ? false : c.unread,
+        messages: [...c.messages],
+      })),
+    );
+    setSelectedId(nextData.contacts[0]?.id ?? '');
+    setDraft('');
+    setPrivacyOpen(false);
+    setRemainingMs(
+      Math.max(0, Date.parse(nextData.link.next_window_utc) - Date.now()),
+    );
+  }, [profile]);
 
   const threadEndRef = useRef<HTMLDivElement | null>(null);
   const privacyPopoverRef = useRef<HTMLDivElement | null>(null);
@@ -230,12 +261,23 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
               {!isConnected ? (
                 <>
                   <p className="text-sm font-semibold text-[#E8F0FF] sm:text-base">
-                    No connection with Earth right now. Next communication
-                    window in{' '}
-                    <span className="font-mono-tabular text-[#4FC3F7]">
-                      {formatCountdown(remainingMs)}
-                    </span>
-                    .
+                    {profile === 'passenger' ? (
+                      <>
+                        Next connection window in{' '}
+                        <span className="font-mono-tabular text-[#4FC3F7]">
+                          {formatCountdown(remainingMs)}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        No connection with Earth right now. Next communication
+                        window in{' '}
+                        <span className="font-mono-tabular text-[#4FC3F7]">
+                          {formatCountdown(remainingMs)}
+                        </span>
+                        .
+                      </>
+                    )}
                   </p>
                   <p className="mt-0.5 text-xs sm:text-sm text-[#8FA3C7]">
                     Messages will be sent automatically when the window opens.
@@ -250,7 +292,9 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
           </div>
 
           <p className="font-mono-tabular text-xs font-medium text-[#8FA3C7] sm:text-right shrink-0">
-            Signal delay: ~{link.one_way_delay_min} min each way.
+            {link.one_way_delay_min <= 0
+              ? 'Signal delay: under 1 second'
+              : `Signal delay: ~${link.one_way_delay_min} min each way.`}
           </p>
         </div>
       </div>
@@ -412,7 +456,9 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
                         <span className="inline-flex items-center gap-1 text-emerald-300">
                           <Check className="h-3 w-3" aria-hidden="true" />
                           <span>
-                            Sent · arrives in ~{link.one_way_delay_min} min
+                            {link.one_way_delay_min <= 0
+                              ? 'Sent · arrives in under 1 second'
+                              : `Sent · arrives in ~${link.one_way_delay_min} min`}
                           </span>
                         </span>
                       )}
