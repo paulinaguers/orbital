@@ -10,6 +10,7 @@ import csv
 import statistics
 
 from backend.simulator import clinical_cases as cases
+from backend.simulator import clinical_cases_markdown as markdown
 from backend.simulator import generate_clinical_test_data as generator
 
 LEVELS = {"green", "yellow", "orange", "red", "PENDING"}
@@ -68,6 +69,17 @@ def test_csv_is_up_to_date_and_reproducible():
     first_run, second_run = generator.build_rows(), generator.build_rows()
     assert first_run == second_run
     assert read_committed_rows() == as_text(first_run)
+
+
+def test_markdown_is_up_to_date_and_lists_every_case():
+    """The committed .md equals a fresh run, and it lists every case of the CSV.
+    El .md commiteado es igual a una corrida nueva y lista todos los casos del CSV.
+    """
+    committed = markdown.OUTPUT_MD.read_text(encoding="utf-8")
+    assert committed == markdown.build_markdown(generator.build_rows())
+    for row in read_committed_rows():
+        if not row["case_id"].startswith(("BASE-", "SEP-")):
+            assert f"| {row['case_id']} | {row['flight_day']} |" in committed, row["case_id"]
 
 
 def test_size_identity_and_simulated_flag():

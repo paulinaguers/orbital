@@ -1,6 +1,7 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
-"""Writes data/clinical_test_cases.csv from the hand-written clinical cases.
-Escribe data/clinical_test_cases.csv a partir de los casos clínicos escritos a mano.
+"""Writes data/clinical_test_cases.csv and docs/content/clinical_test_cases.md
+from the hand-written clinical cases.
+Escribe el CSV y el .md de casos a partir de los casos clínicos escritos a mano.
 
 SIMULATED DATA - NOT REAL ASTRONAUT DATA.
 DATOS SIMULADOS - NO SON DATOS REALES DE ASTRONAUTAS.
@@ -24,6 +25,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from backend.simulator import clinical_cases as cases
+from backend.simulator.clinical_cases_markdown import OUTPUT_MD, write_markdown
 
 # Fixed seed: the same seed always gives the same CSV.
 # Semilla fija: la misma semilla siempre da el mismo CSV.
@@ -195,4 +197,6 @@ def write_csv(rows, path=OUTPUT_CSV):
 if __name__ == "__main__":
     all_rows = build_rows()
     write_csv(all_rows)
+    write_markdown(all_rows)
     print(f"Wrote {len(all_rows)} rows to {OUTPUT_CSV}")
+    print(f"Wrote the case list to {OUTPUT_MD}")

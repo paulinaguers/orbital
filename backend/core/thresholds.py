@@ -78,12 +78,12 @@ THRESHOLDS = {
     "blood_pressure": {
         # Systolic and diastolic in different categories: the higher category
         # wins (ACC/AHA 2017 guideline, AFP summary
-        # https://www.aafp.org/afp/2018/0315/p413; 2025 update, Hypertension
+        # https://www.aafp.org/afp/2018/0315/p413; 2025 AHA/ACC update, Hypertension
         # 2025;82(10):e212-e316, https://doi.org/10.1161/HYP.0000000000000249).
         # So green = systolic < 130 AND diastolic < 80;
         # orange = systolic 130-180 OR diastolic 80-120.
         # Sistólica y diastólica en categorías distintas: gana la más alta
-        # (guía ACC/AHA 2017, resumen de AFP; actualización 2025). Entonces
+        # (guía ACC/AHA 2017, resumen de AFP; actualización AHA/ACC 2025). Entonces
         # verde = sistólica < 130 Y diastólica < 80; naranja = sistólica
         # 130-180 O diastólica 80-120.
         "green_systolic_below": 130,  # AHA
