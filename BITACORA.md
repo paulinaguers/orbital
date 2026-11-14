@@ -1,67 +1,303 @@
-# Bitácora de trabajo – ORBITAL
+# Work logbook – ORBITAL
 
-Registro cronológico de todo lo que hace el equipo durante el hackathon: decisiones, tareas, uso de herramientas de IA (SI) y plugins, y lo que revisó una persona. Es la materia prima de la documentación final en español e inglés (skill `documentacion-bilingue`).
+Chronological record of everything the team does during the hackathon: decisions, tasks, use of AI tools (SI) and plugins, and what a person reviewed. It is the raw material for the final documentation (skill `documentacion-bilingue`).
 
-**Reglas**
+**Rules**
 
-- Una entrada por tarea terminada o decisión tomada. Se agrega al final, nunca se borra.
-- Se registra con `/bitacora` o a mano con el formato de abajo.
-- "Revisión humana" es obligatoria: qué se leyó, probó o corrigió.
-- Si una herramienta de IA generó algo que se descartó, también se anota.
+- One entry per finished task or decision. Entries are added at the end and never deleted.
+- Log with `/bitacora` or by hand with the format below.
+- "Human review" is mandatory: what was read, tested or corrected, and by whom.
+- If an AI tool produced something that was discarded, log that too.
 
-**Formato de cada entrada**
+**Entry format**
 
 ```text
-### [AAAA-MM-DD HH:MM] Título corto
-- Hilo: A | B | C | General
-- Tipo: tarea | decisión | sugerencia | problema | recorte
-- Qué se hizo:
-- Herramientas de IA: (Claude chat / Claude Code / subagente revisor / subagente coordinador / Google AI Studio / ninguna) y para qué
-- Revisión humana: qué se leyó, probó o corrigió y quién
-- Por qué: razón de la decisión (si aplica)
-- Fuentes: documentos o referencias usadas (si aplica)
-- Commit: hash o "sin commit"
+### [YYYY-MM-DD HH:MM] Short title
+- Thread: A | B | C | General
+- Type: task | decision | suggestion | problem | cut
+- What was done:
+- AI tools: (Claude chat / Claude Code / reviewer subagent / coordinator subagent / Google AI Studio / none) and what for
+- Human review: what was read, tested or corrected, and by whom
+- Why: reason for the decision (if any)
+- Sources: documents or references used (if any)
+- Commit: hash or "no commit"
 ```
 
----
-
-## Preparación (antes del evento)
-
-### [2026-11-01 → 2026-11-13] Investigación y preparación
-- Hilo: General
-- Tipo: decisión
-- Qué se hizo: investigación de indicadores, umbrales, escalas y fundamentación; definición de la metodología de trabajo con Claude (proyecto, skills, agentes, cronograma). Sin código de la solución, según las reglas del evento.
-- Herramientas de IA: Claude (chat) para búsqueda bibliográfica, redacción de documentos y diseño de la metodología.
-- Revisión humana: el equipo revisó y validó los documentos: Indicadores y umbrales, Fundamentación del proyecto, Escalas tests y protocolos, Capa de ML.
-- Fuentes: ver `.claude/skills/fisiologia-espacial/references/bibliografia.md`.
-- Commit: sin commit
+Threads: **A** data and core (Python) · **B** screens and connection · **C** clinical content and documentation.
 
 ---
 
-## Sábado 14/11
+## Preparation (before the event)
 
-<!-- Las entradas del evento van debajo, en orden cronológico -->
+### [2026-11-01 → 2026-11-13] Research and preparation
+- Thread: General
+- Type: decision
+- What was done: research on indicators, thresholds, scales and rationale; definition of the working method with Claude (project, skills, agents, schedule). No solution code, as the event rules require.
+- AI tools: Claude (chat) for literature search, document drafting and method design.
+- Human review: the team reviewed and validated the documents: Indicators and thresholds, Project rationale, Scales tests and protocols, ML layer.
+- Sources: see `.claude/skills/fisiologia-espacial/references/bibliografia.md`.
+- Commit: no commit
 
-### [2026-11-14 12:41] Control 12:41: recortes propuestos por atraso del Bloque 1
-- Hilo: General
-- Tipo: sugerencia
-- Qué se hizo: control de avance. El repo tiene solo la configuración (commits 2dc2d64 a las 11:31 y 29730a9 a las 12:25), sin `backend/` ni entregables de B o C. Se propone: (1) simulador solo con CSV, sin SQLite ni `self_reports`; (2) A publica primero el formato de datos (columnas y un JSON de ejemplo) para que B no lo espere; (3) si el núcleo no tiene los tests en verde a las 17:00, la capa de ML queda afuera desde ya. Pendiente de decisión del equipo.
-- Herramientas de IA: subagente coordinador (Claude Code) para medir el avance contra el cronograma.
-- Revisión humana: pendiente; el equipo decide si aplica los recortes.
-- Por qué: unos 130 min de atraso en el Hilo A ponen en riesgo el CORTE 1 (núcleo y API con tests a las 19:00).
-- Commit: sin commit
+---
 
-### [2026-11-14 12:56] Textos de alerta del MVP (EN/ES)
-- Hilo: C
-- Tipo: tarea
-- Qué se hizo: docs/content/alert_texts.md con, para las 10 mediciones de los 7 grupos del MVP y los 4 niveles, el texto que ve el astronauta y la recomendación (EN primero, ES debajo), el umbral que lo dispara con su fuente (marcado "Proposal" donde la skill dice Propuesta) y el riesgo oficial de NASA. Acción fija por nivel en todas las mediciones; rojo solo por umbral clínico. Sección Symptoms con las 4 casillas y la regla que alimenta cada una. Quedan 6 decisiones del equipo marcadas con ⚠: rojo del ánimo, rojo del PVT, mapeo de síntomas y temperatura, presión < 90/60 sin síntomas, dirección del desvío |z| y Amsler.
-- Herramientas de IA: Claude Code (Opus 5.5) armó el plan y redactó el archivo desde la skill fisiologia-espacial; el subagente revisor lo comparó con la skill (aprobado con cambios); Claude Code aplicó las 4 correcciones del revisor y quitó 3 consejos que no estaban en la skill. Nota de proceso: un comando corrió en auto mode; se volvió a Manual.
-- Revisión humana: PENDIENTE. Miguel (Hilo C) aprobó el plan, pidió los 3 agregados (síntomas, acción fija por nivel, umbral con fuente) y verificó que no hubiera duplicados en 66f14f2. Falta la lectura clínica completa del archivo. Las 6 decisiones ⚠ quedan abiertas.
-- Por qué: entregable del Hilo C, bloque 1. Las pantallas (B) y el núcleo (A) usan estos textos y umbrales.
-- Fuentes: skill fisiologia-espacial (umbrales.md, escalas-y-protocolos.md, linea-base-y-ml.md, riesgos-nasa.md, bibliografia.md).
+## Saturday 14/11
+
+<!-- Event entries go below, in chronological order -->
+
+### [2026-11-14 12:41] 12:41 check: cuts proposed because Block 1 was late
+- Thread: General
+- Type: suggestion
+- What was done: progress check. The repo had only the configuration (commits 2dc2d64 at 11:31 and 29730a9 at 12:25), with no `backend/` and no deliverables from B or C. Proposed: (1) simulator with CSV only, no SQLite and no `self_reports`; (2) A publishes the data format first (columns and a sample JSON) so B does not wait for it; (3) if the core tests are not green at 17:00, the ML layer is dropped right away. Pending team decision.
+- AI tools: coordinator subagent (Claude Code) to measure progress against the schedule.
+- Human review: pending; the team decides whether to apply the cuts.
+- Why: about 130 min of delay in thread A put CUT 1 at risk (core and API with tests at 19:00).
+- Commit: no commit
+
+### [2026-11-14 12:56] MVP alert texts (EN/ES)
+- Thread: C
+- Type: task
+- What was done: docs/content/alert_texts.md with, for the 10 measurements of the 7 MVP groups and the 4 levels, the text the astronaut sees and the recommendation (EN first, ES below), the threshold that triggers it with its source (marked "Proposal" where the skill says Propuesta) and the official NASA risk. Fixed action per level for every measurement; red only from a clinical threshold. Symptoms section with the 4 checkboxes and the rule each one feeds. 6 team decisions remain marked ⚠: mood red, PVT red, symptom mapping and temperature, pressure < 90/60 without symptoms, direction of the |z| deviation, and Amsler.
+- AI tools: Claude Code (Opus 5.5) planned and drafted the file from the fisiologia-espacial skill; the reviewer subagent compared it with the skill (approved with changes); Claude Code applied the reviewer's 4 corrections and removed 3 tips that were not in the skill. Process note: one command ran in auto mode; it was set back to Manual.
+- Human review: PENDING. Miguel (thread C) approved the plan, asked for the 3 additions (symptoms, fixed action per level, threshold with source) and checked there were no duplicates in 66f14f2. The full clinical reading of the file is still missing. The 6 ⚠ decisions remain open.
+- Why: thread C deliverable, block 1. Screens (B) and core (A) use these texts and thresholds.
+- Sources: fisiologia-espacial skill (umbrales.md, escalas-y-protocolos.md, linea-base-y-ml.md, riesgos-nasa.md, bibliografia.md).
 - Commit: 66f14f2
 - Correction: the committed file was truncated after section 6; restored in commit 5ab5c33.
 
-## Domingo 15/11
+### [2026-11-14 13:10] Thread B working method: screens with Google AI Studio
+- Thread: B
+- Type: decision
+- What was done: the screens are generated with Google AI Studio (Build mode, Gemini 4 Hydrogen, free tier) from prompts written with Claude, one screen per prompt. Each working version is exported as a ZIP into `frontend/` and committed. AI Studio was not connected to GitHub, so it cannot overwrite the repo structure. The data shape was agreed with the code glossary (`flight_day`, `nasa_risk`, `threshold_source`, indicator ids).
+- AI tools: Claude (project chat) to write the prompts and check them against the project skills; Google AI Studio to generate the React code.
+- Human review: Paulina reviewed every preview with screenshots before exporting.
+- Why: Stack A, decided on 13/11. A shared data shape lets A and B work in parallel.
+- Commit: no commit
+
+### [2026-11-14 13:29] Home screen with Orbi and app structure
+- Thread: B
+- Type: task
+- What was done: React + TypeScript app with 5 routes, top bar (name, role, flight day, "SIMULATED DATA") and bottom navigation. Home with Orbi, an original SVG mascot whose color follows `overall_level`, and a speech bubble with the affected blocks, the recommendation and who was notified. Data read only through `source.ts` with `DEMO_MODE`.
+- AI tools: Google AI Studio (Gemini 4 Hydrogen) with prompts written by Claude.
+- Human review: key test done (setting `overall_level` to red turns Orbi red: the screen does not compute levels). A build error caused by a comment inside a JSON file was fixed, and a duplicated copy of the data was removed.
+- Commit: c9b7bc7
+
+### [2026-11-14 13:37] Clinical thresholds file (values only)
+- Thread: C
+- Type: task
+- What was done: `backend/core/thresholds.py` with every threshold value and its source, plus the backend package files.
+- AI tools: Claude Code (logged by thread A from the commit history).
+- Human review: to be completed by thread C (Miguel).
+- Commit: c73e3a3
+
+### [2026-11-14 13:41] Body map with the five blocks
+- Thread: B
+- Type: task
+- What was done: SVG silhouette with 5 cards (Cardiorespiratory & Oxygenation, Sleep & Cognition, Metabolic & Internal Balance, Environment Radiation & Vision, Mental Health), each linked by a line to its own point on the body and clickable to its detail page. Each card shows the official risk it watches; glucose shows "CSA: Insulin resistance in spaceflight" because it is not an HRP risk.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: Paulina asked for one line per block from distinct points and for every card to be a button.
+- Why: mood (VAS) moved from the sleep block to Mental Health to avoid showing it twice.
+- Commit: a76336f
+
+### [2026-11-14 13:47] Block detail template
+- Thread: B
+- Type: task
+- What was done: one template for the 5 blocks with current value, level, threshold source, baseline range and a 14-day chart in plain SVG (baseline band, points colored by level). The baseline comes in the data; the screen does not compute it.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: checked that each block shows its own indicators.
+- Why: charts without a new library, so no unapproved dependency was added.
+- Commit: c4da9cd
+
+### [2026-11-14 13:56] Mental health: check-in, private journal and breathing
+- Thread: B
+- Type: task
+- What was done: daily check-in (mood, fatigue, stress, workload); private journal stored only on the device and never sent; guided breathing exercise (4-4-6 rhythm) with a note that it does not replace professional support.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: the 4-4-6 rhythm is a team Proposal, with no source in the project documents.
+- Commit: b3d8fe2
+
+### [2026-11-14 14:09] Alert texts restored and clinical review applied
+- Thread: C
+- Type: task
+- What was done: the truncated sections of `alert_texts.md` were restored and the clinical review was applied.
+- AI tools: Claude Code (logged by thread A from the commit history).
+- Human review: to be completed by thread C (Miguel).
+- Commit: 5ab5c33
+
+### [2026-11-14 15:05] In-app tests: PVT and Amsler grid
+- Thread: B
+- Type: task
+- What was done: 1-minute demo PVT (stimulus every 1–4 s, times measured with `performance.now()`) and 20 × 20 Amsler grid, one eye at a time, following the scales and protocols document. The screen stores only raw data; lapses and levels are computed by the core.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: checked that no screen shows a score or a level for the tests.
+- Commit: f0f2a94
+
+### [2026-11-14 15:08] My Circle
+- Thread: B
+- Type: task
+- What was done: messenger with 4 fictional contacts, link status with a countdown to the next communication window, and queued messages while offline. Simulated signal delay of 12 min each way (NASA: up to 20 min each way to Mars).
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: contacts and messages are marked as simulated.
+- Commit: 5713edf
+
+### [2026-11-14 15:14] Daily check-in on a 0–10 numeric scale
+- Thread: B
+- Type: decision
+- What was done: the check-in changed from a visual analog scale to a 0–10 numeric scale with faces (10 = worst). New fields: `mood_score`, `fatigue_score`, `stress_score`, `workload_score`; indicator `mood_vas` became `mood_score`.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: team decision.
+- Why: the judges asked for a numeric scale. Pending: thread C to migrate the answer key and the scales document; the mood red "worst 10 %" becomes 9–10 (to confirm).
+- Commit: 0fa5bc3
+
+### [2026-11-14 15:22 → 15:55] Clinical answer key for the core
+- Thread: C
+- Type: task
+- What was done: symptom sources fixed in the skill and the "lightheaded" checkbox renamed; bilingual comments and open decisions added to the thresholds; blood pressure rule resolved with the ACC/AHA source (the higher category wins); simulated clinical test dataset with hand-written cases and its tests (`data/clinical_test_cases.csv`, 188 rows).
+- AI tools: Claude Code (logged by thread A from the commit history).
+- Human review: to be completed by thread C (Miguel).
+- Commits: d85a522, 44612bb, 64b9f20, f223c75
+
+### [2026-11-14 15:45] How alerts work and data sources
+- Thread: B
+- Type: decision
+- What was done: "How alerts work" screen with the 4 levels and who each one notifies; a "Measured with" line on every indicator (sensors, in-app tests, self-report); the manual sleep log was removed (sleep comes from the wearable).
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: alert scheme decided by the team: yellow = self-care, no one notified; orange = onboard doctor and flight surgeon on Earth; red = both, marked URGENT, plus a crewmate on board.
+- Why: this changes the scheme in the documents (orange adds the flight surgeon; red adds the onboard doctor and a crewmate). Pending: thread C to update the rationale, thresholds and `alert_texts.md`.
+- Commit: 812999a
+
+### [2026-11-14 16:02] Test reminders
+- Thread: B
+- Type: task
+- What was done: "Today's tasks" on Home, bell with a counter and a toast for overdue tests. Frequencies from the scales document: daily check-in, PVT every 4 days, Amsler weekly. Whether a test is due comes in the data; the screen does not compute it.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Commit: 789752e
+
+### [2026-11-14 16:17] Self-care tips and privacy notes
+- Thread: B
+- Type: task
+- What was done: tips panel with concrete steps per indicator (`tips.ts`); steps backed by NASA practice carry the label "Based on NASA practice", the rest are team Proposals. End-to-end encryption note in My Circle, stated as part of the design and not implemented in the prototype.
+- AI tools: Google AI Studio with prompts written by Claude; Claude checked each tip against the fisiologia-espacial skill.
+- Human review: Paulina asked for concrete steps. Pending: thread C to validate the steps marked "team".
+- Commit: e3af498
+
+### [2026-11-14 16:34] Space passenger profile
+- Thread: B
+- Type: decision
+- What was done: "Crew member | Space passenger" switch. The passenger version is simplified: friendly texts, no NASA risk tags or sources, no PVT, Amsler or journal; resting heart rate green 60–100 (AHA) instead of 50–100 (athletic profile); baseline from preflight days only.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Human review: team decision after the mentoring session.
+- Why: the mentors suggested scaling ORBITAL to commercial spaceflight. Age and pre-existing conditions are future work. Passenger data stays fixed in the screen (not computed by the core).
+- Correction: the first passenger mock had 5.8 h of sleep marked yellow; under the thresholds less than 6 h is orange. Changed to 6.4 h (yellow) in 826d75e.
+- Commits: 9721cb6, 826d75e
+
+### [2026-11-14 16:44] Orbi rewards
+- Thread: B
+- Type: task
+- What was done: stars orbiting Orbi, streak counter, celebration when a test is saved, unlockable items. Rewards are for completing tests, never for the results.
+- AI tools: Google AI Studio with prompts written by Claude.
+- Why: routine and gamification support regular measurements (project rationale); rewarding results would push for dishonest self-reports.
+- Commit: 331da2c
+
+### [2026-11-14 16:58] Deep space visual style
+- Thread: B
+- Type: task
+- What was done: visual restyle (space background, glass cards, Earth limb drawn with gradients) and the tagline "Your health, our mission". Same structure and logic.
+- AI tools: Google AI Studio with prompts written by Claude, from a reference image provided by Paulina.
+- Human review: the NASA logo and the photos in the reference image were left out on purpose (event rules; the app works offline).
+- Commit: ff57459
+
+### [2026-11-14 17:14] Frontend cleaned for local use
+- Thread: B
+- Type: problem
+- What was done: `npm install` failed on a fresh copy (esbuild 0.25 conflicted with Vite 8). Unused dependencies left by AI Studio were removed (`@google/genai`, `express`, `dotenv`, `esbuild`, `tsx`), and `.env.example` and the frontend README no longer mention a Gemini key.
+- AI tools: Claude found the problem by installing the repo from scratch; the fix was applied with a prompt in AI Studio.
+- Human review: Paulina reinstalled and ran the app.
+- Commit: 1e75b45
+
+### [2026-11-14 17:21] Apache 2.0 license
+- Thread: General
+- Type: task
+- What was done: `LICENSE` with the official Apache License 2.0 text.
+- AI tools: Claude provided the official text with the team copyright line.
+- Commit: 833f13a
+
+### [2026-11-14 17:43] Core, demo data and demo.json (CUT 1)
+- Thread: A
+- Type: task
+- What was done: core in `backend/core/`: personal baseline (flight days 4–10, mean and pstdev), z-score, clinical layer per measurement, deviation layer (3 in a row), final level (the higher wins; a deviation alone never reaches red), who is notified, PVT lapses and Amsler category from raw data. Continuous 42-day demo database (`data/demo_scenarios.csv`). Export to `frontend/src/data/demo.json` with the screen's data shape; on-screen texts read from `alert_texts.md` without rewriting them.
+- AI tools: Claude (project chat, Opus 5.5) wrote the code and the tests and wrote the files into Paulina's local copy.
+- Human review: Paulina ran the tests on her computer and reviewed the changes before committing. The core matches every non-pending row of `clinical_test_cases.csv` (more than 1,500 comparisons).
+- Why: CUT 1 of the schedule.
+- Finding: with only 7 baseline days the standard deviation can come out too narrow by chance, and then normal days trigger false deviation alerts (in a first version the healthy scenario raised orange blood pressure alerts). The demo data avoids it; it stays as an open point (minimum spread or a longer baseline).
+- Commit: 4f2c18e
+
+### [2026-11-14 17:43] Provisional decisions taken by the core
+- Thread: A
+- Type: decision
+- What was done: the core needed an answer for each open decision. Rule used: when in doubt, the higher level. All are marked PROVISIONAL in the code and can be changed in one place.
+  - Q1 "sustained" = 3 measurements in a row. ⚠7: a single extreme reading inside the clinical range sets no deviation alert.
+  - ⚠5: mood and PVT count only when they get worse (higher); SpO₂ only when it drops; the rest in both directions.
+  - Sleep at exactly 7 h = yellow; radiation at exactly 65 % = orange; a PVT response of exactly 355 ms is a lapse (≥).
+  - ⚠1 / ⚠2: mood and PVT reach orange at most.
+  - Q3: CO₂ yellow and orange use the 7-day average; red uses the highest 1-hour average.
+  - ⚠3 / ⚠4 / Q2: low blood pressure is orange only with dizziness or feeling faint.
+  - ⚠6: an Amsler change not repeated, or awaiting a retest, is yellow.
+- AI tools: Claude proposed the provisional answers.
+- Human review: PENDING: the whole team must confirm or change them.
+- Commit: 4f2c18e
+
+### [2026-11-14 17:51] The core reads the database, and the FastAPI API
+- Thread: A
+- Type: task
+- What was done: the core now always reads `data/demo_scenarios.csv` through `backend/storage.py` (the simulator only creates the CSV; editing it changes what the app shows). FastAPI API (`backend/api/main.py`): status, 14-day series, scenarios, and `self_reports` that receives a check-in, a PVT session or an Amsler result and recalculates the status live. New results stay in memory until the API restarts. CORS for the local screen; tests with FastAPI's test client.
+- AI tools: Claude wrote the code and the tests.
+- Human review: Paulina ran the 43 tests (all green) and started the API on her computer.
+- Commit: 9fce4e7
+
+### [2026-11-14 17:58] Screen connected to the core with automatic fallback
+- Thread: B
+- Type: task
+- What was done: the screen first tries the API (only on localhost), then `demo.json`, then the mocks. "Data source" indicator and "Demo scenario" selector under the settings gear. After a test, the screen refreshes with the status returned by the core.
+- AI tools: Google AI Studio with a prompt written by Claude.
+- Human review: Paulina checked on localhost that the screen shows the core's data (59 stars, 42-day streak, texts from `alert_texts.md`) and that the scenarios switch.
+- Why: the demo must not depend on the API being up (codigo-orbital skill).
+- Commit: d7b667e
+
+### [2026-11-14 18:16] Fourth demo scenario: Attention (orange)
+- Thread: A
+- Type: task
+- What was done: 4 scenarios, one per level: healthy (green), deterioration (yellow: sleep, CO₂, PVT), attention (orange: resting heart rate 66–67 bpm, clinically normal but a sustained marked deviation from Alex's own baseline), emergency (red: SpO₂ 89 % and two nights under 6 h). Overall message now says "2 areas need" instead of "2 area(s)".
+- AI tools: Claude wrote the scenario, the tests and the docs; AI Studio added the fourth button.
+- Human review: Paulina asked for one scenario per level and ran the tests (44 green).
+- Why: Attention shows the personal baseline at work: a generic app would call 66 bpm normal.
+- Commit: 3e169cd
+
+### [2026-11-14 18:19] ML layer dropped from the MVP
+- Thread: General
+- Type: cut
+- What was done: the optional ML anomaly layer is not built; it goes to the pitch and the README as future work.
+- AI tools: none.
+- Human review: team decision.
+- Why: priority to a stable demo, documentation and pitch. The baseline finding above (too narrow with 7 days) is the kind of problem a future ML layer with more history would address.
+- Commit: no commit
+
+### [2026-11-14 18:36] Passenger-specific My Circle
+- Thread: B
+- Type: task
+- What was done: the Space passenger profile has its own fictional contacts (family, business partner, flight concierge) and a signal delay of under 1 second (low Earth orbit), instead of the crew's contacts and Mars delay.
+- AI tools: Google AI Studio with a prompt written by Claude.
+- Human review: Paulina asked for separate data so the profiles do not look the same.
+- Commits: 6e66b18, 61560e9 (`demo.json` restored after the export)
+
+### [2026-11-14 18:40] Repository check
+- Thread: General
+- Type: task
+- What was done: full check of the latest version on GitHub: 44 tests green; clean install and build of the frontend; `demo.json` present; the API is only tried on localhost; Apache 2.0 license; SI mark on every code file; no keys or `.env` files; README without Gemini instructions.
+- AI tools: Claude cloned the public repo and ran the checks.
+- Human review: Paulina asked for the check.
+- Pending: update the code glossary (sent, it must be copied into `.claude/` by hand), team confirmation of the provisional decisions, thread C updates to `alert_texts.md` and the answer key.
+- Commit: no commit
+
+## Sunday 15/11
 
 <!-- -->
