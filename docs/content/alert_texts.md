@@ -12,6 +12,8 @@
 
 ---
 
+<a id="how-to-read"></a>
+
 ## How to read this file / Cómo leer este archivo
 
 ### Fixed action per level / Acción fija por nivel
@@ -44,19 +46,21 @@ Source / Fuente: `fisiologia-espacial` → `linea-base-y-ml.md`, `escalas-y-prot
 
 | MVP group | Measurement / Medición | Official NASA risk or hazard (HRP) / Riesgo o peligro oficial NASA |
 | --- | --- | --- |
-| 1 | [Blood pressure](#1-blood-pressure--presión-arterial) | Cardiovascular Adaptations |
-| 2 | [Resting heart rate](#2a-resting-heart-rate--frecuencia-cardíaca-en-reposo) | Cardiovascular Adaptations |
-| 2 | [SpO₂](#2b-spo₂--saturación-de-oxígeno) | Hypoxia |
-| 3 | [Glucose](#3-glucose--glucosa) | Not an HRP risk on its own (see section) |
-| 4 | [Sleep](#4-sleep--sueño) | Inadequate Sleep and Irregular Schedules |
-| 5 | [Mood (VAS)](#5a-mood-vas--ánimo-vas) | Behavioral Conditions and Psychiatric Disorders |
-| 5 | [Reaction test (PVT)](#5b-reaction-test-pvt--test-de-reacción-pvt) | Inadequate Sleep · Behavioral Conditions |
-| 6 | [Vision (Amsler grid)](#6-vision-amsler-grid--visión-rejilla-de-amsler) | SANS |
-| 7 | [Cabin CO₂](#7a-cabin-co₂--co₂-de-cabina) | Hostile closed environments (NASA-STD-3001) |
-| 7 | [Cumulative radiation](#7b-cumulative-radiation--radiación-acumulada) | Space Radiation |
-| — | [Symptoms](#symptoms--síntomas) | Cardiovascular · Hostile closed environments (CO₂) · Immune |
+| 1 | [Blood pressure](#1-blood-pressure) | Cardiovascular Adaptations |
+| 2 | [Resting heart rate](#2a-heart-rate) | Cardiovascular Adaptations |
+| 2 | [SpO₂](#2b-spo2) | Hypoxia |
+| 3 | [Glucose](#3-glucose) | Not an HRP risk on its own (see section) |
+| 4 | [Sleep](#4-sleep) | Inadequate Sleep and Irregular Schedules |
+| 5 | [Mood (VAS)](#5a-mood) | Behavioral Conditions and Psychiatric Disorders |
+| 5 | [Reaction test (PVT)](#5b-pvt) | Inadequate Sleep · Behavioral Conditions |
+| 6 | [Vision (Amsler grid)](#6-vision) | SANS |
+| 7 | [Cabin CO₂](#7a-co2) | Hostile closed environments (NASA-STD-3001) |
+| 7 | [Cumulative radiation](#7b-radiation) | Space Radiation |
+| — | [Symptoms](#symptoms) | Cardiovascular · Hostile closed environments (CO₂) · Immune |
 
 ---
+
+<a id="1-blood-pressure"></a>
 
 ## 1. Blood pressure / Presión arterial
 
@@ -76,6 +80,8 @@ In long flights, 24 h blood pressure drops 8–10 mmHg (Norsk 2015), so the pers
 
 ---
 
+<a id="2a-heart-rate"></a>
+
 ## 2a. Resting heart rate / Frecuencia cardíaca en reposo
 
 **NASA risk / Riesgo NASA:** Risk of Cardiovascular Adaptations (same as above). Heart rate and its variability drop in flight. / Riesgo de adaptaciones cardiovasculares (el mismo de arriba). La FC y su variabilidad bajan en vuelo. https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/
@@ -90,6 +96,8 @@ In long flights, 24 h blood pressure drops 8–10 mmHg (Norsk 2015), so the pers
 | 🔴 | < 40 or > 120 bpm · AHA<br>*< 40 o > 120 lpm* | Critical resting heart rate.<br>*FC en reposo crítica.* | Escalate to the flight surgeon. Your report is ready to send.<br>*Escalá al flight surgeon. Tu reporte está listo para enviar.* |
 
 ---
+
+<a id="2b-spo2"></a>
 
 ## 2b. SpO₂ / Saturación de oxígeno
 
@@ -107,6 +115,8 @@ OMS (normal 97–99 %, límite inferior 94 %); < 90 % es emergencia (Myatt 2017,
 
 ---
 
+<a id="3-glucose"></a>
+
 ## 3. Glucose / Glucosa
 
 **NASA risk / Riesgo NASA:** not an independent HRP risk. The CSA documents insulin resistance in space, with a risk of type 2 diabetes (CSA, Vascular study), and the challenge statement asks for it. / No es un riesgo HRP independiente. La CSA documenta resistencia a la insulina en el espacio, con riesgo de diabetes tipo 2 (CSA, estudio Vascular), y lo pide el enunciado. https://www.asc-csa.gc.ca/eng/sciences/vascular.asp · https://www.asc-csa.gc.ca/eng/multimedia/search/image/8056
@@ -122,6 +132,8 @@ OMS (normal 97–99 %, límite inferior 94 %); < 90 % es emergencia (Myatt 2017,
 
 ---
 
+<a id="4-sleep"></a>
+
 ## 4. Sleep / Sueño
 
 **NASA risk / Riesgo NASA:** Risk of Inadequate Sleep and Irregular Schedules. About 16 sunrises per day in orbit disrupt the circadian rhythm; sessions of 6 h or less were linked to slower psychomotor speed, more stress and more tiredness. / Riesgo de sueño insuficiente y horarios irregulares. Unos 16 amaneceres por día en órbita alteran el ritmo circadiano; dormir 6 h o menos se asoció con menor velocidad psicomotora, más estrés y más cansancio. https://www.nasa.gov/humans-in-space/science-in-space-week-of-sept-15-2023-sleep-on-station/
@@ -136,6 +148,8 @@ OMS (normal 97–99 %, límite inferior 94 %); < 90 % es emergencia (Myatt 2017,
 | 🔴 | < 6 h on 2 or more nights in a row · *Sleep* 2022<br>*< 6 h en 2 o más noches seguidas* | You have slept less than 6 hours for several nights in a row.<br>*Llevás varias noches seguidas durmiendo menos de 6 horas.* | Escalate to the flight surgeon. Your report is ready to send.<br>*Escalá al flight surgeon. Tu reporte está listo para enviar.* |
 
 ---
+
+<a id="5a-mood"></a>
 
 ## 5a. Mood (VAS) / Ánimo (VAS)
 
@@ -157,6 +171,8 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 
 ---
 
+<a id="5b-pvt"></a>
+
 ## 5b. Reaction test (PVT) / Test de reacción (PVT)
 
 **NASA risk / Riesgo NASA:** Risk of Inadequate Sleep and Irregular Schedules; Risk of Behavioral Conditions and Psychiatric Disorders. NASA uses a 10-minute self-test of vigilance; on the ISS it ran every 4 days (Reaction SelfTest). / Riesgo de sueño insuficiente y horarios irregulares; riesgo de condiciones conductuales y trastornos psiquiátricos. NASA usa un autotest de vigilancia de 10 minutos; en la ISS se hacía cada 4 días (Reaction SelfTest). https://www.nasa.gov/hrp/risks/
@@ -174,6 +190,8 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 > El rojo del PVT pide desvío de la línea base **más** otra señal. Con "sueño en rojo" cruza un umbral fijo; con "síntomas", no (en el MVP los síntomas no tienen umbral). Además, `umbrales.md` describe los niveles como "más lapsos" y `escalas-y-protocolos.md` usa z; este archivo sigue a `escalas-y-protocolos.md`, que es más detallado. Confirmar.
 
 ---
+
+<a id="6-vision"></a>
 
 ## 6. Vision (Amsler grid) / Visión (rejilla de Amsler)
 
@@ -193,6 +211,8 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 
 ---
 
+<a id="7a-co2"></a>
+
 ## 7a. Cabin CO₂ / CO₂ de cabina
 
 **NASA risk / Riesgo NASA:** Hostile and closed environments hazard. NASA's hazard page gives no CO₂ values; the limits come from NASA-STD-3001 and the CO₂ technical brief. Symptoms have been reported from 2.3 mmHg (Law and Alexander, NASA). / Peligro de ambientes cerrados y hostiles. La página de NASA sobre este peligro no da valores de CO₂; los límites salen del NASA-STD-3001 y del informe técnico de CO₂. Se reportaron síntomas desde 2,3 mmHg (Law y Alexander, NASA). https://www.nasa.gov/hrp/hazard-hostile-closed-environments/
@@ -210,6 +230,8 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 
 ---
 
+<a id="7b-radiation"></a>
+
 ## 7b. Cumulative radiation / Radiación acumulada
 
 **NASA risk / Riesgo NASA:** Space radiation (cancer and degenerative effects). On the ISS, personal dosimeters are analyzed on Earth; there is no real-time personal reading. ORBITAL's continuous reading is **simulated** and points to autonomous monitors like CSA's CANS. / Radiación espacial (cáncer y efectos degenerativos). En la ISS los dosímetros personales se analizan en Tierra; no hay lectura personal en tiempo real. La lectura continua de ORBITAL es **simulada** y apunta a monitores autónomos como el CANS de la CSA. https://www.nasa.gov/missions/analog-field-testing/why-space-radiation-matters/
@@ -226,6 +248,8 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 > ⚠ **Team decision needed / Decisión pendiente del equipo:** yellow (50–65 %) and orange (65–80 %) share exactly 65 %. / Amarillo (50–65 %) y naranja (65–80 %) comparten el 65 % exacto.
 
 ---
+
+<a id="symptoms"></a>
 
 ## Symptoms / Síntomas
 
@@ -249,6 +273,8 @@ Source / Fuente: `escalas-y-protocolos.md` §2.3, `umbrales.md` (MVP).
 > 3. The skill also has a severity-based symptom scale (mild/moderate/severe, *Proposal*) in which a mild symptom alone is yellow. That conflicts with "symptoms do not set a level on their own" (`umbrales.md`, MVP). Intensity is listed as future work, so this file follows `umbrales.md`. Confirm. / La skill tiene además una escala por intensidad (leve/moderada/intensa, *Proposal*) en la que un síntoma leve solo ya es amarillo. Eso choca con "los síntomas no ponen un nivel por sí solos" (`umbrales.md`, MVP). La intensidad figura como trabajo futuro, así que este archivo sigue a `umbrales.md`. Confirmar.
 
 ---
+
+<a id="sources"></a>
 
 ## Sources / Fuentes
 
