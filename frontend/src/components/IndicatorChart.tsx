@@ -31,7 +31,7 @@ function formatTick(val: number): string {
 }
 
 function formatTickWithUnit(val: number, unit: string): string {
-  const shortUnit = unit === '/100 (100 = worst)' ? '/100' : unit;
+  const shortUnit = unit === '/10 (10 = worst)' ? '/10' : unit;
   return `${formatTick(val)}${shortUnit ? ` ${shortUnit}` : ''}`;
 }
 

@@ -93,10 +93,10 @@ export type IndicatorSeries =
 
 export interface SelfReportPayload {
   flight_day: number;
-  mood_vas: number;
-  fatigue_vas: number;
-  stress_vas: number;
-  workload_vas: number;
+  mood_score: number;
+  fatigue_score: number;
+  stress_score: number;
+  workload_score: number;
 }
 
 export interface AmslerResultPayload {

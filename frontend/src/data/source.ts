@@ -114,8 +114,8 @@ export const INDICATOR_EXPLANATIONS: Record<
     measures: 'Whether straight lines look wavy or missing.',
     matters: 'Many long-duration astronauts develop eye changes (SANS).',
   },
-  mood_vas: {
-    measures: 'How you rated your mood (100 = worst).',
+  mood_score: {
+    measures: 'How you rated your mood from 0 to 10 (10 = worst).',
     matters: 'Isolation and confinement affect mood and wellbeing.',
   },
 };

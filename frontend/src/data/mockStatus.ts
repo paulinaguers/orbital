@@ -143,10 +143,10 @@ export const mockStatus: OrbitalStatus = {
       recommendation: 'You are doing well. Keep checking in daily.',
       indicators: [
         {
-          id: 'mood_vas',
-          name: 'Mood (VAS)',
-          value: 22,
-          unit: '/100 (100 = worst)',
+          id: 'mood_score',
+          name: 'Mood',
+          value: 2,
+          unit: '/10 (10 = worst)',
           level: 'green',
           threshold_source: 'Personal baseline',
         },
