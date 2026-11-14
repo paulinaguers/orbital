@@ -6,8 +6,8 @@ __pycache__/
 venv/
 
 # Datos generados por el simulador (se regeneran con el script)
-datos/*.db
-datos/*.sqlite
+data/*.db
+data/*.sqlite
 
 # Node / React
 node_modules/

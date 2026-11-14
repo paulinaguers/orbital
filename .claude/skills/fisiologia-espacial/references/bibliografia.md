@@ -80,3 +80,30 @@ Todas las referencias citadas en los documentos del equipo. Agrupadas por docume
 - NASA. Houston We Have a Podcast, Ep. 377: Mission Control – Crew Health Consoles. https://www.nasa.gov/podcasts/houston-we-have-a-podcast/mission-control-crew-health-consoles
 - JAXA. ISS medical operations system. https://humans-in-space.jaxa.jp/en/biz-lab/med-in-space/healthcare/medops/system
 - scikit-learn. IsolationForest (documentación de la librería). https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
+
+## E. Riesgos oficiales del NASA HRP (recursos del desafío, leídos el 13/11/2026)
+
+- NASA HRP. Risks of Human Spaceflight. https://www.nasa.gov/hrp/risks/
+- NASA. Risk of Cardiovascular Adaptations. https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/
+- NASA HHP. CV Risk. https://www.nasa.gov/directorates/esdmd/hhp/cv-risk/
+- NASA Human Research Roadmap, fichas de riesgo: CV https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179 · SANS https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=105 · Hueso https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=77 · Capacidad física https://humanresearchroadmap.nasa.gov/risks/?i=180 · Inmune https://humanresearchroadmap.nasa.gov/risks/?i=85
+- NASA HRP Evidence Reports. https://humanresearchroadmap.nasa.gov/evidence/
+- NASA. ARCHeR. https://www.nasa.gov/reference/archer/
+- NASA. Artemis II Crew Both Subjects and Scientists in NASA Deep Space Research. https://www.nasa.gov/general/artemis-ii-crew-both-subjects-and-scientists-in-nasa-deep-space-research/
+- NASA. Crew Systems (flywheel y sueño en Orion). https://www.nasa.gov/reference/crew-systems/
+- NASA. Science in Space: Sleep on Station (2023). https://www.nasa.gov/humans-in-space/science-in-space-week-of-sept-15-2023-sleep-on-station/
+
+## F. Revisión completa de recursos (14/11/2026)
+
+- NASA HRP. Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness. https://www.nasa.gov/reference/risk-of-reduced-cardiorespiratory-and-musculoskeletal-fitness/
+- NASA. The Human Body in Space. https://www.nasa.gov/humans-in-space/the-human-body-in-space/
+- NASA. Wearable Tech for Space Station Research (2024). https://www.nasa.gov/missions/station/iss-research/wearable-tech-for-space-station-research/
+- NASA. Polaris Dawn: telemedicina y datos de salud. https://www.nasa.gov/humans-in-space/nasa-to-test-telemedicine-gather-essential-health-data-with-polaris-dawn-crew/
+- NASA. Medical Data Architecture (HRP IWS 2020). https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20200000567.pdf
+- NASA. Space Radiation (monitoreo). https://www.nasa.gov/directorates/esdmd/hhp/space-radiation/
+- CSA. Space Health. https://www.asc-csa.gc.ca/eng/sciences/space-flight-improve-monitor-health-earth.asp
+- CSA. Bio-Monitor. https://www.asc-csa.gc.ca/eng/sciences/bio-monitor.asp
+- CSA. Vascular (rigidez arterial y resistencia a la insulina). https://www.asc-csa.gc.ca/eng/sciences/vascular.asp
+- CSA. BP Reg. https://www.asc-csa.gc.ca/eng/sciences/bpreg.asp
+- CSA. ACTIS. https://www.asc-csa.gc.ca/eng/sciences/actis.asp
+- CSA. Radi-N2. https://www.asc-csa.gc.ca/eng/sciences/radi-n2.asp

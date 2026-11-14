@@ -5,7 +5,7 @@ Streamlit arma una página web con gráficos y botones escribiendo solo Python. 
 ## Flujo
 
 ```text
-simulador (Python) → núcleo (backend/core) → app Streamlit (frontend/app.py)
+simulator (Python) → núcleo (backend/core) → app Streamlit (frontend/app.py)
 ```
 
 Un solo proceso, sin API: la app importa el núcleo directamente.

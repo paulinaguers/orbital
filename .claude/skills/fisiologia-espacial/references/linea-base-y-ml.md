@@ -35,6 +35,7 @@ Fuente: documento del equipo "Capa de machine learning en ORBITAL".
 
 - **En pantalla:** antes de la etapa 2, aviso "ML calibrando · día X de N". La alerta ML se llama "patrón combinado inusual", muestra qué variables pesaron (z por variable) y **nunca supera amarillo** (aviso suave, sin consulta). Si el patrón se sostiene y un valor sale del rango clínico, las reglas lo suben a naranja o rojo.
 - **Evaluación:** contra anomalías inyectadas con fecha conocida en el simulador. Métricas: episodios detectados, falsas alarmas por semana, días hasta detectar. Comparar reglas solas contra reglas + ML. El ML se queda solo si detecta más sin multiplicar falsas alarmas.
+- **Respaldo de NASA y CSA:** la arquitectura de datos médicos de NASA (Medical Data Architecture, HRP Investigators' Workshop 2020) apunta a apoyo a decisiones clínicas más autónomo, con o sin soporte de Tierra, e incluye predicción de eventos médicos con aprendizaje automático. La CSA (estudio Space Health) usa una plataforma de IA que busca patrones y riesgos en datos del Bio-Monitor, pero el análisis se hace en Tierra. https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20200000567.pdf · https://www.asc-csa.gc.ca/eng/sciences/space-flight-improve-monitor-health-earth.asp
 - **Cortes:** sáb 19:00 (núcleo y API con tests) y dom 11:30 (métricas). Si se corta, rama aparte y trabajo futuro.
 
 ## Cómo se mide hoy a los astronautas (contexto realista)

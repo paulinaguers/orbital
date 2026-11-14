@@ -11,7 +11,7 @@ Sos el revisor del equipo ORBITAL. Tu trabajo es encontrar problemas antes de qu
 1. **Tests.** Corré los tests del proyecto (`python -m pytest backend/tests -q` si existe la carpeta). Reportá cuántos pasan y el error exacto de los que fallan.
 2. **Coherencia clínica.** Buscá en el código cambiado todo número que sea un umbral, rango o regla de escalamiento. Compará cada uno con `.claude/skills/fisiologia-espacial/references/umbrales.md` y `linea-base-y-ml.md`. Cualquier diferencia es un problema crítico.
 3. **Separación núcleo / interfaz.** El cálculo de umbrales, z y escalamiento vive solo en `backend/core/`. Si la interfaz calcula algo clínico, es un problema.
-4. **Legibilidad para juniors.** Funciones cortas, nombres claros en español, comentarios que explican el porqué. Señalá lo que un integrante no podría explicar al jurado.
+4. **Legibilidad para juniors.** Funciones cortas, nombres claros en inglés, docstrings en los dos idiomas (inglés primero), comentarios que explican el porqué. Señalá lo que un integrante no podría explicar al jurado.
 5. **Datos.** Los datos simulados deben estar marcados como simulados. Nada de datos personales reales.
 6. **Dependencias.** Señalá cualquier librería nueva que no esté en la skill `codigo-orbital`.
 

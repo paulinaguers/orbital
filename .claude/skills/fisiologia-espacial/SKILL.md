@@ -25,6 +25,7 @@ Esta skill es la fuente de verdad clínica del proyecto. Todo número que entre 
 | `references/escalas-y-protocolos.md` | Cómo se hace y puntúa cada test, escala y medición con dispositivo |
 | `references/contexto-fisiologico.md` | Cinco peligros, efectos en el cuerpo, cómo se monitorea hoy en la ISS, autonomía médica (EIMO) |
 | `references/bibliografia.md` | Todas las referencias citadas en los documentos del proyecto, con URL |
+| `references/riesgos-nasa.md` | Qué riesgo oficial del NASA HRP cubre cada indicador, datos clave, frases de pitch y cómo mide NASA hoy (ARCHeR, Standard Measures) |
 | `references/libros-de-referencia.md` | Libros y fuentes de cabecera de medicina espacial para ampliar |
 
 ## Escalamiento

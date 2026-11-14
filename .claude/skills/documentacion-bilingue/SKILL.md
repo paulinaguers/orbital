@@ -23,9 +23,14 @@ Produce la documentación en **español y en inglés**, con el mismo contenido y
    - IA como herramienta de desarrollo (Claude chat, Claude Code, subagentes, skills, Google AI Studio): para qué se usó cada una y cómo se revisó lo que generó.
    - ML como parte del producto (si se implementó): modelo, datos, evaluación y límites.
 4. **Nombre del enfoque:** "desarrollo asistido por IA con supervisión humana" / "AI-assisted development with human oversight". No usar "vibe coding".
-5. **Bilingüe paralelo:** primero el texto completo en español, después el mismo en inglés. Usar `references/glosario-es-en.md` para términos técnicos.
+5. **Bilingüe paralelo:** para trabajo interno, primero español y después inglés. **Todo lo que se enlaza desde la entrega (README, metodología, declaración de SI, video, formulario) va con el inglés primero**: la guía exige inglés en la página y en todo material enlazado. Usar `references/glosario-es-en.md` para términos técnicos.
 6. **Claro para quien no es especialista:** oraciones cortas, tablas para comparar, sin jerga sin explicar.
 7. Citar fuentes con la bibliografía de la skill clínica.
+8. **Origen de la idea:** la guía prohíbe usar SI para que se le ocurra la solución. Dejar claro que la idea, el criterio clínico y las decisiones son del equipo; la SI se usó para investigar, ordenar, programar y documentar.
+9. **Marcas de SI visibles para el jurado:** código generado → mención en el README y comentario al inicio de cada archivo; imágenes o videos generados (incluido el avatar ficticio) → marca de agua visible. La respuesta del campo "Use of SI" no la ven los jueces; las marcas dentro del proyecto sí.
+10. **Sin logos ni marcas de NASA** ni de agencias socias en ningún material.
+11. **Referencias completas:** datos, fuentes clínicas, librerías (pandas, numpy, scikit-learn, FastAPI, React, Streamlit), Google AI Studio, Claude, imágenes. Aunque sean abiertas.
+12. **Datos de NASA como parte central (criterio Relevance):** en todos los textos, explicar que los umbrales salen del NASA-STD-3001, que cada indicador vigila un riesgo oficial del NASA HRP y que el simulador usa números publicados por NASA. Mencionar la CSA (agencia socia: Bio-Monitor, Space Health, Vascular).
 
 ## Entregables y plantillas
 
@@ -34,7 +39,8 @@ Produce la documentación en **español y en inglés**, con el mismo contenido y
 | Documento de metodología (ES + EN) | `references/plantilla-metodologia.md` | Borrador en cada punto de control; cierre el domingo 12:00–14:30 |
 | Declaración de uso de SI (ES + EN) | `references/plantilla-declaracion-si.md` | Domingo, antes de la carga |
 | README del repo (ES + EN) | Sección "README" de la plantilla de metodología | Domingo antes de las 15:00 |
-| Descripción para la plataforma y guion de video | Según la Project Submission Guide | Domingo |
+| Campos del formulario (en inglés) | `references/campos-formulario.md` | Domingo 15:00–16:00, envío apenas termina el jurado |
+| Guion del video demo (≤ 30 s, subtítulos en inglés) | `references/campos-formulario.md` | Domingo bloque 3 |
 
 ## Trabajo progresivo
 

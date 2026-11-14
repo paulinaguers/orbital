@@ -40,7 +40,9 @@ Fuente: documento del equipo "Escalas, tests y protocolos" (2/11/2026). Convenci
 - **App:** selectores de hora y validaciones simples; si hay wearable, usar su dato y dejar el diario para la calidad.
 
 ### 2.3 Registro de síntomas
-- **Lista:** dolor de cabeza, visión borrosa, mareo, náuseas, congestión, fiebre, lesiones de piel; intensidad leve/moderada/intensa y desde cuándo.
+- **MVP (4 casillas, decidido el 14/11):** mareo o desorientación · aturdimiento al pararse · dolor de cabeza · herpes labial o erupciones. Fuentes: la mayoría de los astronautas tiene mareo espacial (NASA HRP, riesgo sensoriomotor); hasta 80 % tiene aturdimiento al volver de misiones largas (CSA, BP Reg); la hipoxia leve da dolor de cabeza (NASA HRP, riesgo de hipoxia); el sistema inmune alterado da herpes labial y erupciones (NASA HRP, riesgo inmune).
+- **Uso en el motor:** completan reglas que ya existen (presión < 90/60 con síntomas → naranja; CO₂ con dolor de cabeza → naranja; temperatura 37,5–37,9 con síntomas → naranja). No hay reglas nuevas.
+- **Lista ampliada (futuro):** visión borrosa, náuseas, congestión, fiebre; intensidad leve/moderada/intensa y desde cuándo.
 - **Semáforo:** amarillo síntoma leve; naranja síntoma moderado o leve > 2 días; rojo síntoma intenso o que coincide con un indicador en rojo (ej.: dolor de cabeza con CO₂ alto; visión borrosa con cambio en Amsler). *Propuesta.*
 
 ## 3. Mediciones con dispositivo

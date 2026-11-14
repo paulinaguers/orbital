@@ -34,17 +34,17 @@ Tiene que funcionar **sin conexión con la Tierra** (en Marte la señal tarda ha
 
 ## Stack
 
-> Se confirma el sábado 10:00. Hasta entonces, la skill `codigo-orbital` describe las dos variantes.
+> **Decidido el 13/11: Stack A**, con Streamlit como rescate (B). Detalle en la skill `codigo-orbital`.
 
-- **Opción A (propuesta ORBITAL):** núcleo Python → API FastAPI → pantallas React generadas con Google AI Studio. Modo demo: el núcleo exporta `demo.json` y React lo lee si la API falla.
-- **Opción B (plan de rescate):** el mismo núcleo Python mostrado con Streamlit.
+- **Stack A (elegido):** núcleo Python → API FastAPI → pantallas React generadas con Google AI Studio. Modo demo: el núcleo exporta `demo.json` y React lo lee si la API falla.
+- **Stack B (rescate):** el mismo núcleo Python mostrado con Streamlit.
 
 ## Estructura del repo (prevista)
 
 ```text
 backend/
   core/          # núcleo: línea de base, z, umbrales, escalamiento (sin interfaz)
-  simulador/     # datos simulados de astronautas + anomalías inyectadas
+  simulator/     # datos simulados de astronautas + anomalías inyectadas
   api/           # FastAPI (opción A)
   tests/
 frontend/        # React de AI Studio (opción A) o app Streamlit (opción B)
@@ -72,3 +72,14 @@ BITACORA.md      # registro cronológico de trabajo y uso de IA
 - No se trabaja en la solución antes del hackathon: el código se escribe del 14/11 en adelante.
 - El uso de herramientas de SI (así llama el evento a la IA) está permitido, pero la entrega debe explicar cómo se usaron → todo queda en `BITACORA.md`.
 - Repo congelado el **domingo 15:00**. Jurado **16:00**. Carga en la plataforma hasta **23:59**.
+
+## Reglas de entrega (guías oficiales del 13/11/2026)
+
+- Todo lo enlazado desde la entrega va en inglés (README con el inglés primero).
+- Demo: video de 30 s como máximo, con subtítulos en inglés. Pasarse descalifica para el juicio global.
+- Repo público al enviar (lo cambia paulinaguers el dom 15:00). Licencia Apache 2.0.
+- SI declarada y marcada: comentario al inicio de cada archivo de código; marca de agua en imágenes o videos generados. La idea y el criterio son del equipo.
+- Sin logos de NASA ni de agencias socias.
+- Datos de NASA como parte central: cada indicador muestra su riesgo oficial de NASA y sus umbrales con fuente.
+- Detalle: skill `documentacion-bilingue`, `references/campos-formulario.md`.
+- Código: nombres en inglés, docstrings y comentarios en los dos idiomas (inglés primero), commits en inglés. Glosario en la skill `codigo-orbital`, `references/glosario-codigo.md`. `BITACORA.md` y `CRONOGRAMA.md` siguen en español: son registros internos.

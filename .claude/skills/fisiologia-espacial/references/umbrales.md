@@ -19,9 +19,9 @@ Un indicador entra si cumple al menos 4 de 5:
 | Cardiovascular (gravedad) | Presión arterial | Dispositivo | Diaria | En vuelos largos la presión ambulatoria de 24 h baja 8–10 mmHg (Norsk 2015) |
 | Cardiovascular (gravedad) | FC y SpO₂ | Dispositivo o wearable | Continua o diaria | La FC y su variabilidad bajan en vuelo (NASA); el Bio-Monitor (Astroskin) las mide en la ISS (CSA) |
 | SANS: visión (gravedad) | Agudeza visual, rejilla de Amsler, síntomas | Test en la app + autorreporte | Semanal | Son las tres pruebas visuales programadas en la ISS (Waisberg 2023) |
-| Hueso y músculo (gravedad) | Minutos de ejercicio con carga | Autorreporte | Diaria | La densidad ósea cae 1–1,5 % por mes (Stavnichuk 2020); la tripulación entrena ~2 h/día (NASA) |
+| Hueso y músculo (gravedad) | Minutos de ejercicio con carga | Autorreporte | Diaria | La densidad ósea cae 1–1,5 % por mes (Stavnichuk 2020); la tripulación de la ISS entrena ~1,5 h/día, 6–7 días por semana (NASA HRP, riesgo de capacidad física) |
 | Nutrición (ambiente cerrado) | Masa corporal e ingesta | Dispositivo + autorreporte | Semanal | La pérdida de masa es constante y suele superar el 5 % (Laurens 2019); la ISS usa cuestionario semanal de alimentos (NASA) |
-| Metabolismo | Glucosa | Dispositivo | Según protocolo | La pide el desafío; sin datos de vuelo, umbrales clínicos |
+| Metabolismo | Glucosa | Dispositivo | Según protocolo | En la ISS los astronautas desarrollaron resistencia a la insulina y no procesaron la glucosa con normalidad (CSA, estudio Vascular). También la pide el desafío. Umbrales clínicos (ADA) |
 | Sistema inmune (radiación, ambiente cerrado) | Temperatura y síntomas | Dispositivo + autorreporte | Diaria o ante síntomas | Detección temprana de infecciones en hábitat cerrado |
 | Sueño (aislamiento) | Horas y calidad de sueño | Autorreporte o wearable | Diaria | Duermen ~6 h contra 8,5 h programadas (Barger 2014) |
 | Conductual y cognitivo (aislamiento) | PVT y escala de ánimo | Test en la app + autorreporte | Cada 3–4 días | En la ISS se tomaron PVT y escalas visuales cada 4 días (Sleep 2022) |
@@ -44,7 +44,7 @@ Verde = seguir la rutina · Amarillo = aviso suave: vigilar, repetir la medició
 | Test de reacción (PVT) | Igual a la línea base | Más lapsos en una sesión | Más lapsos en 3 sesiones seguidas | Aumento marcado y sostenido | Lapso > 500 ms (PVT 10 min, NASA); > 355 ms en versión de 3 min (Basner 2011) |
 | Radiación acumulada | < 50 % del límite | 50–65 % | 65–80 % | > 80 %, o una tormenta solar | *Propuesta*, sobre 600 mSv carrera y 250 mSv por evento solar (NASA-STD-3001) |
 | Masa corporal (variación) | Pérdida < 2 % | 2–3,5 % | 3,5–5 % | > 5 % | *Propuesta*; la pérdida suele superar el 5 % (Laurens 2019) |
-| Ejercicio (min/día) | ≥ 120 | 90–119 | 60–89 | < 60 varios días | *Propuesta*, sobre ~2 h/día (NASA) |
+| Ejercicio (min/día) | ≥ 90 | 60–89 | 30–59 | < 30 varios días | *Propuesta*, sobre ~1,5 h/día, 6–7 días por semana (NASA HRP). Cambiado el 14/11 (antes ≥ 120 sobre ~2 h/día) |
 | Visión (Amsler y agudeza) | Sin cambios | Cambio leve que no se repite al medir de nuevo | Cambio confirmado respecto de la línea base | Pérdida súbita o distorsión | *Propuesta* |
 
 Además de los rangos fijos, cada valor se compara con la línea base del propio astronauta (ver `linea-base-y-ml.md`). En vuelo la presión baja y la FC se reduce: un desvío sostenido respecto de su propio promedio puede ser más informativo que un rango terrestre.
@@ -67,6 +67,7 @@ No fija rangos numéricos para signos vitales. Exige evaluar, registrar, monitor
 1. Presión arterial: carga manual.
 2. FC y SpO₂: wearable simulado.
 3. Glucosa: carga manual.
+   - Síntomas (autorreporte, desde el 14/11): mareo o desorientación, aturdimiento al pararse, dolor de cabeza, herpes labial o erupciones. No crean reglas nuevas: alimentan "presión < 90/60 con síntomas", "CO₂ con dolor de cabeza" y "temperatura con síntomas".
 4. Sueño: autorreporte.
 5. Ánimo y test de reacción: test en la app.
 6. Visión con rejilla de Amsler: test en la app.
