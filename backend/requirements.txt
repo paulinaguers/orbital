@@ -1,0 +1,6 @@
+# Python packages for the ORBITAL backend (open source).
+# Install in the orbital conda env: pip install -r backend/requirements.txt
+fastapi
+uvicorn
+httpx
+pytest

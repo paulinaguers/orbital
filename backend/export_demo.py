@@ -1,6 +1,9 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
-"""Runs the core over the demo scenarios and writes frontend/src/data/demo.json.
-Corre el núcleo sobre los escenarios de demo y escribe demo.json.
+"""Runs the core over the demo database and writes frontend/src/data/demo.json.
+Corre el núcleo sobre la base de la demo y escribe demo.json.
+
+Data in: data/demo_scenarios.csv (read through backend/storage.py).
+Datos de entrada: data/demo_scenarios.csv (leído con backend/storage.py).
 
 The JSON has the same shape as the screen's mock data (mockStatus.ts and
 mockSeries.ts), so the demo does not depend on the API being up.
@@ -19,7 +22,8 @@ from backend.core.baseline import baseline_band, calculate_baseline, is_baseline
 from backend.core.escalation import escalation_for, evaluate_timeline, latest_levels
 from backend.core.levels import GREEN, highest
 from backend.core.thresholds import THRESHOLDS
-from backend.simulator.demo_scenarios import ASTRONAUT, SCENARIOS, build_scenario
+from backend.simulator.demo_scenarios import ASTRONAUT
+from backend.storage import list_scenarios, load_scenario
 
 OUTPUT_JSON = Path(__file__).resolve().parents[1] / "frontend" / "src" / "data" / "demo.json"
 DEFAULT_SCENARIO = "deterioration"
@@ -200,15 +204,21 @@ def series_entry(m, days, results):
                        for d, lvl in measured]}
 
 
+def scenario_entry(days, texts):
+    """Status and series of one list of days (used by the API too).
+    Estado y series de una lista de días (también lo usa la API).
+    """
+    results = evaluate_timeline(days)
+    return {"status": status_entry(days, results, texts),
+            "series": {m: series_entry(m, days, results) for m in INDICATORS}}
+
+
 def build_demo():
-    """Status and series for every scenario. / Estado y series de cada escenario."""
+    """Status and series for every scenario of the demo database.
+    Estado y series de cada escenario de la base de la demo.
+    """
     texts = read_texts()
-    scenarios = {}
-    for name in SCENARIOS:
-        days = build_scenario(name)
-        results = evaluate_timeline(days)
-        scenarios[name] = {"status": status_entry(days, results, texts),
-                           "series": {m: series_entry(m, days, results) for m in INDICATORS}}
+    scenarios = {name: scenario_entry(load_scenario(name), texts) for name in list_scenarios()}
     return {"simulated": True, "generated_by": "backend/export_demo.py",
             "default_scenario": DEFAULT_SCENARIO, "scenarios": scenarios}
 
