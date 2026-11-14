@@ -31,12 +31,12 @@ function buildSections(
 ): TipSection[] {
   const targetBlocks = filterBlockId
     ? blocks.filter((b) => b.id === filterBlockId)
-    : blocks.filter((b) => b.level !== 'green');
+    : blocks.filter((b) => b.level !== 'green' && b.level !== 'not_evaluable');
 
   const sections: TipSection[] = [];
 
   for (const block of targetBlocks) {
-    if (block.level === 'green') {
+    if (block.level === 'green' || block.level === 'not_evaluable') {
       continue;
     }
 
@@ -53,7 +53,7 @@ function buildSections(
 
     let addedForBlock = false;
     for (const indicator of block.indicators) {
-      if (indicator.level === 'green') {
+      if (indicator.level === 'green' || indicator.level === 'not_evaluable') {
         continue;
       }
       const tip = lookupTipForIndicator(indicator.id, indicator.level);
@@ -118,7 +118,9 @@ export function TipsDrawer({
   const filteredBlock = filterBlockId
     ? blocks.find((b) => b.id === filterBlockId)
     : null;
-  const affectedBlockCount = blocks.filter((b) => b.level !== 'green').length;
+  const affectedBlockCount = blocks.filter(
+    (b) => b.level !== 'green' && b.level !== 'not_evaluable',
+  ).length;
 
   return (
     <div

@@ -40,7 +40,7 @@ function getOrbiOverdueLine(overdueTests: ScheduledTest[]): string | null {
   }
   const hasPvt = overdueTests.some((test) => test.id === 'pvt');
   if (hasPvt) {
-    return "Don't forget your reaction test, it helps me know how rested you are.";
+    return "Don't forget your brief reaction test (PVT-inspired), it helps me know how rested you are.";
   }
   return `Don't forget your ${overdueTests[0].name.toLowerCase()}, it helps me keep track of how you are doing.`;
 }
@@ -55,7 +55,7 @@ export function HomePage({
   const isPassenger = profile === 'passenger';
   const firstName = status.astronaut.name.split(' ')[0] || status.astronaut.name;
   const attentionBlocks = status.blocks.filter(
-    (block) => block.level !== 'green',
+    (block) => block.level !== 'green' && block.level !== 'not_evaluable',
   );
   const notifiedList = status.escalation.notified;
   const bubbleColor = LEVEL_STYLES[status.overall_level].color;

@@ -2,7 +2,7 @@
 
 import type { HealthLevel } from '../types/orbital';
 
-export type TipLevel = Exclude<HealthLevel, 'green'>;
+export type TipLevel = Exclude<HealthLevel, 'green' | 'not_evaluable'>;
 
 export interface TipStep {
   text: string;
@@ -34,7 +34,7 @@ const SLEEP_BETTER_STEPS: TipStep[] = [
     basis: 'team',
   },
   {
-    text: 'Retake the reaction test tomorrow to see if you are recovering.',
+    text: 'Retake the brief reaction test (PVT-inspired) tomorrow to see if you are recovering.',
     basis: 'team',
   },
 ];
@@ -198,7 +198,7 @@ export function lookupTipForIndicator(
   indicatorId: string,
   level: HealthLevel,
 ): TipEntry | null {
-  if (level === 'green') {
+  if (level === 'green' || level === 'not_evaluable') {
     return null;
   }
   if (level === 'red') {

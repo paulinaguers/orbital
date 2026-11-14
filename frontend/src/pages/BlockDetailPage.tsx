@@ -36,7 +36,9 @@ interface BlockAction {
 }
 
 const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
-  sleep_cognition: [{ label: 'Take reaction test (PVT)', path: '/tests/pvt' }],
+  sleep_cognition: [
+    { label: 'Take brief reaction test (PVT-inspired)', path: '/tests/pvt' },
+  ],
   mental_health: [
     { label: 'Daily check-in', path: '/mental/checkin' },
     { label: 'Private journal', path: '/mental/journal' },
@@ -92,12 +94,25 @@ function IndicatorCard({
   const explanation = INDICATOR_EXPLANATIONS[indicator.id];
 
   const renderBaselineText = () => {
-    if (isPassenger || !series || series.indicator === 'vision_amsler') {
+    if (
+      isPassenger ||
+      indicator.baseline_available === false ||
+      !series ||
+      series.indicator === 'vision_amsler'
+    ) {
       return null;
     }
 
     if (series.indicator === 'blood_pressure') {
       const bp = series as BloodPressureIndicatorSeries;
+      if (
+        typeof bp.baseline_low_systolic !== 'number' ||
+        typeof bp.baseline_high_systolic !== 'number' ||
+        typeof bp.baseline_low_diastolic !== 'number' ||
+        typeof bp.baseline_high_diastolic !== 'number'
+      ) {
+        return null;
+      }
       return (
         <p className="mt-1.5 text-sm text-[#8FA3C7]">
           Your baseline:{' '}
@@ -110,6 +125,12 @@ function IndicatorCard({
     }
 
     const num = series as NumericIndicatorSeries;
+    if (
+      typeof num.baseline_low !== 'number' ||
+      typeof num.baseline_high !== 'number'
+    ) {
+      return null;
+    }
     return (
       <p className="mt-1.5 text-sm text-[#8FA3C7]">
         Your baseline:{' '}
@@ -136,6 +157,18 @@ function IndicatorCard({
 
           <StatusBadge level={indicator.level} variant="pill" />
         </div>
+
+        {indicator.level === 'not_evaluable' && (
+          <p className="mt-3 text-sm font-medium text-[#CBD5E1]">
+            Not enough data yet to compare with your usual values.
+          </p>
+        )}
+
+        {indicator.baseline_available === false && (
+          <p className="mt-1.5 text-xs text-[#94A3B8]">
+            Personal baseline not available: only clinical limits applied.
+          </p>
+        )}
 
         {series && (
           <IndicatorChart series={series} unit={indicator.unit} passengerMode />
@@ -196,6 +229,11 @@ function IndicatorCard({
             {formatIndicatorValue(indicator)}
           </p>
           {renderBaselineText()}
+          {indicator.baseline_available === false && (
+            <p className="mt-1.5 text-xs text-[#94A3B8]">
+              Personal baseline not available: only clinical limits applied.
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col items-start gap-2 sm:items-end shrink-0">
@@ -349,7 +387,7 @@ export function BlockDetailPage({
             </p>
           )}
 
-          {block.level !== 'green' && (
+          {block.level !== 'green' && block.level !== 'not_evaluable' && (
             <button
               type="button"
               onClick={() => onOpenTips(block.id)}

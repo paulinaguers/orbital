@@ -1,6 +1,11 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-export type HealthLevel = 'green' | 'yellow' | 'orange' | 'red';
+export type HealthLevel =
+  | 'green'
+  | 'yellow'
+  | 'orange'
+  | 'red'
+  | 'not_evaluable';
 export type UserProfile = 'crew' | 'passenger';
 export type DataSourceKind = 'api' | 'demo' | 'mock';
 export type DemoScenario = 'healthy' | 'deterioration' | 'attention' | 'emergency';
@@ -22,6 +27,7 @@ export interface Indicator {
   unit: string;
   level: HealthLevel;
   threshold_source: string;
+  baseline_available?: boolean;
 }
 
 export interface HealthBlock {
@@ -89,20 +95,20 @@ export interface VisionAmslerSeriesPoint {
 
 export interface NumericIndicatorSeries {
   indicator: string;
-  baseline_mean: number;
-  baseline_low: number;
-  baseline_high: number;
+  baseline_mean?: number | null;
+  baseline_low?: number | null;
+  baseline_high?: number | null;
   points: NumericSeriesPoint[];
 }
 
 export interface BloodPressureIndicatorSeries {
   indicator: 'blood_pressure';
-  baseline_mean_systolic: number;
-  baseline_low_systolic: number;
-  baseline_high_systolic: number;
-  baseline_mean_diastolic: number;
-  baseline_low_diastolic: number;
-  baseline_high_diastolic: number;
+  baseline_mean_systolic?: number | null;
+  baseline_low_systolic?: number | null;
+  baseline_high_systolic?: number | null;
+  baseline_mean_diastolic?: number | null;
+  baseline_low_diastolic?: number | null;
+  baseline_high_diastolic?: number | null;
   points: BloodPressureSeriesPoint[];
 }
 

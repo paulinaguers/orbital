@@ -214,6 +214,16 @@ export const LEVEL_STYLES: Record<
     pillTextColor: '#E74C3C',
     pillGlow: '0 0 16px rgba(231, 76, 60, 0.55)',
   },
+  not_evaluable: {
+    color: '#94A3B8',
+    label: 'Not evaluable',
+    statusSentence: 'Not enough data yet to compare with your usual values.',
+    surfaceBg: 'rgba(148, 163, 184, 0.14)',
+    surfaceBorder: 'rgba(148, 163, 184, 0.35)',
+    textColor: '#CBD5E1',
+    pillBg: 'rgba(148, 163, 184, 0.2)',
+    pillTextColor: '#94A3B8',
+  },
 };
 
 export const INDICATOR_EXPLANATIONS: Record<
@@ -246,7 +256,8 @@ export const INDICATOR_EXPLANATIONS: Record<
   pvt_lapses: {
     measures: 'Slow reactions (lapses) in a short attention test.',
     matters: 'Fatigue and lack of sleep slow your reactions.',
-    measuredWith: 'In-app reaction test, based on the test used on the ISS',
+    measuredWith:
+      'In-app brief reaction test (PVT-inspired), inspired by the test used on the ISS',
   },
   glucose: {
     measures: 'Sugar level in your blood.',
@@ -262,7 +273,7 @@ export const INDICATOR_EXPLANATIONS: Record<
   radiation_dose: {
     measures: 'Total radiation received so far in your career.',
     matters:
-      'Space radiation raises long-term health risks; NASA sets a career limit.',
+      'Space radiation raises long-term health risks; NASA sets a career limit. Long-term exposure tracking. Only a solar storm in progress is an urgent (red) alert.',
     measuredWith: 'Personal dosimeter (simulated)',
   },
   vision_amsler: {
@@ -274,6 +285,22 @@ export const INDICATOR_EXPLANATIONS: Record<
   mood_score: {
     measures: 'How you rated your mood from 0 to 10 (10 = worst).',
     matters: 'Isolation and confinement affect mood and wellbeing.',
+    measuredWith: 'Daily self check-in',
+  },
+  fatigue_score: {
+    measures: 'How tired you feel, from 0 to 10 (10 = worst).',
+    matters:
+      'Short sleep and heavy workload build up fatigue in long missions.',
+    measuredWith: 'Daily self check-in',
+  },
+  stress_score: {
+    measures: 'How stressed you feel, from 0 to 10 (10 = worst).',
+    matters: 'Isolation, confinement and workload raise stress.',
+    measuredWith: 'Daily self check-in',
+  },
+  workload_score: {
+    measures: 'How heavy your workload feels, from 0 to 10 (10 = worst).',
+    matters: 'Overload lowers performance and wellbeing.',
     measuredWith: 'Daily self check-in',
   },
 };
@@ -311,8 +338,9 @@ export const DATA_SOURCE_GROUPS: Array<{
     group: 'In-app tests',
     items: [
       {
-        indicator: 'Reaction test (PVT)',
-        source: 'In-app reaction test, based on the test used on the ISS',
+        indicator: 'Brief reaction test (PVT-inspired)',
+        source:
+          'In-app brief reaction test (PVT-inspired), inspired by the test used on the ISS',
       },
       {
         indicator: 'Vision (Amsler grid)',

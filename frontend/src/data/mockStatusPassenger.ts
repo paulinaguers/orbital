@@ -8,6 +8,7 @@ export const MOCK_PASSENGER_ESCALATION_BY_LEVEL: Record<HealthLevel, string[]> =
     yellow: [],
     orange: ['Flight crew', 'Ground medical team'],
     red: ['Flight crew', 'Ground medical team – URGENT'],
+    not_evaluable: [],
   };
 
 export const mockStatusPassenger: OrbitalStatus = {

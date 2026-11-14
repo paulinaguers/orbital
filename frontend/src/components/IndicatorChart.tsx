@@ -174,21 +174,44 @@ function BloodPressureChart({
     );
   }
 
+  const hasSysBaseline =
+    typeof series.baseline_low_systolic === 'number' &&
+    typeof series.baseline_high_systolic === 'number';
+  const hasDiaBaseline =
+    typeof series.baseline_low_diastolic === 'number' &&
+    typeof series.baseline_high_diastolic === 'number';
+
   const allValues = [
-    series.baseline_low_systolic,
-    series.baseline_high_systolic,
-    series.baseline_low_diastolic,
-    series.baseline_high_diastolic,
+    ...(hasSysBaseline
+      ? [
+          series.baseline_low_systolic as number,
+          series.baseline_high_systolic as number,
+        ]
+      : []),
+    ...(hasDiaBaseline
+      ? [
+          series.baseline_low_diastolic as number,
+          series.baseline_high_diastolic as number,
+        ]
+      : []),
     ...points.flatMap((p) => [p.systolic, p.diastolic]),
   ];
   const { min, max } = getYDomain(allValues);
 
   const yTicks = [0, 0.33, 0.67, 1].map((t) => min + (max - min) * t);
 
-  const sysBandTop = yForValue(series.baseline_high_systolic, min, max);
-  const sysBandBottom = yForValue(series.baseline_low_systolic, min, max);
-  const diaBandTop = yForValue(series.baseline_high_diastolic, min, max);
-  const diaBandBottom = yForValue(series.baseline_low_diastolic, min, max);
+  const sysBandTop = hasSysBaseline
+    ? yForValue(series.baseline_high_systolic as number, min, max)
+    : 0;
+  const sysBandBottom = hasSysBaseline
+    ? yForValue(series.baseline_low_systolic as number, min, max)
+    : 0;
+  const diaBandTop = hasDiaBaseline
+    ? yForValue(series.baseline_high_diastolic as number, min, max)
+    : 0;
+  const diaBandBottom = hasDiaBaseline
+    ? yForValue(series.baseline_low_diastolic as number, min, max)
+    : 0;
 
   const sysPolyline = points
     .map(
@@ -328,23 +351,27 @@ function BloodPressureChart({
             })()}
 
           {/* Shaded baseline bands: Systolic & Diastolic */}
-          <rect
-            x={MARGIN.left}
-            y={sysBandTop}
-            width={PLOT_WIDTH}
-            height={Math.max(1, sysBandBottom - sysBandTop)}
-            fill="#3D7BFF"
-            fillOpacity="0.16"
-          />
-          <rect
-            x={MARGIN.left}
-            y={diaBandTop}
-            width={PLOT_WIDTH}
-            height={Math.max(1, diaBandBottom - diaBandTop)}
-            fill="#3D7BFF"
-            fillOpacity="0.16"
-          />
-          {passengerMode && (
+          {hasSysBaseline && (
+            <rect
+              x={MARGIN.left}
+              y={sysBandTop}
+              width={PLOT_WIDTH}
+              height={Math.max(1, sysBandBottom - sysBandTop)}
+              fill="#3D7BFF"
+              fillOpacity="0.16"
+            />
+          )}
+          {hasDiaBaseline && (
+            <rect
+              x={MARGIN.left}
+              y={diaBandTop}
+              width={PLOT_WIDTH}
+              height={Math.max(1, diaBandBottom - diaBandTop)}
+              fill="#3D7BFF"
+              fillOpacity="0.16"
+            />
+          )}
+          {passengerMode && hasSysBaseline && (
             <text
               x={MARGIN.left + 8}
               y={sysBandTop + 13}
@@ -540,17 +567,26 @@ function NumericTrendChart({
     );
   }
 
+  const hasBaseline =
+    typeof series.baseline_low === 'number' &&
+    typeof series.baseline_high === 'number';
+
   const allValues = [
-    series.baseline_low,
-    series.baseline_high,
+    ...(hasBaseline
+      ? [series.baseline_low as number, series.baseline_high as number]
+      : []),
     ...points.map((p) => p.value),
   ];
   const { min, max } = getYDomain(allValues);
 
   const yTicks = [0, 0.33, 0.67, 1].map((t) => min + (max - min) * t);
 
-  const bandTop = yForValue(series.baseline_high, min, max);
-  const bandBottom = yForValue(series.baseline_low, min, max);
+  const bandTop = hasBaseline
+    ? yForValue(series.baseline_high as number, min, max)
+    : 0;
+  const bandBottom = hasBaseline
+    ? yForValue(series.baseline_low as number, min, max)
+    : 0;
 
   const polyline = points
     .map(
@@ -674,15 +710,17 @@ function NumericTrendChart({
             })()}
 
           {/* Baseline shaded band */}
-          <rect
-            x={MARGIN.left}
-            y={bandTop}
-            width={PLOT_WIDTH}
-            height={Math.max(1, bandBottom - bandTop)}
-            fill="#3D7BFF"
-            fillOpacity="0.16"
-          />
-          {passengerMode && (
+          {hasBaseline && (
+            <rect
+              x={MARGIN.left}
+              y={bandTop}
+              width={PLOT_WIDTH}
+              height={Math.max(1, bandBottom - bandTop)}
+              fill="#3D7BFF"
+              fillOpacity="0.16"
+            />
+          )}
+          {passengerMode && hasBaseline && (
             <text
               x={MARGIN.left + 8}
               y={Math.min(bandTop + 13, MARGIN.top + PLOT_HEIGHT - 6)}

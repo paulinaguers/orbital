@@ -274,10 +274,10 @@ export function PvtTestPage({
       {stage === 'intro' && (
         <div className="mt-4 flex flex-1 flex-col justify-center">
           <TestIntroCard
-            title="Reaction test (PVT)"
+            title="Brief reaction test (PVT-inspired)"
             whatItMeasures="Sustained attention and reaction speed."
             whyItMatters="Fatigue and lack of sleep slow reactions. Astronauts on the ISS took it every 4 days."
-            howLong="Standard version 3 min, demo version 1 min"
+            howLong="Demo version: 1 minute. Inspired by the 3-minute PVT-B used on the ISS; results are compared only with your own sessions of the same length."
             howOften="Every 4 days"
             steps={[
               {
@@ -304,7 +304,7 @@ export function PvtTestPage({
         <div
           role="button"
           tabIndex={0}
-          aria-label="Reaction test area. Tap or press Space when the counter appears."
+          aria-label="Brief reaction test (PVT-inspired) area. Tap or press Space when the counter appears."
           onPointerDown={(e) => {
             e.preventDefault();
             handleStimulusInput();
@@ -372,7 +372,7 @@ export function PvtTestPage({
             </span>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-[#E8F0FF]">
-                Reaction test complete
+                Brief reaction test (PVT-inspired) complete
               </h1>
               <p className="mt-2 text-lg leading-relaxed text-[#8FA3C7]">
                 Test complete: {recordedCount}{' '}
@@ -394,14 +394,14 @@ export function PvtTestPage({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Reaction test instructions"
+          aria-label="Brief reaction test (PVT-inspired) instructions"
           className="fixed inset-0 z-40 flex items-center justify-center bg-[#050B1A]/80 p-4 backdrop-blur-sm overflow-y-auto"
         >
           <TestIntroCard
-            title="Reaction test (PVT)"
+            title="Brief reaction test (PVT-inspired)"
             whatItMeasures="Sustained attention and reaction speed."
             whyItMatters="Fatigue and lack of sleep slow reactions. Astronauts on the ISS took it every 4 days."
-            howLong="Standard version 3 min, demo version 1 min"
+            howLong="Demo version: 1 minute. Inspired by the 3-minute PVT-B used on the ISS; results are compared only with your own sessions of the same length."
             howOften="Every 4 days"
             steps={[
               {

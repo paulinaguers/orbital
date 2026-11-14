@@ -167,6 +167,19 @@ export function AlertsInfoPage({ profile, onNavigate }: AlertsInfoPageProps) {
         })}
       </div>
 
+      {/* Not evaluable level note */}
+      <div
+        className={`glass-panel mt-5 flex flex-wrap items-center gap-3 px-5 py-4 leading-relaxed text-[#E8F0FF] ${
+          isPassenger ? 'text-base' : 'text-sm'
+        }`}
+      >
+        <StatusBadge level="not_evaluable" variant="pill" />
+        <p className="min-w-0 flex-1 text-[#8FA3C7]">
+          Not enough data yet to compare with your usual values. This never
+          counts as a color alert.
+        </p>
+      </div>
+
       {/* Timing & Earth delay info box */}
       <div
         className={`glass-panel mt-6 flex items-start gap-3 px-5 py-4 leading-relaxed text-[#E8F0FF] ${

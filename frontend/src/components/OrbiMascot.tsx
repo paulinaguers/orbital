@@ -455,7 +455,7 @@ export function OrbiMascot({
         </>
       )}
 
-      {level === 'yellow' && (
+      {(level === 'yellow' || level === 'not_evaluable') && (
         <path
           d="M99 126 Q110 128 121 126"
           stroke="#F8FAFC"

@@ -11,6 +11,7 @@ export const MOCK_ESCALATION_BY_LEVEL: Record<HealthLevel, string[]> = {
     'Flight surgeon (Earth) – URGENT',
     'Crewmate on board',
   ],
+  not_evaluable: [],
 };
 
 export const mockStatus: OrbitalStatus = {
@@ -83,7 +84,7 @@ export const mockStatus: OrbitalStatus = {
         },
         {
           id: 'pvt_lapses',
-          name: 'Reaction test (PVT)',
+          name: 'Brief reaction test (PVT-inspired)',
           value: 2,
           unit: 'lapses',
           level: 'green',
@@ -177,7 +178,7 @@ export const mockStatus: OrbitalStatus = {
     },
     {
       id: 'pvt',
-      name: 'Reaction test (PVT)',
+      name: 'Brief reaction test (PVT-inspired)',
       route: '/tests/pvt',
       frequency_days: 4,
       last_done_flight_day: 37,
