@@ -3,7 +3,7 @@
 export type HealthLevel = 'green' | 'yellow' | 'orange' | 'red';
 export type UserProfile = 'crew' | 'passenger';
 export type DataSourceKind = 'api' | 'demo' | 'mock';
-export type DemoScenario = 'healthy' | 'deterioration' | 'emergency';
+export type DemoScenario = 'healthy' | 'deterioration' | 'attention' | 'emergency';
 
 export interface Astronaut {
   id: string;

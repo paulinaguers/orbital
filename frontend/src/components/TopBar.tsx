@@ -26,6 +26,7 @@ interface TopBarProps {
 const SCENARIO_OPTIONS: Array<{ id: DemoScenario; label: string }> = [
   { id: 'healthy', label: 'Healthy' },
   { id: 'deterioration', label: 'Deterioration' },
+  { id: 'attention', label: 'Attention' },
   { id: 'emergency', label: 'Emergency' },
 ];
 
@@ -354,7 +355,7 @@ export function TopBar({
                     <div
                       role="group"
                       aria-label="Demo scenario"
-                      className="glass-panel-soft mt-2 grid grid-cols-3 gap-1 p-1"
+                      className="glass-panel-soft mt-2 grid grid-cols-2 gap-1 p-1"
                     >
                       {SCENARIO_OPTIONS.map((option) => {
                         const active = scenario === option.id;
