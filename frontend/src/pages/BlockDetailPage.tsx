@@ -300,16 +300,38 @@ export function BlockDetailPage({
       {/* 3. Block-specific action buttons */}
       {actions.length > 0 && (
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          {actions.map((action) => (
-            <button
-              key={action.label}
-              type="button"
-              onClick={() => onNavigate(action.path)}
-              className="inline-flex min-h-[46px] items-center justify-center rounded-xl border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
-            >
-              {action.label}
-            </button>
-          ))}
+          {actions.map((action) => {
+            const matchedTest = status.tests.find(
+              (test) => test.route === action.path,
+            );
+            const isDue = Boolean(matchedTest?.due);
+            const isOverdue = Boolean(matchedTest?.overdue);
+
+            return (
+              <button
+                key={action.label}
+                type="button"
+                onClick={() => onNavigate(action.path)}
+                className="inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-xl border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              >
+                <span>{action.label}</span>
+                {isDue && (
+                  <span
+                    className="rounded-md px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide"
+                    style={{
+                      backgroundColor: isOverdue
+                        ? 'rgba(230, 126, 34, 0.25)'
+                        : 'rgba(241, 196, 15, 0.22)',
+                      color: isOverdue ? '#EB984E' : '#F4D03F',
+                      border: `1px solid ${isOverdue ? 'rgba(230, 126, 34, 0.5)' : 'rgba(241, 196, 15, 0.45)'}`,
+                    }}
+                  >
+                    Due
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
 

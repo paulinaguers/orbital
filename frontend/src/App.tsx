@@ -1,9 +1,14 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
+import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TopBar } from './components/TopBar';
-import { fetchOrbitalStatus, getDemoStatus } from './data/source';
+import {
+  fetchOrbitalStatus,
+  getDemoStatus,
+  markTestCompletedInMemory,
+} from './data/source';
 import { AlertsInfoPage } from './pages/AlertsInfoPage';
 import { AmslerTestPage } from './pages/AmslerTestPage';
 import { BlockDetailPage } from './pages/BlockDetailPage';
@@ -59,6 +64,7 @@ export default function App() {
   const [route, setRoute] = useState<AppRoute>(() =>
     parseRoute(window.location.pathname),
   );
+  const [toastDismissed, setToastDismissed] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -93,6 +99,14 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleTestCompleted = (testId: string) => {
+    setStatus((prev) => markTestCompletedInMemory(prev, testId));
+  };
+
+  const overdueToastTest = !toastDismissed
+    ? status.tests.find((test) => test.due && test.overdue) ?? null
+    : null;
+
   const renderPage = () => {
     switch (route.page) {
       case 'home':
@@ -112,6 +126,7 @@ export default function App() {
           <MentalCheckinPage
             astronaut={status.astronaut}
             onNavigate={navigate}
+            onTestCompleted={() => handleTestCompleted('checkin')}
           />
         );
       case 'mental-journal':
@@ -125,11 +140,19 @@ export default function App() {
         return <MentalBreathingPage onNavigate={navigate} />;
       case 'test-amsler':
         return (
-          <AmslerTestPage astronaut={status.astronaut} onNavigate={navigate} />
+          <AmslerTestPage
+            astronaut={status.astronaut}
+            onNavigate={navigate}
+            onTestCompleted={() => handleTestCompleted('amsler')}
+          />
         );
       case 'test-pvt':
         return (
-          <PvtTestPage astronaut={status.astronaut} onNavigate={navigate} />
+          <PvtTestPage
+            astronaut={status.astronaut}
+            onNavigate={navigate}
+            onTestCompleted={() => handleTestCompleted('pvt')}
+          />
         );
       case 'circle':
         return (
@@ -148,10 +171,46 @@ export default function App() {
       <TopBar
         astronaut={status.astronaut}
         simulated={status.simulated}
+        tests={status.tests}
         onNavigateHome={() => navigate('/')}
+        onNavigate={navigate}
       />
 
       <main className="flex flex-1 flex-col">{renderPage()}</main>
+
+      {overdueToastTest && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-20 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 rounded-2xl border border-[#E67E22]/55 bg-[#10192D]/95 px-4 py-3 shadow-2xl shadow-black/60 backdrop-blur-sm"
+        >
+          <p className="text-sm font-medium text-slate-100">
+            Reminder: {overdueToastTest.name} is overdue.
+          </p>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                setToastDismissed(true);
+                navigate(overdueToastTest.route);
+              }}
+              className="inline-flex min-h-[34px] items-center justify-center rounded-lg bg-[#E67E22] px-3 py-1.5 text-xs font-semibold text-slate-950 transition-colors hover:bg-[#EB984E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 cursor-pointer"
+            >
+              Start now
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setToastDismissed(true)}
+              aria-label="Dismiss reminder"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-sky-400 cursor-pointer"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <BottomNav route={route} onNavigate={navigate} />
     </div>

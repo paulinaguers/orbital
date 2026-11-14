@@ -8,6 +8,7 @@ import type { Astronaut } from '../types/orbital';
 interface AmslerTestPageProps {
   astronaut: Astronaut;
   onNavigate: (path: string) => void;
+  onTestCompleted?: () => void;
 }
 
 type TestStep =
@@ -26,6 +27,7 @@ const COLS = Array.from({ length: GRID_SIZE }, (_, i) => i);
 export function AmslerTestPage({
   astronaut,
   onNavigate,
+  onTestCompleted,
 }: AmslerTestPageProps) {
   const [step, setStep] = useState<TestStep>('intro-right');
   const [selectedCells, setSelectedCells] = useState<Set<string>>(
@@ -91,6 +93,7 @@ export function AmslerTestPage({
       if (currentEye === 'right') {
         setStep('intro-left');
       } else {
+        onTestCompleted?.();
         setStep('complete');
       }
     } catch {

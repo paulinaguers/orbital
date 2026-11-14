@@ -34,6 +34,17 @@ export interface Escalation {
   notified: string[];
 }
 
+export interface ScheduledTest {
+  id: string;
+  name: string;
+  route: string;
+  frequency_days: number;
+  last_done_flight_day: number;
+  next_due_flight_day: number;
+  due: boolean;
+  overdue: boolean;
+}
+
 export interface OrbitalStatus {
   simulated: boolean;
   astronaut: Astronaut;
@@ -41,6 +52,7 @@ export interface OrbitalStatus {
   overall_message: string;
   escalation: Escalation;
   blocks: HealthBlock[];
+  tests: ScheduledTest[];
 }
 
 export interface NumericSeriesPoint {

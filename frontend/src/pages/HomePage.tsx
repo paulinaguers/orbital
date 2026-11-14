@@ -3,11 +3,33 @@
 import { OrbiMascot } from '../components/OrbiMascot';
 import { StatusBadge } from '../components/StatusBadge';
 import { LEVEL_STYLES } from '../data/source';
-import type { OrbitalStatus } from '../types/orbital';
+import type { OrbitalStatus, ScheduledTest } from '../types/orbital';
 
 interface HomePageProps {
   status: OrbitalStatus;
   onNavigate: (path: string) => void;
+}
+
+function getNextScheduledTest(tests: ScheduledTest[]): ScheduledTest | null {
+  if (tests.length === 0) {
+    return null;
+  }
+  return tests.reduce((earliest, candidate) =>
+    candidate.next_due_flight_day < earliest.next_due_flight_day
+      ? candidate
+      : earliest,
+  );
+}
+
+function getOrbiOverdueLine(overdueTests: ScheduledTest[]): string | null {
+  if (overdueTests.length === 0) {
+    return null;
+  }
+  const hasPvt = overdueTests.some((test) => test.id === 'pvt');
+  if (hasPvt) {
+    return "Don't forget your reaction test, it helps me know how rested you are.";
+  }
+  return `Don't forget your ${overdueTests[0].name.toLowerCase()}, it helps me keep track of how you are doing.`;
 }
 
 export function HomePage({ status, onNavigate }: HomePageProps) {
@@ -17,6 +39,11 @@ export function HomePage({ status, onNavigate }: HomePageProps) {
   );
   const notifiedList = status.escalation.notified;
   const bubbleColor = LEVEL_STYLES[status.overall_level].color;
+
+  const dueTests = status.tests.filter((test) => test.due);
+  const overdueTests = status.tests.filter((test) => test.due && test.overdue);
+  const orbiOverdueLine = getOrbiOverdueLine(overdueTests);
+  const nextTest = getNextScheduledTest(status.tests);
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 py-8 sm:px-8 sm:py-12">
@@ -39,7 +66,7 @@ export function HomePage({ status, onNavigate }: HomePageProps) {
           </div>
         </div>
 
-        {/* Speech Bubble & Primary Actions Column */}
+        {/* Speech Bubble, Today's Tasks & Primary Actions Column */}
         <div className="flex min-w-0 flex-col lg:pt-3">
           <div
             className="animate-orbi-bubble-pop relative rounded-3xl bg-[#F8FAFC] p-6 text-slate-900 shadow-[0_18px_45px_rgba(0,0,0,0.42)] sm:p-8"
@@ -85,6 +112,11 @@ export function HomePage({ status, onNavigate }: HomePageProps) {
               <p className="mt-2 text-lg leading-relaxed text-slate-700">
                 {status.overall_message}
               </p>
+              {orbiOverdueLine && (
+                <p className="mt-2 text-base font-medium leading-relaxed text-[#B45309]">
+                  {orbiOverdueLine}
+                </p>
+              )}
             </div>
 
             {/* 2) Affected blocks: short line with small colored pill showing level label */}
@@ -113,6 +145,55 @@ export function HomePage({ status, onNavigate }: HomePageProps) {
             {notifiedList.length > 0 && (
               <p className="mt-5 border-t border-slate-200 pt-4 text-sm font-semibold text-slate-800">
                 Notified: {notifiedList.join(', ')}
+              </p>
+            )}
+          </div>
+
+          {/* Today's tasks card */}
+          <div className="mt-5 rounded-2xl border border-slate-800/90 bg-[#10192D] p-5 shadow-lg shadow-black/25">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300">
+              Today&apos;s tasks
+            </h2>
+
+            {dueTests.length > 0 ? (
+              <ul className="mt-3 divide-y divide-slate-800/80">
+                {dueTests.map((test) => (
+                  <li
+                    key={test.id}
+                    className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-1 last:pb-0"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-base font-medium text-slate-100">
+                        {test.name}
+                      </p>
+                      <p
+                        className="mt-0.5 text-sm font-medium"
+                        style={{
+                          color: test.overdue ? '#EB984E' : '#94A3B8',
+                        }}
+                      >
+                        {test.overdue
+                          ? `Overdue since flight day ${test.next_due_flight_day}`
+                          : 'Due today'}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(test.route)}
+                      className="inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-xl border border-sky-400/45 bg-sky-500/15 px-4 py-2 text-sm font-semibold text-sky-200 transition-colors hover:border-sky-400/75 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+                    >
+                      Start
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-2.5 text-sm text-slate-300">
+                All tests up to date.
+                {nextTest
+                  ? ` Next: ${nextTest.name} on flight day ${nextTest.next_due_flight_day}.`
+                  : ''}
               </p>
             )}
           </div>

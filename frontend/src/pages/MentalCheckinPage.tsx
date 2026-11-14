@@ -8,6 +8,7 @@ import type { Astronaut } from '../types/orbital';
 interface MentalCheckinPageProps {
   astronaut: Astronaut;
   onNavigate: (path: string) => void;
+  onTestCompleted?: () => void;
 }
 
 type ScoreKey =
@@ -357,6 +358,7 @@ function FaceIcon({
 export function MentalCheckinPage({
   astronaut,
   onNavigate,
+  onTestCompleted,
 }: MentalCheckinPageProps) {
   const [scores, setScores] = useState<Record<ScoreKey, number | null>>({
     mood_score: null,
@@ -401,6 +403,7 @@ export function MentalCheckinPage({
         },
         astronaut.id,
       );
+      onTestCompleted?.();
       setSaved(true);
     } catch {
       setErrorMessage('Could not save your check-in. Please try again.');

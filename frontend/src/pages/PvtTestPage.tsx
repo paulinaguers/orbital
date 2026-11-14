@@ -8,6 +8,7 @@ import type { Astronaut } from '../types/orbital';
 interface PvtTestPageProps {
   astronaut: Astronaut;
   onNavigate: (path: string) => void;
+  onTestCompleted?: () => void;
 }
 
 const DURATION_S = 60;
@@ -23,7 +24,11 @@ function formatTimer(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-export function PvtTestPage({ astronaut, onNavigate }: PvtTestPageProps) {
+export function PvtTestPage({
+  astronaut,
+  onNavigate,
+  onTestCompleted,
+}: PvtTestPageProps) {
   const [stage, setStage] = useState<SessionStage>('intro');
   const [subPhase, setSubPhase] = useState<TrialSubPhase>('waiting');
   const [displayMs, setDisplayMs] = useState(0);
@@ -109,6 +114,7 @@ export function PvtTestPage({ astronaut, onNavigate }: PvtTestPageProps) {
 
     setRecordedCount(recorded.length);
     setStage('complete');
+    onTestCompleted?.();
 
     void savePvtSession(
       {
@@ -121,7 +127,7 @@ export function PvtTestPage({ astronaut, onNavigate }: PvtTestPageProps) {
     ).catch(() => {
       // Offline prototype keeps local count displayed even if remote save is unavailable
     });
-  }, [astronaut.flight_day, astronaut.id, clearAllTimers]);
+  }, [astronaut.flight_day, astronaut.id, clearAllTimers, onTestCompleted]);
 
   const startSession = () => {
     clearAllTimers();

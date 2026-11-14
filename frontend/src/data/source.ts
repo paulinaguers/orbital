@@ -315,6 +315,27 @@ export async function savePvtSession(
   }
 }
 
+export function markTestCompletedInMemory(
+  status: OrbitalStatus,
+  testId: string,
+): OrbitalStatus {
+  return {
+    ...status,
+    tests: status.tests.map((test) =>
+      test.id === testId
+        ? {
+            ...test,
+            due: false,
+            overdue: false,
+            last_done_flight_day: status.astronaut.flight_day,
+            next_due_flight_day:
+              status.astronaut.flight_day + test.frequency_days,
+          }
+        : test,
+    ),
+  };
+}
+
 export function formatIndicatorValue(indicator: Indicator): string {
   if (
     typeof indicator.systolic === 'number' &&
