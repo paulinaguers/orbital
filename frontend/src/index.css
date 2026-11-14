@@ -109,12 +109,173 @@
   animation: orbi-anchor-pulse 1.8s ease-in-out infinite;
 }
 
+@keyframes orbi-wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-11deg) scale(1.03);
+  }
+  40% {
+    transform: rotate(10deg) scale(1.04);
+  }
+  60% {
+    transform: rotate(-8deg) scale(1.03);
+  }
+  80% {
+    transform: rotate(6deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes orbi-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-22px) scale(1.06, 0.96);
+  }
+  55% {
+    transform: translateY(2px) scale(0.96, 1.05);
+  }
+  78% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+@keyframes orbi-celebrate {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-28px) rotate(140deg) scale(1.08);
+  }
+  58% {
+    transform: translateY(-34px) rotate(360deg) scale(1.1);
+  }
+  80% {
+    transform: translateY(3px) rotate(360deg) scale(0.96, 1.04);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes orbi-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbi-orbit-counter-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes orbi-star-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 65vh) scale(0.6) rotate(0deg);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 42vh) scale(1.35) rotate(85deg);
+  }
+  78% {
+    opacity: 1;
+    transform: translate(-50%, -108px) scale(1.1) rotate(305deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -118px) scale(0.55) rotate(360deg);
+  }
+}
+
+@keyframes orbi-confetti-pop {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0px), var(--ty, -60px))
+      rotate(var(--rot, 180deg)) scale(0.7);
+  }
+}
+
+@keyframes orbi-flame-flicker {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scaleY(1.22) scaleX(0.9);
+    opacity: 1;
+  }
+}
+
+.animate-orbi-wiggle {
+  animation: orbi-wiggle 0.65s ease-in-out;
+}
+
+.animate-orbi-bounce {
+  animation: orbi-bounce 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-orbi-celebrate {
+  animation: orbi-celebrate 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-orbi-orbit-spin {
+  animation: orbi-orbit-spin 28s linear infinite;
+}
+
+.animate-orbi-orbit-counter-spin {
+  animation: orbi-orbit-counter-spin 28s linear infinite;
+}
+
+.animate-orbi-star-fly {
+  animation: orbi-star-fly 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-orbi-confetti-pop {
+  animation: orbi-confetti-pop 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-orbi-flame-flicker {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: orbi-flame-flicker 0.38s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-orbi-float,
   .animate-orbi-blink,
   .animate-orbi-antenna-pulse,
   .animate-orbi-bubble-pop,
-  .animate-anchor-pulse {
+  .animate-anchor-pulse,
+  .animate-orbi-wiggle,
+  .animate-orbi-bounce,
+  .animate-orbi-celebrate,
+  .animate-orbi-orbit-spin,
+  .animate-orbi-orbit-counter-spin,
+  .animate-orbi-star-fly,
+  .animate-orbi-confetti-pop,
+  .animate-orbi-flame-flicker {
     animation: none;
   }
 }

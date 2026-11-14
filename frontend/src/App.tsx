@@ -1,7 +1,7 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Sparkles, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TipsDrawer } from './components/TipsDrawer';
 import { TopBar } from './components/TopBar';
@@ -19,10 +19,30 @@ import { HomePage } from './pages/HomePage';
 import { MentalBreathingPage } from './pages/MentalBreathingPage';
 import { MentalCheckinPage } from './pages/MentalCheckinPage';
 import { MentalJournalPage } from './pages/MentalJournalPage';
+import { MomentsPage } from './pages/MomentsPage';
 import { PvtTestPage } from './pages/PvtTestPage';
 import type { AppRoute, OrbitalStatus, UserProfile } from './types/orbital';
 
 const PROFILE_STORAGE_KEY = 'orbital_user_profile_v1';
+
+const CELEBRATION_MESSAGES: Record<UserProfile, string[]> = {
+  crew: [
+    'Thanks! That helps me look after you.',
+    "Star collected! You're on a roll.",
+    'Mission data received, crewmate!',
+  ],
+  passenger: [
+    'Thanks! That helps me look after you.',
+    "Star collected! You're on a roll.",
+    'All saved! Enjoy the view up here!',
+  ],
+};
+
+const MILESTONES: Array<{ threshold: number; label: string }> = [
+  { threshold: 5, label: 'tiny antenna light' },
+  { threshold: 10, label: 'small scarf' },
+  { threshold: 20, label: 'little jetpack' },
+];
 
 function readStoredProfile(): UserProfile {
   try {
@@ -72,6 +92,9 @@ function parseRoute(pathname: string): AppRoute {
   if (cleanPath === '/circle') {
     return { page: 'circle' };
   }
+  if (cleanPath === '/moments') {
+    return { page: 'moments' };
+  }
   if (cleanPath === '/alerts-info') {
     return { page: 'alerts-info' };
   }
@@ -79,19 +102,28 @@ function parseRoute(pathname: string): AppRoute {
   return { page: 'home' };
 }
 
-function isHiddenInPassengerMode(route: AppRoute): boolean {
-  return (
-    route.page === 'mental-journal' ||
-    route.page === 'test-amsler' ||
-    route.page === 'test-pvt'
-  );
+function isRouteAllowedForProfile(
+  route: AppRoute,
+  profile: UserProfile,
+): boolean {
+  if (profile === 'passenger') {
+    return (
+      route.page !== 'mental-journal' &&
+      route.page !== 'test-amsler' &&
+      route.page !== 'test-pvt'
+    );
+  }
+  return route.page !== 'moments';
 }
 
 export default function App() {
   const [profile, setProfile] = useState<UserProfile>(() => readStoredProfile());
-  const [status, setStatus] = useState<OrbitalStatus>(() =>
-    getDemoStatus(readStoredProfile()),
-  );
+  const [statusByProfile, setStatusByProfile] = useState<
+    Record<UserProfile, OrbitalStatus>
+  >(() => ({
+    crew: getDemoStatus('crew'),
+    passenger: getDemoStatus('passenger'),
+  }));
   const [route, setRoute] = useState<AppRoute>(() =>
     parseRoute(window.location.pathname),
   );
@@ -103,14 +135,41 @@ export default function App() {
   const [checkedTipSteps, setCheckedTipSteps] = useState<
     Record<string, boolean>
   >({});
+  const [celebration, setCelebration] = useState<{
+    key: number;
+    message: string;
+  } | null>(null);
+  const celebrationCounterRef = useRef(0);
+  const [unlockedToast, setUnlockedToast] = useState<string | null>(null);
+  const seenMilestonesRef = useRef<Record<UserProfile, Set<number>>>({
+    crew: new Set(
+      MILESTONES.filter(
+        (m) => getDemoStatus('crew').rewards.stars >= m.threshold,
+      ).map((m) => m.threshold),
+    ),
+    passenger: new Set(
+      MILESTONES.filter(
+        (m) => getDemoStatus('passenger').rewards.stars >= m.threshold,
+      ).map((m) => m.threshold),
+    ),
+  });
+
+  const status = statusByProfile[profile];
 
   useEffect(() => {
-    setStatus(getDemoStatus(profile));
     let active = true;
     getStatus(profile)
       .then((nextStatus) => {
         if (active) {
-          setStatus(nextStatus);
+          setStatusByProfile((prev) => ({
+            ...prev,
+            [profile]: {
+              ...nextStatus,
+              // Preserve any in-memory completed tests & earned stars during demo session
+              tests: prev[profile].tests,
+              rewards: prev[profile].rewards,
+            },
+          }));
         }
       })
       .catch(() => {
@@ -122,7 +181,7 @@ export default function App() {
   }, [profile]);
 
   useEffect(() => {
-    if (profile === 'passenger' && isHiddenInPassengerMode(route)) {
+    if (!isRouteAllowedForProfile(route, profile)) {
       if (window.location.pathname !== '/') {
         window.history.replaceState(null, '', '/');
       }
@@ -138,9 +197,29 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  useEffect(() => {
+    if (!unlockedToast) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setUnlockedToast(null);
+    }, 5500);
+    return () => window.clearTimeout(timer);
+  }, [unlockedToast]);
+
+  useEffect(() => {
+    if (!celebration) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setCelebration(null);
+    }, 1650);
+    return () => window.clearTimeout(timer);
+  }, [celebration]);
+
   const navigate = (path: string) => {
     const nextRoute = parseRoute(path);
-    if (profile === 'passenger' && isHiddenInPassengerMode(nextRoute)) {
+    if (!isRouteAllowedForProfile(nextRoute, profile)) {
       if (window.location.pathname !== '/') {
         window.history.pushState(null, '', '/');
       }
@@ -163,11 +242,39 @@ export default function App() {
     writeStoredProfile(nextProfile);
     setTipsDrawerOpen(false);
     setTipsFilterBlockId(null);
+    setCelebration(null);
+    setUnlockedToast(null);
     setProfile(nextProfile);
   };
 
   const handleTestCompleted = (testId: string) => {
-    setStatus((prev) => markTestCompletedInMemory(prev, testId));
+    const currentStatus = statusByProfile[profile];
+    const nextStatus = markTestCompletedInMemory(currentStatus, testId);
+    const nextStars = nextStatus.rewards.stars;
+
+    setStatusByProfile((prev) => ({
+      ...prev,
+      [profile]: nextStatus,
+    }));
+
+    // Check first-time milestone unlocks
+    const seen = seenMilestonesRef.current[profile];
+    for (const milestone of MILESTONES) {
+      if (nextStars >= milestone.threshold && !seen.has(milestone.threshold)) {
+        seen.add(milestone.threshold);
+        setUnlockedToast(`Orbi unlocked: ${milestone.label}!`);
+      }
+    }
+
+    const lines = CELEBRATION_MESSAGES[profile];
+    const message = lines[Math.floor(Math.random() * lines.length)] ?? lines[0];
+    celebrationCounterRef.current += 1;
+    setCelebration({
+      key: celebrationCounterRef.current,
+      message,
+    });
+
+    navigate('/');
   };
 
   const handleOpenTips = (blockId: string) => {
@@ -188,10 +295,9 @@ export default function App() {
       : null;
 
   const renderPage = () => {
-    const effectiveRoute =
-      profile === 'passenger' && isHiddenInPassengerMode(route)
-        ? ({ page: 'home' } as AppRoute)
-        : route;
+    const effectiveRoute = isRouteAllowedForProfile(route, profile)
+      ? route
+      : ({ page: 'home' } as AppRoute);
 
     switch (effectiveRoute.page) {
       case 'home':
@@ -199,6 +305,7 @@ export default function App() {
           <HomePage
             status={status}
             profile={profile}
+            celebration={celebration}
             onNavigate={navigate}
             onOpenTips={handleOpenTips}
           />
@@ -261,6 +368,13 @@ export default function App() {
             onNavigate={navigate}
           />
         );
+      case 'moments':
+        return (
+          <MomentsPage
+            currentFlightDay={status.astronaut.flight_day}
+            onNavigate={navigate}
+          />
+        );
       case 'alerts-info':
         return <AlertsInfoPage profile={profile} onNavigate={navigate} />;
     }
@@ -279,6 +393,32 @@ export default function App() {
       />
 
       <main className="flex flex-1 flex-col">{renderPage()}</main>
+
+      {unlockedToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-36 left-1/2 z-30 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center justify-between gap-3 rounded-2xl border border-amber-300/60 bg-[#10192D]/95 px-4 py-3 shadow-2xl shadow-black/60 backdrop-blur-sm"
+        >
+          <div className="flex items-center gap-2.5">
+            <Sparkles
+              className="h-4 w-4 text-amber-300 shrink-0"
+              aria-hidden="true"
+            />
+            <p className="text-sm font-semibold text-amber-100">
+              {unlockedToast}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setUnlockedToast(null)}
+            aria-label="Dismiss unlock message"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 cursor-pointer"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+      )}
 
       {overdueToastTest && (
         <div
@@ -326,7 +466,7 @@ export default function App() {
         onClose={() => setTipsDrawerOpen(false)}
       />
 
-      <BottomNav route={route} onNavigate={navigate} />
+      <BottomNav route={route} profile={profile} onNavigate={navigate} />
     </div>
   );
 }

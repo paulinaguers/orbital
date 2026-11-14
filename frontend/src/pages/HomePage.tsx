@@ -1,5 +1,6 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
+import { useEffect, useState } from 'react';
 import { OrbiMascot } from '../components/OrbiMascot';
 import { StatusBadge } from '../components/StatusBadge';
 import { LEVEL_STYLES } from '../data/source';
@@ -8,9 +9,19 @@ import type { OrbitalStatus, ScheduledTest, UserProfile } from '../types/orbital
 interface HomePageProps {
   status: OrbitalStatus;
   profile: UserProfile;
+  celebration: { key: number; message: string } | null;
   onNavigate: (path: string) => void;
   onOpenTips: (blockId: string) => void;
 }
+
+const ORBI_TAP_LINES = [
+  'Did you know? In orbit we see 16 sunrises every day!',
+  'Zero gravity makes my antennas feel extra bouncy today.',
+  'Beep boop! Keeping watch over our little corner of the cosmos.',
+  'Earth looks like a bright blue marble from up here.',
+  'Traveling at 27,600 km/h and still time for a quick hello!',
+  'Fun fact: astronauts grow a little taller in microgravity!',
+];
 
 function getNextScheduledTest(tests: ScheduledTest[]): ScheduledTest | null {
   if (tests.length === 0) {
@@ -37,6 +48,7 @@ function getOrbiOverdueLine(overdueTests: ScheduledTest[]): string | null {
 export function HomePage({
   status,
   profile,
+  celebration,
   onNavigate,
   onOpenTips,
 }: HomePageProps) {
@@ -47,6 +59,26 @@ export function HomePage({
   );
   const notifiedList = status.escalation.notified;
   const bubbleColor = LEVEL_STYLES[status.overall_level].color;
+
+  const [tapLine, setTapLine] = useState<string | null>(null);
+  const [celebrationLine, setCelebrationLine] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!celebration) {
+      return;
+    }
+    setTapLine(null);
+    setCelebrationLine(celebration.message);
+  }, [celebration]);
+
+  const handleOrbiTap = () => {
+    setCelebrationLine(null);
+    setTapLine((prev) => {
+      const candidates = ORBI_TAP_LINES.filter((line) => line !== prev);
+      const picked = candidates[Math.floor(Math.random() * candidates.length)];
+      return picked ?? ORBI_TAP_LINES[0];
+    });
+  };
 
   const visibleTests = isPassenger
     ? status.tests.filter((t) => t.id !== 'pvt' && t.id !== 'amsler')
@@ -60,10 +92,23 @@ export function HomePage({
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 py-8 sm:px-8 sm:py-12">
-      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[260px_1fr] lg:gap-10">
-        {/* Companion Column: Orbi + Overall Status + Astronaut Identity */}
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[276px_1fr] lg:gap-10">
+        {/* Companion Column: Orbi + Orbiting Stars + Rewards + Overall Status */}
         <div className="flex flex-col items-center text-center">
-          <OrbiMascot level={status.overall_level} />
+          <OrbiMascot
+            level={status.overall_level}
+            stars={status.rewards.stars}
+            showOrbit
+            interactive
+            celebrationKey={celebration?.key ?? 0}
+            onTap={handleOrbiTap}
+          />
+
+          <p className="font-mono-tabular mt-1 text-sm font-medium text-slate-200">
+            ⭐ {status.rewards.stars}{' '}
+            {status.rewards.stars === 1 ? 'star' : 'stars'} · 🔥{' '}
+            {status.rewards.streak_days}-day streak
+          </p>
 
           <div className="mt-3">
             <StatusBadge level={status.overall_level} prefix="Overall" />
@@ -119,7 +164,7 @@ export function HomePage({
               />
             </svg>
 
-            {/* 1) Greeting + overall_message */}
+            {/* 1) Greeting + overall_message (or celebration / playful tap line) */}
             <div>
               <h1
                 className={`font-bold tracking-tight text-slate-900 ${
@@ -130,6 +175,19 @@ export function HomePage({
               >
                 Hi {firstName}!
               </h1>
+
+              {celebrationLine && (
+                <p className="mt-2 rounded-xl bg-amber-100/90 px-3.5 py-2 text-base font-semibold text-amber-950">
+                  ⭐ {celebrationLine}
+                </p>
+              )}
+
+              {tapLine && (
+                <p className="mt-2 rounded-xl bg-sky-100/85 px-3.5 py-2 text-base font-medium text-sky-950">
+                  {tapLine}
+                </p>
+              )}
+
               <p
                 className={`mt-2 leading-relaxed text-slate-700 ${
                   isPassenger ? 'text-xl' : 'text-lg'
@@ -137,6 +195,7 @@ export function HomePage({
               >
                 {status.overall_message}
               </p>
+
               {orbiOverdueLine && (
                 <p className="mt-2 text-base font-medium leading-relaxed text-[#B45309]">
                   {orbiOverdueLine}

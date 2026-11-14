@@ -155,4 +155,8 @@ export const mockStatusPassenger: OrbitalStatus = {
       overdue: false,
     },
   ],
+  rewards: {
+    stars: 2,
+    streak_days: 1,
+  },
 };

@@ -6,12 +6,14 @@ import type {
   HealthLevel,
   Indicator,
   IndicatorSeries,
+  MomentsData,
   OrbitalStatus,
   PvtSessionPayload,
   SelfReportPayload,
   UserProfile,
 } from '../types/orbital';
 import { mockCircle } from './mockCircle';
+import { mockMoments } from './mockMoments';
 import { mockSeries } from './mockSeries';
 import { mockSeriesPassenger } from './mockSeriesPassenger';
 import { MOCK_ESCALATION_BY_LEVEL, mockStatus } from './mockStatus';
@@ -200,6 +202,10 @@ export function getDemoCircleData(): CircleData {
   return mockCircle;
 }
 
+export function getDemoMomentsData(): MomentsData {
+  return mockMoments;
+}
+
 export async function getStatus(
   profile: UserProfile = 'crew',
   astronautId?: string,
@@ -353,6 +359,10 @@ export function markTestCompletedInMemory(
           }
         : test,
     ),
+    rewards: {
+      ...status.rewards,
+      stars: status.rewards.stars + 1,
+    },
   };
 }
 

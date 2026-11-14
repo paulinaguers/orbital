@@ -47,6 +47,11 @@ export interface ScheduledTest {
   overdue: boolean;
 }
 
+export interface Rewards {
+  stars: number;
+  streak_days: number;
+}
+
 export interface OrbitalStatus {
   profile?: UserProfile;
   simulated: boolean;
@@ -56,6 +61,7 @@ export interface OrbitalStatus {
   escalation: Escalation;
   blocks: HealthBlock[];
   tests: ScheduledTest[];
+  rewards: Rewards;
 }
 
 export interface NumericSeriesPoint {
@@ -163,6 +169,38 @@ export interface CircleData {
   contacts: CircleContact[];
 }
 
+export type PlaceholderSceneVariant =
+  | 'sunrise'
+  | 'earthlimb'
+  | 'aurora'
+  | 'moonrise';
+
+export interface MomentPhoto {
+  id: string;
+  title: string;
+  caption: string;
+  flight_day: number;
+  variant?: PlaceholderSceneVariant;
+  imageUrl?: string;
+  isLocal?: boolean;
+}
+
+export interface MomentsRightNow {
+  altitude_km: number;
+  speed_kmh: number;
+  orbits_completed: number;
+  sunrises_seen_today: number;
+  sunrises_note: string;
+  signal_time_min: number;
+  fun_fact: string;
+}
+
+export interface MomentsData {
+  simulated: boolean;
+  right_now: MomentsRightNow;
+  photos: MomentPhoto[];
+}
+
 export type AppRoute =
   | { page: 'home' }
   | { page: 'body' }
@@ -173,4 +211,5 @@ export type AppRoute =
   | { page: 'test-amsler' }
   | { page: 'test-pvt' }
   | { page: 'circle' }
+  | { page: 'moments' }
   | { page: 'alerts-info' };

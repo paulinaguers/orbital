@@ -196,4 +196,8 @@ export const mockStatus: OrbitalStatus = {
       overdue: false,
     },
   ],
+  rewards: {
+    stars: 7,
+    streak_days: 3,
+  },
 };
