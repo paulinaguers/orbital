@@ -8,6 +8,7 @@ import {
   formatIndicatorValue,
   getDemoSeries,
   getSeries,
+  INDICATOR_EXPLANATIONS,
   LEVEL_STYLES,
 } from '../data/source';
 import type {
@@ -32,7 +33,7 @@ interface BlockAction {
 
 const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
   sleep_cognition: [
-    { label: 'Take reaction test (PVT)' },
+    { label: 'Take reaction test (PVT)', path: '/tests/pvt' },
     { label: "Log last night's sleep" },
   ],
   mental_health: [
@@ -40,8 +41,13 @@ const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
     { label: 'Private journal', path: '/mental/journal' },
     { label: 'Breathing exercise', path: '/mental/breathing' },
   ],
-  environment: [{ label: 'Do Amsler grid test' }],
+  environment: [{ label: 'Do Amsler grid test', path: '/tests/amsler' }],
 };
+
+function parseCareerLimit(thresholdSource: string): number | null {
+  const match = thresholdSource.match(/(\d+(?:\.\d+)?)\s*mSv/i);
+  return match ? Number(match[1]) : null;
+}
 
 function IndicatorCard({
   indicator,
@@ -71,6 +77,7 @@ function IndicatorCard({
   }, [indicator.id, astronautId]);
 
   const indStyle = LEVEL_STYLES[indicator.level];
+  const explanation = INDICATOR_EXPLANATIONS[indicator.id];
 
   const renderBaselineText = () => {
     if (!series || series.indicator === 'vision_amsler') {
@@ -80,7 +87,7 @@ function IndicatorCard({
     if (series.indicator === 'blood_pressure') {
       const bp = series as BloodPressureIndicatorSeries;
       return (
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1.5 text-sm text-slate-300">
           Your baseline:{' '}
           <span className="font-mono-tabular font-medium text-slate-100">
             {bp.baseline_low_systolic}–{bp.baseline_high_systolic} /{' '}
@@ -92,7 +99,7 @@ function IndicatorCard({
 
     const num = series as NumericIndicatorSeries;
     return (
-      <p className="mt-1 text-sm text-slate-300">
+      <p className="mt-1.5 text-sm text-slate-300">
         Your baseline:{' '}
         <span className="font-mono-tabular font-medium text-slate-100">
           {num.baseline_low}–{num.baseline_high}
@@ -102,29 +109,91 @@ function IndicatorCard({
     );
   };
 
+  const radiationLimit =
+    indicator.id === 'radiation_dose'
+      ? parseCareerLimit(indicator.threshold_source)
+      : null;
+  const radiationValue =
+    indicator.id === 'radiation_dose' && typeof indicator.value === 'number'
+      ? indicator.value
+      : null;
+
   return (
     <article
       className="rounded-2xl bg-[#10192D] p-5 shadow-lg shadow-black/25 sm:p-6"
       style={{ border: `1px solid ${indStyle.surfaceBorder}` }}
     >
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+      {/* One-line status sentence at top of card strictly from indicator.level */}
+      <p
+        className="mb-3 text-sm font-medium"
+        style={{ color: indStyle.textColor }}
+      >
+        {indStyle.statusSentence}
+      </p>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-xl">
           <h2 className="text-lg font-semibold text-slate-100">
             {indicator.name}
           </h2>
-          <p className="font-mono-tabular mt-1.5 text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
+
+          {explanation && (
+            <div className="mt-2 space-y-1 text-sm leading-relaxed text-slate-300">
+              <p>
+                <span className="font-medium text-slate-200">
+                  What it measures:
+                </span>{' '}
+                {explanation.measures}
+              </p>
+              <p>
+                <span className="font-medium text-slate-200">
+                  Why it matters in space:
+                </span>{' '}
+                {explanation.matters}
+              </p>
+            </div>
+          )}
+
+          <p className="font-mono-tabular mt-3 text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">
             {formatIndicatorValue(indicator)}
           </p>
           {renderBaselineText()}
         </div>
 
-        <div className="flex flex-col items-start gap-2 sm:items-end">
+        <div className="flex flex-col items-start gap-2 sm:items-end shrink-0">
           <StatusBadge level={indicator.level} variant="pill" />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 sm:text-right">
             Threshold source: {indicator.threshold_source}
           </p>
         </div>
       </div>
+
+      {/* Horizontal career limit progress bar for radiation_dose */}
+      {radiationValue !== null && radiationLimit !== null && (
+        <div className="mt-4 rounded-xl border border-slate-800/80 bg-[#0B1222] p-4">
+          <div className="flex items-center justify-between gap-2 text-xs sm:text-sm">
+            <span className="font-mono-tabular font-medium text-slate-200">
+              {radiationValue} of {radiationLimit} mSv career limit
+            </span>
+          </div>
+          <div
+            role="progressbar"
+            aria-valuenow={radiationValue}
+            aria-valuemin={0}
+            aria-valuemax={radiationLimit}
+            aria-label={`${radiationValue} of ${radiationLimit} mSv career limit`}
+            className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-slate-800"
+          >
+            <div
+              className="h-full rounded-full transition-all duration-300"
+              style={{
+                width: `${Math.min(100, (radiationValue / radiationLimit) * 100)}%`,
+                backgroundColor: indStyle.color,
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {series && <IndicatorChart series={series} unit={indicator.unit} />}
     </article>

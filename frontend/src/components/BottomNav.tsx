@@ -26,7 +26,9 @@ export function BottomNav({ route, onNavigate }: BottomNavProps) {
         route.page === 'block' ||
         route.page === 'mental-checkin' ||
         route.page === 'mental-journal' ||
-        route.page === 'mental-breathing',
+        route.page === 'mental-breathing' ||
+        route.page === 'test-amsler' ||
+        route.page === 'test-pvt',
       Icon: Activity,
     },
     {

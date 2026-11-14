@@ -1,10 +1,12 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
 import type {
+  AmslerResultPayload,
   HealthLevel,
   Indicator,
   IndicatorSeries,
   OrbitalStatus,
+  PvtSessionPayload,
   SelfReportPayload,
 } from '../types/orbital';
 import { mockSeries } from './mockSeries';
@@ -12,12 +14,15 @@ import { mockStatus } from './mockStatus';
 
 const DEMO_MODE = true;
 const inMemorySelfReports: SelfReportPayload[] = [];
+const inMemoryAmslerResults: AmslerResultPayload[] = [];
+const inMemoryPvtSessions: PvtSessionPayload[] = [];
 
 export const LEVEL_STYLES: Record<
   HealthLevel,
   {
     color: string;
     label: string;
+    statusSentence: string;
     surfaceBg: string;
     surfaceBorder: string;
     textColor: string;
@@ -26,7 +31,8 @@ export const LEVEL_STYLES: Record<
 > = {
   green: {
     color: '#2ECC71',
-    label: 'Green',
+    label: 'Green · Normal',
+    statusSentence: 'Within the expected range.',
     surfaceBg: 'rgba(46, 204, 113, 0.12)',
     surfaceBorder: 'rgba(46, 204, 113, 0.35)',
     textColor: '#58D68D',
@@ -34,7 +40,8 @@ export const LEVEL_STYLES: Record<
   },
   yellow: {
     color: '#F1C40F',
-    label: 'Yellow',
+    label: 'Yellow · Watch',
+    statusSentence: 'Changing from your usual values. Keep an eye on it.',
     surfaceBg: 'rgba(241, 196, 15, 0.12)',
     surfaceBorder: 'rgba(241, 196, 15, 0.38)',
     textColor: '#F4D03F',
@@ -42,7 +49,8 @@ export const LEVEL_STYLES: Record<
   },
   orange: {
     color: '#E67E22',
-    label: 'Orange',
+    label: 'Orange · Attention',
+    statusSentence: 'Needs attention.',
     surfaceBg: 'rgba(230, 126, 34, 0.14)',
     surfaceBorder: 'rgba(230, 126, 34, 0.42)',
     textColor: '#EB984E',
@@ -50,11 +58,63 @@ export const LEVEL_STYLES: Record<
   },
   red: {
     color: '#E74C3C',
-    label: 'Red',
+    label: 'Red · Urgent',
+    statusSentence: 'Urgent attention needed.',
     surfaceBg: 'rgba(231, 76, 60, 0.16)',
     surfaceBorder: 'rgba(231, 76, 60, 0.48)',
     textColor: '#EC7063',
     pillTextColor: '#FFFFFF',
+  },
+};
+
+export const INDICATOR_EXPLANATIONS: Record<
+  string,
+  { measures: string; matters: string }
+> = {
+  blood_pressure: {
+    measures: 'Pressure of blood in your arteries.',
+    matters:
+      'Microgravity shifts fluids toward the head and changes how the heart and vessels work.',
+  },
+  heart_rate: {
+    measures: 'Heartbeats per minute at rest.',
+    matters:
+      'The heart adapts to microgravity; changes from your usual value can be an early sign.',
+  },
+  spo2: {
+    measures: 'How much oxygen your blood carries.',
+    matters: 'Cabin pressure changes can cause mild hypoxia.',
+  },
+  sleep_hours: {
+    measures: 'Hours slept last night.',
+    matters:
+      'On the ISS astronauts sleep about 6 h on average, less than scheduled; short sleep lowers performance.',
+  },
+  pvt_lapses: {
+    measures: 'Slow reactions (lapses) in a short attention test.',
+    matters: 'Fatigue and lack of sleep slow your reactions.',
+  },
+  glucose: {
+    measures: 'Sugar level in your blood.',
+    matters: "Spaceflight can reduce the body's response to insulin.",
+  },
+  cabin_co2: {
+    measures: 'Carbon dioxide in the cabin air.',
+    matters:
+      'CO₂ builds up in closed habitats; crews reported symptoms at low levels.',
+  },
+  radiation_dose: {
+    measures: 'Total radiation received so far in your career.',
+    matters:
+      'Space radiation raises long-term health risks; NASA sets a career limit.',
+  },
+  vision_amsler: {
+    measures: 'Whether straight lines look wavy or missing.',
+    matters: 'Many long-duration astronauts develop eye changes (SANS).',
+  },
+  mood_vas: {
+    measures: 'How you rated your mood (100 = worst).',
+    matters: 'Isolation and confinement affect mood and wellbeing.',
   },
 };
 
@@ -126,6 +186,60 @@ export async function saveSelfReport(
   );
   if (!response.ok) {
     throw new Error(`Self-report request failed with code ${response.status}`);
+  }
+}
+
+export async function saveAmslerResult(
+  result: AmslerResultPayload,
+  astronautId = 'A1',
+): Promise<void> {
+  if (DEMO_MODE) {
+    inMemoryAmslerResults.push({
+      ...result,
+      cells: result.cells.map(([r, c]) => [r, c]),
+    });
+    return;
+  }
+
+  const response = await fetch(
+    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(result),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`Amsler test save failed with code ${response.status}`);
+  }
+}
+
+export async function savePvtSession(
+  session: PvtSessionPayload,
+  astronautId = 'A1',
+): Promise<void> {
+  if (DEMO_MODE) {
+    inMemoryPvtSessions.push({
+      ...session,
+      reaction_times_ms: [...session.reaction_times_ms],
+    });
+    return;
+  }
+
+  const response = await fetch(
+    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(session),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`PVT session save failed with code ${response.status}`);
   }
 }
 

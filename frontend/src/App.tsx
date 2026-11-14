@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TopBar } from './components/TopBar';
 import { fetchOrbitalStatus, getDemoStatus } from './data/source';
+import { AmslerTestPage } from './pages/AmslerTestPage';
 import { BlockDetailPage } from './pages/BlockDetailPage';
 import { BodyMapPage } from './pages/BodyMapPage';
 import { HomePage } from './pages/HomePage';
@@ -11,6 +12,7 @@ import { MentalBreathingPage } from './pages/MentalBreathingPage';
 import { MentalCheckinPage } from './pages/MentalCheckinPage';
 import { MentalJournalPage } from './pages/MentalJournalPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { PvtTestPage } from './pages/PvtTestPage';
 import type { AppRoute, OrbitalStatus } from './types/orbital';
 
 function parseRoute(pathname: string): AppRoute {
@@ -30,6 +32,12 @@ function parseRoute(pathname: string): AppRoute {
   }
   if (cleanPath === '/mental/breathing') {
     return { page: 'mental-breathing' };
+  }
+  if (cleanPath === '/tests/amsler') {
+    return { page: 'test-amsler' };
+  }
+  if (cleanPath === '/tests/pvt') {
+    return { page: 'test-pvt' };
   }
   if (cleanPath.startsWith('/block/')) {
     const blockId = decodeURIComponent(cleanPath.slice('/block/'.length));
@@ -127,6 +135,14 @@ export default function App() {
         );
       case 'mental-breathing':
         return <MentalBreathingPage onNavigate={navigate} />;
+      case 'test-amsler':
+        return (
+          <AmslerTestPage astronaut={status.astronaut} onNavigate={navigate} />
+        );
+      case 'test-pvt':
+        return (
+          <PvtTestPage astronaut={status.astronaut} onNavigate={navigate} />
+        );
       case 'action': {
         const matchedBlock = status.blocks.find(
           (block) => block.id === route.blockId,

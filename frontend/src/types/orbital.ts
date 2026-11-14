@@ -99,6 +99,20 @@ export interface SelfReportPayload {
   workload_vas: number;
 }
 
+export interface AmslerResultPayload {
+  flight_day: number;
+  eye: 'right' | 'left';
+  distortion: boolean;
+  cells: Array<[number, number]>;
+}
+
+export interface PvtSessionPayload {
+  flight_day: number;
+  reaction_times_ms: number[];
+  false_starts: number;
+  duration_s: 60;
+}
+
 export type AppRoute =
   | { page: 'home' }
   | { page: 'body' }
@@ -106,6 +120,8 @@ export type AppRoute =
   | { page: 'mental-checkin' }
   | { page: 'mental-journal' }
   | { page: 'mental-breathing' }
+  | { page: 'test-amsler' }
+  | { page: 'test-pvt' }
   | { page: 'action'; blockId: string; actionTitle: string }
   | { page: 'circle' }
   | { page: 'alerts-info' };
