@@ -317,6 +317,6 @@ Full bibliography: [`bibliografia.md`](.claude/skills/fisiologia-espacial/refere
 
 - Paulina Guerscovich — [@paulinaguers](https://github.com/paulinaguers)
 - Miguel — [@miguelperpi](https://github.com/miguelperpi)
-- *(third member — to complete)*
+- Lola — [@thenostromowarrior](https://github.com/thenostromowarrior)
 
 Licensed under the [Apache License 2.0](LICENSE). No NASA or partner-agency logos are used. All data is simulated.
