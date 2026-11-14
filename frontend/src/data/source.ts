@@ -5,11 +5,13 @@ import type {
   Indicator,
   IndicatorSeries,
   OrbitalStatus,
+  SelfReportPayload,
 } from '../types/orbital';
 import { mockSeries } from './mockSeries';
 import { mockStatus } from './mockStatus';
 
 const DEMO_MODE = true;
+const inMemorySelfReports: SelfReportPayload[] = [];
 
 export const LEVEL_STYLES: Record<
   HealthLevel,
@@ -101,6 +103,30 @@ export async function getSeries(
     throw new Error(`Series request failed with code ${response.status}`);
   }
   return (await response.json()) as IndicatorSeries;
+}
+
+export async function saveSelfReport(
+  report: SelfReportPayload,
+  astronautId = 'A1',
+): Promise<void> {
+  if (DEMO_MODE) {
+    inMemorySelfReports.push({ ...report });
+    return;
+  }
+
+  const response = await fetch(
+    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/self_reports`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(report),
+    },
+  );
+  if (!response.ok) {
+    throw new Error(`Self-report request failed with code ${response.status}`);
+  }
 }
 
 export function formatIndicatorValue(indicator: Indicator): string {

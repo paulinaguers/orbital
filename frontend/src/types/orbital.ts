@@ -91,10 +91,21 @@ export type IndicatorSeries =
   | BloodPressureIndicatorSeries
   | VisionAmslerIndicatorSeries;
 
+export interface SelfReportPayload {
+  flight_day: number;
+  mood_vas: number;
+  fatigue_vas: number;
+  stress_vas: number;
+  workload_vas: number;
+}
+
 export type AppRoute =
   | { page: 'home' }
   | { page: 'body' }
   | { page: 'block'; blockId: string }
+  | { page: 'mental-checkin' }
+  | { page: 'mental-journal' }
+  | { page: 'mental-breathing' }
   | { page: 'action'; blockId: string; actionTitle: string }
   | { page: 'circle' }
   | { page: 'alerts-info' };

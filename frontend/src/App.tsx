@@ -7,6 +7,9 @@ import { fetchOrbitalStatus, getDemoStatus } from './data/source';
 import { BlockDetailPage } from './pages/BlockDetailPage';
 import { BodyMapPage } from './pages/BodyMapPage';
 import { HomePage } from './pages/HomePage';
+import { MentalBreathingPage } from './pages/MentalBreathingPage';
+import { MentalCheckinPage } from './pages/MentalCheckinPage';
+import { MentalJournalPage } from './pages/MentalJournalPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import type { AppRoute, OrbitalStatus } from './types/orbital';
 
@@ -18,6 +21,15 @@ function parseRoute(pathname: string): AppRoute {
   }
   if (cleanPath === '/body') {
     return { page: 'body' };
+  }
+  if (cleanPath === '/mental/checkin') {
+    return { page: 'mental-checkin' };
+  }
+  if (cleanPath === '/mental/journal') {
+    return { page: 'mental-journal' };
+  }
+  if (cleanPath === '/mental/breathing') {
+    return { page: 'mental-breathing' };
   }
   if (cleanPath.startsWith('/block/')) {
     const blockId = decodeURIComponent(cleanPath.slice('/block/'.length));
@@ -99,6 +111,22 @@ export default function App() {
             onNavigate={navigate}
           />
         );
+      case 'mental-checkin':
+        return (
+          <MentalCheckinPage
+            astronaut={status.astronaut}
+            onNavigate={navigate}
+          />
+        );
+      case 'mental-journal':
+        return (
+          <MentalJournalPage
+            astronaut={status.astronaut}
+            onNavigate={navigate}
+          />
+        );
+      case 'mental-breathing':
+        return <MentalBreathingPage onNavigate={navigate} />;
       case 'action': {
         const matchedBlock = status.blocks.find(
           (block) => block.id === route.blockId,

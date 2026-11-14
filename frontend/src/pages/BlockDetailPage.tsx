@@ -25,10 +25,22 @@ interface BlockDetailPageProps {
   onNavigate: (path: string) => void;
 }
 
-const BLOCK_ACTIONS: Record<string, string[]> = {
-  sleep_cognition: ['Take reaction test (PVT)', "Log last night's sleep"],
-  mental_health: ['Daily check-in', 'Private journal', 'Breathing exercise'],
-  environment: ['Do Amsler grid test'],
+interface BlockAction {
+  label: string;
+  path?: string;
+}
+
+const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
+  sleep_cognition: [
+    { label: 'Take reaction test (PVT)' },
+    { label: "Log last night's sleep" },
+  ],
+  mental_health: [
+    { label: 'Daily check-in', path: '/mental/checkin' },
+    { label: 'Private journal', path: '/mental/journal' },
+    { label: 'Breathing exercise', path: '/mental/breathing' },
+  ],
+  environment: [{ label: 'Do Amsler grid test' }],
 };
 
 function IndicatorCard({
@@ -216,18 +228,19 @@ export function BlockDetailPage({
       {/* 3. Block-specific action buttons */}
       {actions.length > 0 && (
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          {actions.map((actionTitle) => (
+          {actions.map((action) => (
             <button
-              key={actionTitle}
+              key={action.label}
               type="button"
               onClick={() =>
                 onNavigate(
-                  `/action/${encodeURIComponent(block.id)}/${encodeURIComponent(actionTitle)}`,
+                  action.path ??
+                    `/action/${encodeURIComponent(block.id)}/${encodeURIComponent(action.label)}`,
                 )
               }
               className="inline-flex min-h-[46px] items-center justify-center rounded-xl border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
             >
-              {actionTitle}
+              {action.label}
             </button>
           ))}
         </div>

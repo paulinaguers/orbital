@@ -21,7 +21,12 @@ export function BottomNav({ route, onNavigate }: BottomNavProps) {
       id: 'body',
       label: 'Body',
       path: '/body',
-      active: route.page === 'body' || route.page === 'block',
+      active:
+        route.page === 'body' ||
+        route.page === 'block' ||
+        route.page === 'mental-checkin' ||
+        route.page === 'mental-journal' ||
+        route.page === 'mental-breathing',
       Icon: Activity,
     },
     {
