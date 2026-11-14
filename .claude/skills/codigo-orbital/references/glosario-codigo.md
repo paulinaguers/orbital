@@ -15,7 +15,7 @@ Nombres que se usan en el código. Si hace falta uno nuevo, se agrega acá.
 | `reason` / `source` (`rule`, `ml`) | motivo / origen (regla o ML) |
 | `measurement` | medición |
 | `self_report` | autorreporte |
-| `symptom` | síntoma (`dizziness`, `lightheaded_on_standing`, `headache`, `cold_sore_or_rash`) |
+| `symptom` | síntoma (`dizziness`, `lightheaded_or_faint`, `headache`, `cold_sore_or_rash`); columna `symptom_<nombre>`, por ejemplo `symptom_lightheaded_or_faint` |
 | `indicator` | indicador |
 | `astronaut` | astronauta |
 | `simulator` | simulador |

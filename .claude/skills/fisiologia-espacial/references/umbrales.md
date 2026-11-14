@@ -67,7 +67,7 @@ No fija rangos numéricos para signos vitales. Exige evaluar, registrar, monitor
 1. Presión arterial: carga manual.
 2. FC y SpO₂: wearable simulado.
 3. Glucosa: carga manual.
-   - Síntomas (autorreporte, desde el 14/11): mareo o desorientación, aturdimiento al pararse, dolor de cabeza, herpes labial o erupciones. No crean reglas nuevas: alimentan "presión < 90/60 con síntomas", "CO₂ con dolor de cabeza" y "temperatura con síntomas".
+   - Síntomas (autorreporte, desde el 14/11): mareo o desorientación, aturdimiento o sensación de desmayo, dolor de cabeza, herpes labial o erupciones. No crean reglas nuevas: alimentan "presión < 90/60 con síntomas", "CO₂ con dolor de cabeza" y "temperatura con síntomas".
 4. Sueño: autorreporte.
 5. Ánimo y test de reacción: test en la app.
 6. Visión con rejilla de Amsler: test en la app.
