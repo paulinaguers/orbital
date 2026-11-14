@@ -69,6 +69,14 @@ THRESHOLDS = {
         # Naranja: |z| >= 2 "sostenido". Proposal. Cuántas mediciones
         # son "sostenido" todavía no está definido: decisión pendiente.
         "orange_abs_z_min": 2.0,
+        # PROVISIONAL (thread A, 14/11/2026), pending team decision Q1:
+        # "sustained" = the same 3 measurements in a row as yellow. With this,
+        # a single extreme reading inside the clinical range sets no deviation
+        # alert (open decision ⚠7).
+        # PROVISORIO (hilo A, 14/11/2026), decisión Q1 pendiente: "sostenido" =
+        # las mismas 3 mediciones seguidas que el amarillo. Así, una lectura
+        # extrema aislada dentro del rango clínico no da alerta de desvío (⚠7).
+        "orange_consecutive_count": 3,
     },
     # ------------------------------------------------------------------
     # 1. Blood pressure / Presión arterial (mmHg)
