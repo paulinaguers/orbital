@@ -5,12 +5,16 @@ import { ArrowLeft } from 'lucide-react';
 interface PlaceholderPageProps {
   title: string;
   routeLabel: string;
+  message?: string;
+  backLabel?: string;
   onBack: () => void;
 }
 
 export function PlaceholderPage({
   title,
   routeLabel,
+  message = 'This screen is scheduled for the next build phase. Return to Orbi on the home view to review today’s mission health summary.',
+  backLabel = 'Back to Home',
   onBack,
 }: PlaceholderPageProps) {
   return (
@@ -23,8 +27,7 @@ export function PlaceholderPage({
           {title}
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-300">
-          This screen is scheduled for the next build phase. Return to Orbi on
-          the home view to review today&apos;s mission health summary.
+          {message}
         </p>
 
         <div className="mt-8">
@@ -34,7 +37,7 @@ export function PlaceholderPage({
             className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-2.5 text-sm font-medium text-slate-100 transition-colors duration-150 hover:bg-slate-700/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span>Back to Home</span>
+            <span>{backLabel}</span>
           </button>
         </div>
       </div>

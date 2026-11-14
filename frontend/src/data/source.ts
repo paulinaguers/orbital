@@ -1,6 +1,12 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import type { HealthLevel, Indicator, OrbitalStatus } from '../types/orbital';
+import type {
+  HealthLevel,
+  Indicator,
+  IndicatorSeries,
+  OrbitalStatus,
+} from '../types/orbital';
+import { mockSeries } from './mockSeries';
 import { mockStatus } from './mockStatus';
 
 const DEMO_MODE = true;
@@ -68,6 +74,33 @@ export async function fetchOrbitalStatus(
     throw new Error(`Status request failed with code ${response.status}`);
   }
   return (await response.json()) as OrbitalStatus;
+}
+
+export function getDemoSeries(
+  indicatorId: string,
+): IndicatorSeries | undefined {
+  return mockSeries[indicatorId];
+}
+
+export async function getSeries(
+  indicatorId: string,
+  astronautId = 'A1',
+): Promise<IndicatorSeries> {
+  if (DEMO_MODE) {
+    const series = mockSeries[indicatorId];
+    if (!series) {
+      throw new Error(`No series data found for indicator "${indicatorId}"`);
+    }
+    return series;
+  }
+
+  const response = await fetch(
+    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/series/${encodeURIComponent(indicatorId)}`,
+  );
+  if (!response.ok) {
+    throw new Error(`Series request failed with code ${response.status}`);
+  }
+  return (await response.json()) as IndicatorSeries;
 }
 
 export function formatIndicatorValue(indicator: Indicator): string {

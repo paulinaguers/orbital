@@ -43,9 +43,58 @@ export interface OrbitalStatus {
   blocks: HealthBlock[];
 }
 
+export interface NumericSeriesPoint {
+  flight_day: number;
+  value: number;
+  level: HealthLevel;
+}
+
+export interface BloodPressureSeriesPoint {
+  flight_day: number;
+  systolic: number;
+  diastolic: number;
+  level: HealthLevel;
+}
+
+export interface VisionAmslerSeriesPoint {
+  flight_day: number;
+  result: 'No distortion' | 'Distortion reported';
+  level: HealthLevel;
+}
+
+export interface NumericIndicatorSeries {
+  indicator: string;
+  baseline_mean: number;
+  baseline_low: number;
+  baseline_high: number;
+  points: NumericSeriesPoint[];
+}
+
+export interface BloodPressureIndicatorSeries {
+  indicator: 'blood_pressure';
+  baseline_mean_systolic: number;
+  baseline_low_systolic: number;
+  baseline_high_systolic: number;
+  baseline_mean_diastolic: number;
+  baseline_low_diastolic: number;
+  baseline_high_diastolic: number;
+  points: BloodPressureSeriesPoint[];
+}
+
+export interface VisionAmslerIndicatorSeries {
+  indicator: 'vision_amsler';
+  points: VisionAmslerSeriesPoint[];
+}
+
+export type IndicatorSeries =
+  | NumericIndicatorSeries
+  | BloodPressureIndicatorSeries
+  | VisionAmslerIndicatorSeries;
+
 export type AppRoute =
   | { page: 'home' }
   | { page: 'body' }
   | { page: 'block'; blockId: string }
+  | { page: 'action'; blockId: string; actionTitle: string }
   | { page: 'circle' }
   | { page: 'alerts-info' };

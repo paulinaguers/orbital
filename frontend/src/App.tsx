@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TopBar } from './components/TopBar';
 import { fetchOrbitalStatus, getDemoStatus } from './data/source';
+import { BlockDetailPage } from './pages/BlockDetailPage';
 import { BodyMapPage } from './pages/BodyMapPage';
 import { HomePage } from './pages/HomePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
@@ -21,6 +22,19 @@ function parseRoute(pathname: string): AppRoute {
   if (cleanPath.startsWith('/block/')) {
     const blockId = decodeURIComponent(cleanPath.slice('/block/'.length));
     return { page: 'block', blockId: blockId || 'unknown' };
+  }
+  if (cleanPath.startsWith('/action/')) {
+    const rest = cleanPath.slice('/action/'.length);
+    const slashIdx = rest.indexOf('/');
+    if (slashIdx !== -1) {
+      const blockId = decodeURIComponent(rest.slice(0, slashIdx));
+      const actionTitle = decodeURIComponent(rest.slice(slashIdx + 1));
+      return {
+        page: 'action',
+        blockId: blockId || 'unknown',
+        actionTitle: actionTitle || 'Action',
+      };
+    }
   }
   if (cleanPath === '/circle') {
     return { page: 'circle' };
@@ -77,15 +91,25 @@ export default function App() {
         return <HomePage status={status} onNavigate={navigate} />;
       case 'body':
         return <BodyMapPage status={status} onNavigate={navigate} />;
-      case 'block': {
+      case 'block':
+        return (
+          <BlockDetailPage
+            status={status}
+            blockId={route.blockId}
+            onNavigate={navigate}
+          />
+        );
+      case 'action': {
         const matchedBlock = status.blocks.find(
           (block) => block.id === route.blockId,
         );
         return (
           <PlaceholderPage
-            title={matchedBlock ? matchedBlock.name : 'Block detail'}
-            routeLabel={`/block/${route.blockId}`}
-            onBack={() => navigate('/body')}
+            title={route.actionTitle}
+            routeLabel={matchedBlock ? matchedBlock.name : 'Action'}
+            message="Coming soon"
+            backLabel={matchedBlock ? `Back to ${matchedBlock.name}` : 'Back'}
+            onBack={() => navigate(`/block/${route.blockId}`)}
           />
         );
       }
