@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TopBar } from './components/TopBar';
 import { fetchOrbitalStatus, getDemoStatus } from './data/source';
+import { BodyMapPage } from './pages/BodyMapPage';
 import { HomePage } from './pages/HomePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import type { AppRoute, OrbitalStatus } from './types/orbital';
@@ -75,13 +76,7 @@ export default function App() {
       case 'home':
         return <HomePage status={status} onNavigate={navigate} />;
       case 'body':
-        return (
-          <PlaceholderPage
-            title="Body map"
-            routeLabel="/body"
-            onBack={() => navigate('/')}
-          />
-        );
+        return <BodyMapPage status={status} onNavigate={navigate} />;
       case 'block': {
         const matchedBlock = status.blocks.find(
           (block) => block.id === route.blockId,

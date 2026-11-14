@@ -91,11 +91,30 @@
   animation: orbi-bubble-pop 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes orbi-anchor-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(1.9);
+  }
+}
+
+.animate-anchor-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbi-anchor-pulse 1.8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-orbi-float,
   .animate-orbi-blink,
   .animate-orbi-antenna-pulse,
-  .animate-orbi-bubble-pop {
+  .animate-orbi-bubble-pop,
+  .animate-anchor-pulse {
     animation: none;
   }
 }
