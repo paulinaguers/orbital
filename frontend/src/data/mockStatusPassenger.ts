@@ -73,7 +73,7 @@ export const mockStatusPassenger: OrbitalStatus = {
         {
           id: 'sleep_hours',
           name: 'Sleep',
-          value: 5.8,
+          value: 6.4,
           unit: 'h',
           level: 'yellow',
           threshold_source: '',

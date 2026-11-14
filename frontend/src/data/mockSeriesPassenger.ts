@@ -100,7 +100,7 @@ export const mockSeriesPassenger: Record<string, IndicatorSeries> = {
       },
       { flight_day: 0, value: 6.7, level: 'yellow' },
       { flight_day: 1, value: 6.3, level: 'yellow' },
-      { flight_day: 2, value: 5.8, level: 'yellow' },
+      { flight_day: 2, value: 6.4, level: 'yellow' },
     ],
   },
 
