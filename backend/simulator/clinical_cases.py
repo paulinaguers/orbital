@@ -46,8 +46,9 @@ DECISIONS = {
     "Q5": "BP baseline layer: whether a systolic deviation alone is enough, or how the two z-scores combine",
     "RAD-LIMITS": "Radiation: how the 600 mSv career and 250 mSv solar-event limits combine [thresholds.py, radiation]",
     # Q4 (systolic/diastolic AND or OR) was resolved on 14/11 with the ACC/AHA
-    # guideline: the higher category wins. / Q4 se resolvió el 14/11 con la
-    # guía ACC/AHA: gana la categoría más alta.
+    # 2017 guideline (and its 2025 AHA/ACC update): the higher category wins.
+    # Q4 se resolvió el 14/11 con la guía ACC/AHA 2017 (y su actualización
+    # AHA/ACC 2025): gana la categoría más alta.
     "SLEEP-7H": "Sleep at exactly 7 h is both green and yellow",
     "RAD-65": "Radiation at exactly 65 % is both yellow and orange [7b]",
     "PVT-355": "PVT: whether exactly 355 ms is a lapse (>= or >)",
@@ -81,11 +82,12 @@ SYMPTOM_COLUMNS = [
 ]
 
 # Sleep, cabin CO2, Amsler and radiation have no baseline (z-score) layer in
-# alert_texts.md, so they stay constant on baseline days (standard deviation 0).
-# Thread A's baseline.py must not divide by a standard deviation of 0.
-# Sueño, CO2, Amsler y radiación no tienen capa de línea base en alert_texts.md:
-# quedan constantes en los días de línea base (desvío 0). El baseline.py del
-# hilo A no tiene que dividir por un desvío de 0.
+# alert_texts.md. Sleep, CO2 and Amsler stay constant on baseline days
+# (standard deviation 0); radiation rises every day. Thread A's baseline.py
+# must not divide by a standard deviation of 0.
+# Sueño, CO2, Amsler y radiación no tienen capa de línea base en alert_texts.md.
+# Sueño, CO2 y Amsler quedan constantes en la línea base (desvío 0); la
+# radiación sube cada día. El baseline.py del hilo A no tiene que dividir por 0.
 
 # First flight day with a baseline (days 4-10 are the baseline days). Before
 # it, mood and PVT have no level at all: final level "n/a".
@@ -202,25 +204,25 @@ SINGLE_CASES = {
         single("BP-01", bp(129, 70), {"blood_pressure": ("green", P)},
                "Systolic just below 130 · AHA. Final PENDING ⚠7 and Q5 (single reading, systolic z = +4.75)."),
         single("BP-02", bp(130, 70), {"blood_pressure": ("orange", "orange")},
-               "Systolic at 130 · AHA; different categories, the higher wins (ACC/AHA guideline)."),
+               "Systolic at 130 · AHA; different categories, the higher wins (ACC/AHA 2017 guideline)."),
         single("BP-03", bp(131, 70), {"blood_pressure": ("orange", "orange")},
-               "Systolic just above 130 · AHA; higher category wins (ACC/AHA)."),
+               "Systolic just above 130 · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-04", bp(179, 70), {"blood_pressure": ("orange", "orange")},
-               "Systolic just below 180 · AHA; higher category wins (ACC/AHA)."),
+               "Systolic just below 180 · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-05", bp(180, 70), {"blood_pressure": ("orange", "orange")},
-               "Systolic at 180 (top of 130-180) · AHA; higher category wins (ACC/AHA)."),
+               "Systolic at 180 (top of 130-180) · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-06", bp(181, 70), {"blood_pressure": ("red", "red")},
                "Systolic above 180 · AHA ('and/or'). Repeat after 5 min is the action, not the trigger."),
         single("BP-07", bp(110, 79), {"blood_pressure": ("green", P)},
                "Diastolic just below 80 · AHA. Final PENDING ⚠7 and Q5 (diastolic z = +4.5)."),
         single("BP-08", bp(110, 80), {"blood_pressure": ("orange", "orange")},
-               "Diastolic at 80 · AHA; different categories, the higher wins (ACC/AHA guideline)."),
+               "Diastolic at 80 · AHA; different categories, the higher wins (ACC/AHA 2017 guideline)."),
         single("BP-09", bp(110, 81), {"blood_pressure": ("orange", "orange")},
-               "Diastolic just above 80 · AHA; higher category wins (ACC/AHA)."),
+               "Diastolic just above 80 · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-10", bp(110, 119), {"blood_pressure": ("orange", "orange")},
-               "Diastolic just below 120 · AHA; higher category wins (ACC/AHA)."),
+               "Diastolic just below 120 · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-11", bp(110, 120), {"blood_pressure": ("orange", "orange")},
-               "Diastolic at 120 (top of 80-120) · AHA; higher category wins (ACC/AHA)."),
+               "Diastolic at 120 (top of 80-120) · AHA; higher category wins (ACC/AHA 2017)."),
         single("BP-12", bp(110, 121), {"blood_pressure": ("red", "red")},
                "Diastolic above 120 · AHA ('and/or')."),
         single("BP-13", bp(89, 59), {"blood_pressure": (P, P)},
