@@ -8,6 +8,7 @@ import type { OrbitalStatus, ScheduledTest } from '../types/orbital';
 interface HomePageProps {
   status: OrbitalStatus;
   onNavigate: (path: string) => void;
+  onOpenTips: (blockId: string) => void;
 }
 
 function getNextScheduledTest(tests: ScheduledTest[]): ScheduledTest | null {
@@ -32,7 +33,7 @@ function getOrbiOverdueLine(overdueTests: ScheduledTest[]): string | null {
   return `Don't forget your ${overdueTests[0].name.toLowerCase()}, it helps me keep track of how you are doing.`;
 }
 
-export function HomePage({ status, onNavigate }: HomePageProps) {
+export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
   const firstName = status.astronaut.name.split(' ')[0] || status.astronaut.name;
   const attentionBlocks = status.blocks.filter(
     (block) => block.level !== 'green',
@@ -126,15 +127,25 @@ export function HomePage({ status, onNavigate }: HomePageProps) {
                   {attentionBlocks.map((block) => (
                     <li
                       key={block.id}
-                      className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-[15px] leading-snug text-slate-700"
+                      className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-[15px] leading-snug text-slate-700"
                     >
-                      <StatusBadge level={block.level} variant="pill" />
-                      <span className="font-semibold text-slate-900">
-                        {block.name}:
-                      </span>
-                      <span className="min-w-0 text-slate-700">
-                        {block.recommendation}
-                      </span>
+                      <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                        <StatusBadge level={block.level} variant="pill" />
+                        <span className="font-semibold text-slate-900">
+                          {block.name}:
+                        </span>
+                        <span className="min-w-0 text-slate-700">
+                          {block.recommendation}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => onOpenTips(block.id)}
+                        className="inline-flex min-h-[34px] shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-800 shadow-xs transition-colors hover:border-sky-500 hover:bg-sky-50 hover:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 cursor-pointer"
+                      >
+                        See tips →
+                      </button>
                     </li>
                   ))}
                 </ul>

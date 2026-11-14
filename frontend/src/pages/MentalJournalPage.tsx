@@ -117,9 +117,15 @@ export function MentalJournalPage({
           <span>Mental Health</span>
         </button>
 
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-          Private journal
-        </h1>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+            Private journal
+          </h1>
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-800/75 px-2.5 py-1 text-xs font-medium text-slate-200">
+            <Lock className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />
+            <span>Private</span>
+          </span>
+        </div>
       </div>
 
       {/* Privacy notice */}

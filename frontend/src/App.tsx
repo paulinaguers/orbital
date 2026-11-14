@@ -3,6 +3,7 @@
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
+import { TipsDrawer } from './components/TipsDrawer';
 import { TopBar } from './components/TopBar';
 import {
   fetchOrbitalStatus,
@@ -65,6 +66,13 @@ export default function App() {
     parseRoute(window.location.pathname),
   );
   const [toastDismissed, setToastDismissed] = useState(false);
+  const [tipsDrawerOpen, setTipsDrawerOpen] = useState(false);
+  const [tipsFilterBlockId, setTipsFilterBlockId] = useState<string | null>(
+    null,
+  );
+  const [checkedTipSteps, setCheckedTipSteps] = useState<
+    Record<string, boolean>
+  >({});
 
   useEffect(() => {
     let active = true;
@@ -103,6 +111,18 @@ export default function App() {
     setStatus((prev) => markTestCompletedInMemory(prev, testId));
   };
 
+  const handleOpenTips = (blockId: string) => {
+    setTipsFilterBlockId(blockId);
+    setTipsDrawerOpen(true);
+  };
+
+  const handleToggleTipStep = (stepKey: string) => {
+    setCheckedTipSteps((prev) => ({
+      ...prev,
+      [stepKey]: !prev[stepKey],
+    }));
+  };
+
   const overdueToastTest = !toastDismissed
     ? status.tests.find((test) => test.due && test.overdue) ?? null
     : null;
@@ -110,7 +130,13 @@ export default function App() {
   const renderPage = () => {
     switch (route.page) {
       case 'home':
-        return <HomePage status={status} onNavigate={navigate} />;
+        return (
+          <HomePage
+            status={status}
+            onNavigate={navigate}
+            onOpenTips={handleOpenTips}
+          />
+        );
       case 'body':
         return <BodyMapPage status={status} onNavigate={navigate} />;
       case 'block':
@@ -119,6 +145,7 @@ export default function App() {
             status={status}
             blockId={route.blockId}
             onNavigate={navigate}
+            onOpenTips={handleOpenTips}
           />
         );
       case 'mental-checkin':
@@ -211,6 +238,18 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <TipsDrawer
+        open={tipsDrawerOpen}
+        blocks={status.blocks}
+        filterBlockId={tipsFilterBlockId}
+        checkedSteps={checkedTipSteps}
+        onToggleStep={handleToggleTipStep}
+        onShowAllBlocks={
+          route.page === 'home' ? () => setTipsFilterBlockId(null) : undefined
+        }
+        onClose={() => setTipsDrawerOpen(false)}
+      />
 
       <BottomNav route={route} onNavigate={navigate} />
     </div>

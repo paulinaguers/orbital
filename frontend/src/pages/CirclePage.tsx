@@ -1,6 +1,14 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { ArrowLeft, Check, Clock, Radio, Send, WifiOff } from 'lucide-react';
+import {
+  ArrowLeft,
+  Check,
+  Clock,
+  Lock,
+  Radio,
+  Send,
+  WifiOff,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { getDemoCircleData } from '../data/source';
 import type { CircleContact, CircleMessage } from '../types/orbital';
@@ -45,6 +53,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
     initialData.contacts[0]?.id ?? 'maya',
   );
   const [draft, setDraft] = useState('');
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const targetMs = Date.parse(link.next_window_utc);
   const [remainingMs, setRemainingMs] = useState<number>(() =>
@@ -52,6 +61,7 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
   );
 
   const threadEndRef = useRef<HTMLDivElement | null>(null);
+  const privacyPopoverRef = useRef<HTMLDivElement | null>(null);
 
   const isConnected = remainingMs <= 0 || link.status === 'connected';
 
@@ -99,6 +109,34 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
   useEffect(() => {
     threadEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [selectedContact?.id, selectedContact?.messages.length]);
+
+  useEffect(() => {
+    if (!privacyOpen) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        privacyPopoverRef.current &&
+        !privacyPopoverRef.current.contains(event.target as Node)
+      ) {
+        setPrivacyOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setPrivacyOpen(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [privacyOpen]);
 
   const handleSelectContact = (contactId: string) => {
     setSelectedId(contactId);
@@ -277,23 +315,56 @@ export function CirclePage({ currentFlightDay, onNavigate }: CirclePageProps) {
         {selectedContact && (
           <div className="flex min-h-[460px] flex-col rounded-2xl border border-slate-800/90 bg-[#10192D] shadow-lg shadow-black/20">
             {/* Chat Header */}
-            <div className="flex items-center gap-3 border-b border-slate-800/80 px-5 py-4">
-              <div
-                aria-hidden="true"
-                className={`flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold shrink-0 ${
-                  AVATAR_TONES[selectedContact.id] ??
-                  'bg-slate-700 text-slate-100 border-slate-600'
-                }`}
-              >
-                {selectedContact.initials}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 px-5 py-4">
+              <div className="flex items-center gap-3">
+                <div
+                  aria-hidden="true"
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold shrink-0 ${
+                    AVATAR_TONES[selectedContact.id] ??
+                    'bg-slate-700 text-slate-100 border-slate-600'
+                  }`}
+                >
+                  {selectedContact.initials}
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-slate-50">
+                    {selectedContact.name}
+                  </h2>
+                  <p className="text-xs text-slate-400">
+                    {selectedContact.relationship}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-base font-semibold text-slate-50">
-                  {selectedContact.name}
-                </h2>
-                <p className="text-xs text-slate-400">
-                  {selectedContact.relationship}
-                </p>
+
+              <div ref={privacyPopoverRef} className="relative">
+                <button
+                  type="button"
+                  onClick={() => setPrivacyOpen((prev) => !prev)}
+                  aria-expanded={privacyOpen}
+                  aria-haspopup="dialog"
+                  className="inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-800/75 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+                >
+                  <Lock className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />
+                  <span>End-to-end encrypted</span>
+                </button>
+
+                {privacyOpen && (
+                  <div
+                    role="dialog"
+                    aria-label="Encryption and privacy note"
+                    className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-slate-700/90 bg-[#0B1324] p-4 shadow-2xl shadow-black/70 z-30"
+                  >
+                    <p className="text-xs leading-relaxed text-slate-100 sm:text-sm">
+                      In ORBITAL&apos;s design, personal messages are end-to-end
+                      encrypted: only you and your contact can read them. They
+                      are never analyzed and are not part of your health data.
+                    </p>
+                    <p className="mt-2.5 border-t border-slate-800 pt-2.5 text-[11px] leading-relaxed text-slate-400">
+                      Prototype: encryption is part of the design and is not
+                      implemented in this demo.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

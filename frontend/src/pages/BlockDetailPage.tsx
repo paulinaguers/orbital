@@ -24,6 +24,7 @@ interface BlockDetailPageProps {
   status: OrbitalStatus;
   blockId: string;
   onNavigate: (path: string) => void;
+  onOpenTips: (blockId: string) => void;
 }
 
 interface BlockAction {
@@ -207,6 +208,7 @@ export function BlockDetailPage({
   status,
   blockId,
   onNavigate,
+  onOpenTips,
 }: BlockDetailPageProps) {
   const block: HealthBlock | undefined = status.blocks.find(
     (b) => b.id === blockId,
@@ -274,7 +276,7 @@ export function BlockDetailPage({
 
         {/* Recommendation in a highlighted box */}
         <div
-          className="mt-5 rounded-2xl px-5 py-4"
+          className="mt-5 flex flex-col gap-3 rounded-2xl px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
           style={{
             backgroundColor: blockStyle.surfaceBg,
             border: `1.5px solid ${blockStyle.surfaceBorder}`,
@@ -283,6 +285,16 @@ export function BlockDetailPage({
           <p className="text-base font-medium leading-relaxed text-slate-100">
             {block.recommendation}
           </p>
+
+          {block.level !== 'green' && (
+            <button
+              type="button"
+              onClick={() => onOpenTips(block.id)}
+              className="inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-xl border border-slate-200/25 bg-[#0D1526]/85 px-4 py-2 text-sm font-semibold text-slate-100 transition-colors hover:border-sky-400/60 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+            >
+              See tips
+            </button>
+          )}
         </div>
       </header>
 

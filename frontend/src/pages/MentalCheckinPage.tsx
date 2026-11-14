@@ -1,7 +1,15 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  Check,
+  CheckCircle2,
+  Clock,
+  HelpCircle,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { useState } from 'react';
+import { TestIntroCard } from '../components/TestIntroCard';
 import { saveSelfReport } from '../data/source';
 import type { Astronaut } from '../types/orbital';
 
@@ -366,6 +374,8 @@ export function MentalCheckinPage({
     stress_score: null,
     workload_score: null,
   });
+  const [showIntro, setShowIntro] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -425,22 +435,66 @@ export function MentalCheckinPage({
             <span>Mental Health</span>
           </button>
 
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            Daily check-in
-          </h1>
-          <p className="mt-1.5 text-base text-slate-300">
-            Takes less than 30 seconds.
-          </p>
+          {!showIntro && (
+            <>
+              <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+                Daily check-in
+              </h1>
+              <p className="mt-1.5 text-base text-slate-300">
+                Takes less than 30 seconds.
+              </p>
+            </>
+          )}
         </div>
 
-        {!saved && (
-          <p className="font-mono-tabular text-sm font-medium text-slate-300">
-            {answeredCount} of 4 answered
-          </p>
+        {!saved && !showIntro && (
+          <div className="flex items-center gap-3">
+            <p className="font-mono-tabular text-sm font-medium text-slate-300">
+              {answeredCount} of 4 answered
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowIntro(true)}
+              aria-label="How this check-in works"
+              title="How this check-in works"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700/80 bg-slate-800/80 text-slate-300 transition-colors hover:border-sky-400/60 hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
         )}
       </div>
 
-      {saved ? (
+      {showIntro && !saved ? (
+        <div className="mt-4 flex flex-1 flex-col justify-center">
+          <TestIntroCard
+            title="Daily check-in"
+            whatItMeasures="Four quick questions from 0 to 10 about mood, fatigue, stress and workload."
+            whyItMatters="Isolation and confinement affect wellbeing."
+            howLong="Under 30 seconds"
+            howOften="Daily, at the same time"
+            steps={[
+              {
+                icon: SlidersHorizontal,
+                text: 'Rate mood, fatigue, stress and workload on the 0 to 10 scale (10 is the worst state).',
+              },
+              {
+                icon: Clock,
+                text: 'Answer quickly based on how you feel right now, ideally at the same time each day.',
+              },
+              {
+                icon: CheckCircle2,
+                text: 'Save your check-in so ORBITAL can track changes against your personal baseline.',
+              },
+            ]}
+            actionLabel={hasStarted ? 'Back to check-in' : 'Start test'}
+            onStart={() => {
+              setHasStarted(true);
+              setShowIntro(false);
+            }}
+          />
+        </div>
+      ) : saved ? (
         <div className="mt-8 rounded-2xl border border-slate-700/80 bg-[#10192D] p-8 shadow-xl shadow-black/25">
           <div className="flex items-start gap-4">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-500/15 text-sky-300 shrink-0">

@@ -1,7 +1,15 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  HelpCircle,
+  MousePointerClick,
+  Timer,
+} from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { TestIntroCard } from '../components/TestIntroCard';
 import { savePvtSession } from '../data/source';
 import type { Astronaut } from '../types/orbital';
 
@@ -35,9 +43,11 @@ export function PvtTestPage({
   const [remainingSec, setRemainingSec] = useState(DURATION_S);
   const [falseStartNotice, setFalseStartNotice] = useState(false);
   const [recordedCount, setRecordedCount] = useState(0);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const subPhaseRef = useRef<TrialSubPhase>('waiting');
   const sessionEndAtRef = useRef<number>(0);
+  const pausedRemainingMsRef = useRef<number>(DURATION_MS);
   const stimulusStartRef = useRef<number>(0);
   const reactionTimesRef = useRef<number[]>([]);
   const falseStartsRef = useRef<number>(0);
@@ -152,8 +162,40 @@ export function PvtTestPage({
     scheduleNextWait();
   };
 
+  const openHelp = () => {
+    pausedRemainingMsRef.current = Math.max(
+      0,
+      sessionEndAtRef.current - performance.now(),
+    );
+    clearAllTimers();
+    setHelpOpen(true);
+  };
+
+  const closeHelpAndResume = () => {
+    const remainingMs = pausedRemainingMsRef.current;
+    setHelpOpen(false);
+    if (remainingMs <= 0) {
+      finishSession();
+      return;
+    }
+
+    sessionEndAtRef.current = performance.now() + remainingMs;
+    setRemainingSec(remainingMs / 1000);
+
+    countdownIntervalRef.current = window.setInterval(() => {
+      const leftSec = (sessionEndAtRef.current - performance.now()) / 1000;
+      setRemainingSec(Math.max(0, leftSec));
+    }, 250);
+
+    sessionTimerRef.current = window.setTimeout(() => {
+      finishSession();
+    }, remainingMs);
+
+    scheduleNextWait();
+  };
+
   const handleStimulusInput = useCallback(() => {
-    if (stage !== 'running') {
+    if (stage !== 'running' || helpOpen) {
       return;
     }
 
@@ -187,10 +229,10 @@ export function PvtTestPage({
         setFalseStartNotice(false);
       }, 650);
     }
-  }, [scheduleNextWait, stage]);
+  }, [helpOpen, scheduleNextWait, stage]);
 
   useEffect(() => {
-    if (stage !== 'running') {
+    if (stage !== 'running' || helpOpen) {
       return;
     }
 
@@ -230,23 +272,31 @@ export function PvtTestPage({
       </div>
 
       {stage === 'intro' && (
-        <div className="my-auto mx-auto w-full max-w-2xl rounded-2xl border border-slate-800/90 bg-[#10192D] p-7 shadow-xl shadow-black/25 sm:p-9">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            Reaction test (PVT)
-          </h1>
-          <p className="mt-4 text-lg leading-relaxed text-slate-200">
-            Keep your eyes on the center. When the counter appears, tap the
-            screen (or press Space) as fast as you can. Demo version: 1 minute.
-          </p>
-          <div className="mt-7">
-            <button
-              type="button"
-              onClick={startSession}
-              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
-            >
-              Start test
-            </button>
-          </div>
+        <div className="mt-4 flex flex-1 flex-col justify-center">
+          <TestIntroCard
+            title="Reaction test (PVT)"
+            whatItMeasures="Sustained attention and reaction speed."
+            whyItMatters="Fatigue and lack of sleep slow reactions. Astronauts on the ISS took it every 4 days."
+            howLong="Standard version 3 min, demo version 1 min"
+            howOften="Every 4 days"
+            steps={[
+              {
+                icon: Eye,
+                text: 'Keep your eyes focused on the center dot.',
+              },
+              {
+                icon: Timer,
+                text: 'Wait for the millisecond counter to appear at random intervals.',
+              },
+              {
+                icon: MousePointerClick,
+                text: 'Tap anywhere on the screen or press Space as fast as you can when it appears.',
+              },
+            ]}
+            note="Use the same device and the same way of answering (tap or Space) every time."
+            actionLabel="Start test"
+            onStart={startSession}
+          />
         </div>
       )}
 
@@ -261,11 +311,26 @@ export function PvtTestPage({
           }}
           className="mt-4 flex flex-1 flex-col items-center justify-between rounded-3xl border border-slate-800 bg-[#0A1120] p-6 select-none touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-sky-400 sm:p-8"
         >
-          <div className="flex w-full items-center justify-between text-xs sm:text-sm text-slate-400">
+          <div className="flex w-full items-center justify-between gap-3 text-xs sm:text-sm text-slate-400">
             <span>Tap anywhere or press Space</span>
-            <span className="font-mono-tabular font-medium text-slate-300">
-              {formatTimer(remainingSec)}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="font-mono-tabular font-medium text-slate-300">
+                {formatTimer(remainingSec)}
+              </span>
+              <button
+                type="button"
+                aria-label="Test instructions"
+                title="Test instructions"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openHelp();
+                }}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700/80 bg-slate-800/80 text-slate-300 transition-colors hover:border-sky-400/60 hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+              >
+                <HelpCircle className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-1 flex-col items-center justify-center">
@@ -323,6 +388,39 @@ export function PvtTestPage({
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {helpOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Reaction test instructions"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs overflow-y-auto"
+        >
+          <TestIntroCard
+            title="Reaction test (PVT)"
+            whatItMeasures="Sustained attention and reaction speed."
+            whyItMatters="Fatigue and lack of sleep slow reactions. Astronauts on the ISS took it every 4 days."
+            howLong="Standard version 3 min, demo version 1 min"
+            howOften="Every 4 days"
+            steps={[
+              {
+                icon: Eye,
+                text: 'Keep your eyes focused on the center dot.',
+              },
+              {
+                icon: Timer,
+                text: 'Wait for the millisecond counter to appear at random intervals.',
+              },
+              {
+                icon: MousePointerClick,
+                text: 'Tap anywhere on the screen or press Space as fast as you can when it appears.',
+              },
+            ]}
+            note="Use the same device and the same way of answering (tap or Space) every time."
+            actionLabel="Resume test"
+            onStart={closeHelpAndResume}
+          />
         </div>
       )}
     </section>

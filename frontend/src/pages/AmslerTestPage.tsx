@@ -1,7 +1,16 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  Check,
+  EyeOff,
+  Glasses,
+  Grid3x3,
+  HelpCircle,
+  Repeat,
+} from 'lucide-react';
 import { useState } from 'react';
+import { TestIntroCard } from '../components/TestIntroCard';
 import { saveAmslerResult } from '../data/source';
 import type { Astronaut } from '../types/orbital';
 
@@ -35,6 +44,7 @@ export function AmslerTestPage({
   );
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const currentEye: 'right' | 'left' =
     step === 'intro-right' || step === 'grid-right' || step === 'mark-right'
@@ -105,7 +115,7 @@ export function AmslerTestPage({
 
   return (
     <section className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 py-5 sm:px-8 sm:py-6">
-      <div>
+      <div className="flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={() => onNavigate('/block/environment')}
@@ -114,27 +124,50 @@ export function AmslerTestPage({
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>Back</span>
         </button>
+
+        {step !== 'intro-right' && step !== 'complete' && (
+          <button
+            type="button"
+            onClick={() => setHelpOpen(true)}
+            aria-label="Test instructions"
+            title="Test instructions"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700/80 bg-slate-800/80 text-slate-300 transition-colors hover:border-sky-400/60 hover:bg-slate-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+          >
+            <HelpCircle className="h-4 w-4" aria-hidden="true" />
+          </button>
+        )}
       </div>
 
       {step === 'intro-right' && (
-        <div className="my-auto mx-auto w-full max-w-2xl rounded-2xl border border-slate-800/90 bg-[#10192D] p-7 shadow-xl shadow-black/25 sm:p-9">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            Amsler grid test — Right eye
-          </h1>
-          <p className="mt-4 text-lg leading-relaxed text-slate-200">
-            Wear your usual reading glasses. Hold the screen at reading distance
-            (30–38 cm). Cover your LEFT eye completely. Stare at the center dot
-            without moving your eyes.
-          </p>
-          <div className="mt-7">
-            <button
-              type="button"
-              onClick={() => setStep('grid-right')}
-              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 cursor-pointer"
-            >
-              Start right eye test
-            </button>
-          </div>
+        <div className="mt-4 flex flex-1 flex-col justify-center">
+          <TestIntroCard
+            title="Amsler grid test"
+            whatItMeasures="Checks for wavy, blurry or missing lines in central vision."
+            whyItMatters="Many long-duration astronauts develop eye changes (SANS). It is one of the vision checks done on the ISS."
+            howLong="About 1 minute"
+            howOften="Weekly"
+            steps={[
+              {
+                icon: Glasses,
+                text: 'Wear your usual reading glasses and hold the screen at reading distance (30–38 cm).',
+              },
+              {
+                icon: EyeOff,
+                text: 'Cover your LEFT eye completely first, and stare at the center dot without moving your eyes.',
+              },
+              {
+                icon: Grid3x3,
+                text: 'Report whether any lines look wavy, blurry, dark or missing, and tap affected cells if needed.',
+              },
+              {
+                icon: Repeat,
+                text: 'Repeat the same check with your RIGHT eye completely covered.',
+              },
+            ]}
+            note="The most common mistake is doing it with both eyes open."
+            actionLabel="Start test"
+            onStart={() => setStep('grid-right')}
+          />
         </div>
       )}
 
@@ -291,6 +324,43 @@ export function AmslerTestPage({
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {helpOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Amsler grid test instructions"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs overflow-y-auto"
+        >
+          <TestIntroCard
+            title="Amsler grid test"
+            whatItMeasures="Checks for wavy, blurry or missing lines in central vision."
+            whyItMatters="Many long-duration astronauts develop eye changes (SANS). It is one of the vision checks done on the ISS."
+            howLong="About 1 minute"
+            howOften="Weekly"
+            steps={[
+              {
+                icon: Glasses,
+                text: 'Wear your usual reading glasses and hold the screen at reading distance (30–38 cm).',
+              },
+              {
+                icon: EyeOff,
+                text: 'Cover your LEFT eye completely first, and stare at the center dot without moving your eyes.',
+              },
+              {
+                icon: Grid3x3,
+                text: 'Report whether any lines look wavy, blurry, dark or missing, and tap affected cells if needed.',
+              },
+              {
+                icon: Repeat,
+                text: 'Repeat the same check with your RIGHT eye completely covered.',
+              },
+            ]}
+            note="The most common mistake is doing it with both eyes open."
+            actionLabel="Back to test"
+            onStart={() => setHelpOpen(false)}
+          />
         </div>
       )}
     </section>
