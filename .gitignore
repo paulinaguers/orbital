@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Datos generados por el simulador (se regeneran con el script)
+datos/*.db
+datos/*.sqlite
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Secretos y configuración personal
+.env
+.claude/settings.local.json
+
+# Sistema
+.DS_Store
+Thumbs.db
