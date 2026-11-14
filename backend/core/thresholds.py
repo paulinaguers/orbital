@@ -43,12 +43,13 @@ THRESHOLDS = {
         "last_flight_day": 10,
         # PROPOSED FORMULA (thread C, 14/11/2026, to confirm with thread A):
         # the baseline standard deviation is statistics.pstdev (population
-        # standard deviation). Thread A's baseline.py must use it so it
-        # matches the clinical test cases in data/clinical_test_cases.csv.
+        # standard deviation). Thread A's baseline.py should use it once
+        # confirmed, so it matches the clinical test cases in
+        # data/clinical_test_cases.csv.
         # FÓRMULA PROPUESTA (hilo C, 14/11/2026, a confirmar con el hilo A):
         # el desvío estándar de la línea base es statistics.pstdev (desvío
-        # poblacional). El baseline.py del hilo A tiene que usarla para
-        # coincidir con los casos de prueba clínicos.
+        # poblacional). El baseline.py del hilo A debería usarla una vez
+        # confirmada, para coincidir con los casos de prueba clínicos.
     },
     # ------------------------------------------------------------------
     # Deviation from the baseline (z-score) / Desvío de la línea base (z)
@@ -75,6 +76,12 @@ THRESHOLDS = {
     # hypotension: NHLBI, NHS inform.
     # ------------------------------------------------------------------
     "blood_pressure": {
+        # Open decision: the skill does not say whether green ("< 130 / < 80")
+        # and orange ("130–180 / 80–120") combine systolic and diastolic with
+        # AND or with OR; only red says "and/or".
+        # Decisión pendiente: la skill no dice si el verde ("< 130 / < 80") y
+        # el naranja ("130–180 / 80–120") combinan sistólica y diastólica con
+        # Y o con O; solo el rojo dice "y/o".
         "green_systolic_below": 130,  # AHA
         "green_diastolic_below": 80,  # AHA
         "orange_systolic_range": (130, 180),  # AHA
@@ -113,7 +120,9 @@ THRESHOLDS = {
     # ------------------------------------------------------------------
     "spo2": {
         "green_min": 95,  # WHO
-        "yellow_value": 94,  # WHO lower limit
+        # A one-value range, so every level uses the same "_range" name.
+        # Un rango de un solo valor, para que todos los niveles usen "_range".
+        "yellow_range": (94, 94),  # WHO lower limit
         "orange_range": (91, 93),  # WHO / Myatt 2017
         # Red includes exactly 90 %: Proposal, more conservative than the
         # source (< 90 %). / Rojo incluye el 90 % exacto: Proposal, más
@@ -134,15 +143,19 @@ THRESHOLDS = {
     # ------------------------------------------------------------------
     # 4. Sleep / Sueño (hours per night / horas por noche)
     # Source: Sleep 2022 (ISS, Reaction SelfTest). Yellow/orange cut: Proposal.
+    # Fuente: Sleep 2022 (ISS, Reaction SelfTest). Corte amarillo/naranja: Proposal.
     # ------------------------------------------------------------------
     "sleep_hours": {
         "green_min": 7,  # Sleep 2022
         # Overlaps green at exactly 7 h: open team decision.
         # Se superpone con verde en 7 h exactas: decisión pendiente.
-        "yellow_range": (6, 7),  # Sleep 2022; cut: Proposal
-        "orange_below": 6,  # one night; Sleep 2022; cut: Proposal
+        "yellow_range": (6, 7),  # Sleep 2022; cut / corte: Proposal
+        # One night; Sleep 2022; cut: Proposal.
+        # Una noche; Sleep 2022; corte: Proposal.
+        "orange_below": 6,
         "red_below": 6,  # Sleep 2022
-        "red_consecutive_nights": 2,  # 2 or more nights in a row; Sleep 2022
+        # 2 or more nights in a row / 2 o más noches seguidas; Sleep 2022
+        "red_consecutive_nights": 2,
     },
     # ------------------------------------------------------------------
     # 5a. Mood VAS / Ánimo VAS (score 0-100, inverted so 100 = worst)
@@ -175,13 +188,19 @@ THRESHOLDS = {
         # Si una respuesta de 355 ms exactos es lapso es una decisión
         # pendiente: escalas dice ">= 355", umbrales dice "> 355".
         "lapse_ms_3min": 355,  # Basner 2011
+        # Open decision: umbrales.md says "> 500 ms"; escalas-y-protocolos.md
+        # only says the cut is 500 ms (">=" or ">").
+        # Decisión pendiente: umbrales.md dice "> 500 ms"; escalas-y-protocolos.md
+        # solo dice que el corte es 500 ms (">=" o ">").
         "lapse_ms_10min": 500,  # NASA
-        "yellow_abs_z_min": 1.5,  # in one session; Proposal
-        "orange_abs_z_min": 1.5,  # in 3 sessions in a row; Proposal
+        "yellow_abs_z_min": 1.5,  # in one session / en una sesión; Proposal
+        # in 3 sessions in a row / en 3 sesiones seguidas; Proposal
+        "orange_abs_z_min": 1.5,
         "orange_consecutive_sessions": 3,  # Proposal
         # Red: |z| >= 2 sustained, together with symptoms or sleep in red.
         # Proposal. Open decision ("sustained" and "symptoms").
         # Rojo: |z| >= 2 sostenido, junto con síntomas o sueño en rojo.
+        # Proposal. Decisión pendiente ("sostenido" y "síntomas").
         "red_abs_z_min": 2.0,  # Proposal
     },
     # ------------------------------------------------------------------
@@ -200,14 +219,26 @@ THRESHOLDS = {
     # usan amarillo y naranja.
     # ------------------------------------------------------------------
     "cabin_co2": {
-        "green_below": 2.5,  # 7-day average; NASA-STD-3001 / OCHMO-TB-004
-        "yellow_range": (2.5, 3.0),  # without symptoms; cut by symptoms: Proposal
-        "orange_range": (2.5, 3.0),  # with headache; cut by symptoms: Proposal
-        "red_above": 3.0,  # 1-hour average; NASA-STD-3001 / OCHMO-TB-004
+        # 7-day average / promedio de 7 días; NASA-STD-3001 / OCHMO-TB-004
+        "green_below": 2.5,
+        # Without symptoms; cut by symptoms: Proposal.
+        # Sin síntomas; corte por síntomas: Proposal.
+        "yellow_range": (2.5, 3.0),
+        # With headache; cut by symptoms: Proposal.
+        # Con dolor de cabeza; corte por síntomas: Proposal.
+        "orange_range": (2.5, 3.0),
+        # 1-hour average / promedio de 1 hora; NASA-STD-3001 / OCHMO-TB-004
+        "red_above": 3.0,
     },
     # ------------------------------------------------------------------
     # 7b. Cumulative radiation / Radiación acumulada
     # Limits: NASA-STD-3001 Vol. 1 Rev. C. Level percentages: Proposal.
+    # Límites: NASA-STD-3001 Vol. 1 Rev. C. Porcentajes de nivel: Proposal.
+    # Open decision: the skill bases the percentages on both limits (600 mSv
+    # career and 250 mSv per solar event) but does not say how they combine.
+    # Decisión pendiente: la skill basa los porcentajes en los dos límites
+    # (600 mSv de carrera y 250 mSv por evento solar), pero no dice cómo se
+    # combinan.
     # ------------------------------------------------------------------
     "radiation_dose": {
         "career_limit_msv": 600,  # NASA-STD-3001 V1 4030
@@ -217,7 +248,8 @@ THRESHOLDS = {
         # Overlaps yellow at exactly 65 %: open team decision.
         # Se superpone con amarillo en 65 % exacto: decisión pendiente.
         "orange_range_pct": (65, 80),  # Proposal
-        "red_above_pct": 80,  # or any solar storm; Proposal
+        # Or any solar storm; Proposal. / O cualquier tormenta solar; Proposal.
+        "red_above_pct": 80,
     },
     # Temperature is not in the MVP (open team decision). Its CDC values
     # (fever >= 38 °C, hypothermia < 35 °C) are in the skill.
