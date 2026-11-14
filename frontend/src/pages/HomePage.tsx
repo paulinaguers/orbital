@@ -3,10 +3,11 @@
 import { OrbiMascot } from '../components/OrbiMascot';
 import { StatusBadge } from '../components/StatusBadge';
 import { LEVEL_STYLES } from '../data/source';
-import type { OrbitalStatus, ScheduledTest } from '../types/orbital';
+import type { OrbitalStatus, ScheduledTest, UserProfile } from '../types/orbital';
 
 interface HomePageProps {
   status: OrbitalStatus;
+  profile: UserProfile;
   onNavigate: (path: string) => void;
   onOpenTips: (blockId: string) => void;
 }
@@ -33,7 +34,13 @@ function getOrbiOverdueLine(overdueTests: ScheduledTest[]): string | null {
   return `Don't forget your ${overdueTests[0].name.toLowerCase()}, it helps me keep track of how you are doing.`;
 }
 
-export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
+export function HomePage({
+  status,
+  profile,
+  onNavigate,
+  onOpenTips,
+}: HomePageProps) {
+  const isPassenger = profile === 'passenger';
   const firstName = status.astronaut.name.split(' ')[0] || status.astronaut.name;
   const attentionBlocks = status.blocks.filter(
     (block) => block.level !== 'green',
@@ -41,10 +48,15 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
   const notifiedList = status.escalation.notified;
   const bubbleColor = LEVEL_STYLES[status.overall_level].color;
 
-  const dueTests = status.tests.filter((test) => test.due);
-  const overdueTests = status.tests.filter((test) => test.due && test.overdue);
+  const visibleTests = isPassenger
+    ? status.tests.filter((t) => t.id !== 'pvt' && t.id !== 'amsler')
+    : status.tests;
+  const dueTests = visibleTests.filter((test) => test.due);
+  const overdueTests = isPassenger
+    ? []
+    : visibleTests.filter((test) => test.due && test.overdue);
   const orbiOverdueLine = getOrbiOverdueLine(overdueTests);
-  const nextTest = getNextScheduledTest(status.tests);
+  const nextTest = getNextScheduledTest(visibleTests);
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 py-8 sm:px-8 sm:py-12">
@@ -70,7 +82,9 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
         {/* Speech Bubble, Today's Tasks & Primary Actions Column */}
         <div className="flex min-w-0 flex-col lg:pt-3">
           <div
-            className="animate-orbi-bubble-pop relative rounded-3xl bg-[#F8FAFC] p-6 text-slate-900 shadow-[0_18px_45px_rgba(0,0,0,0.42)] sm:p-8"
+            className={`animate-orbi-bubble-pop relative bg-[#F8FAFC] p-6 text-slate-900 shadow-[0_18px_45px_rgba(0,0,0,0.42)] sm:p-8 ${
+              isPassenger ? 'rounded-[2rem]' : 'rounded-3xl'
+            }`}
             style={{ border: `2.5px solid ${bubbleColor}` }}
           >
             {/* Desktop speech bubble triangular tail pointing toward Orbi's mouth */}
@@ -107,10 +121,20 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
 
             {/* 1) Greeting + overall_message */}
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              <h1
+                className={`font-bold tracking-tight text-slate-900 ${
+                  isPassenger
+                    ? 'text-3xl sm:text-4xl'
+                    : 'text-2xl sm:text-3xl'
+                }`}
+              >
                 Hi {firstName}!
               </h1>
-              <p className="mt-2 text-lg leading-relaxed text-slate-700">
+              <p
+                className={`mt-2 leading-relaxed text-slate-700 ${
+                  isPassenger ? 'text-xl' : 'text-lg'
+                }`}
+              >
                 {status.overall_message}
               </p>
               {orbiOverdueLine && (
@@ -127,7 +151,9 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
                   {attentionBlocks.map((block) => (
                     <li
                       key={block.id}
-                      className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-[15px] leading-snug text-slate-700"
+                      className={`flex flex-wrap items-center justify-between gap-x-3 gap-y-2 leading-snug text-slate-700 ${
+                        isPassenger ? 'text-base sm:text-lg' : 'text-[15px]'
+                      }`}
                     >
                       <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
                         <StatusBadge level={block.level} variant="pill" />
@@ -135,14 +161,16 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
                           {block.name}:
                         </span>
                         <span className="min-w-0 text-slate-700">
-                          {block.recommendation}
+                          {isPassenger
+                            ? (block.simple_explanation ?? block.recommendation)
+                            : block.recommendation}
                         </span>
                       </div>
 
                       <button
                         type="button"
                         onClick={() => onOpenTips(block.id)}
-                        className="inline-flex min-h-[34px] shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-800 shadow-xs transition-colors hover:border-sky-500 hover:bg-sky-50 hover:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 cursor-pointer"
+                        className="inline-flex min-h-[36px] shrink-0 items-center justify-center rounded-xl border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-800 shadow-xs transition-colors hover:border-sky-500 hover:bg-sky-50 hover:text-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 cursor-pointer"
                       >
                         See tips →
                       </button>
@@ -161,7 +189,11 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
           </div>
 
           {/* Today's tasks card */}
-          <div className="mt-5 rounded-2xl border border-slate-800/90 bg-[#10192D] p-5 shadow-lg shadow-black/25">
+          <div
+            className={`mt-5 border border-slate-800/90 bg-[#10192D] p-5 shadow-lg shadow-black/25 ${
+              isPassenger ? 'rounded-3xl sm:p-6' : 'rounded-2xl'
+            }`}
+          >
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300">
               Today&apos;s tasks
             </h2>
@@ -174,7 +206,11 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
                     className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-1 last:pb-0"
                   >
                     <div className="min-w-0">
-                      <p className="text-base font-medium text-slate-100">
+                      <p
+                        className={`font-medium text-slate-100 ${
+                          isPassenger ? 'text-lg' : 'text-base'
+                        }`}
+                      >
                         {test.name}
                       </p>
                       <p
@@ -200,7 +236,11 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
                 ))}
               </ul>
             ) : (
-              <p className="mt-2.5 text-sm text-slate-300">
+              <p
+                className={`mt-2.5 text-slate-300 ${
+                  isPassenger ? 'text-base' : 'text-sm'
+                }`}
+              >
                 All tests up to date.
                 {nextTest
                   ? ` Next: ${nextTest.name} on flight day ${nextTest.next_due_flight_day}.`
@@ -214,9 +254,11 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
             <button
               type="button"
               onClick={() => onNavigate('/body')}
-              className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 active:bg-sky-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 whitespace-nowrap shrink-0 cursor-pointer"
+              className={`inline-flex min-h-[48px] items-center justify-center bg-sky-500 px-6 py-3 font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-400 active:bg-sky-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 whitespace-nowrap shrink-0 cursor-pointer ${
+                isPassenger ? 'rounded-2xl text-lg' : 'rounded-xl text-base'
+              }`}
             >
-              View my metrics →
+              {isPassenger ? 'View my health →' : 'View my metrics →'}
             </button>
 
             <button
@@ -227,6 +269,12 @@ export function HomePage({ status, onNavigate, onOpenTips }: HomePageProps) {
               How alerts work
             </button>
           </div>
+
+          {isPassenger && (
+            <p className="mt-8 border-t border-slate-800/70 pt-4 text-center text-xs leading-relaxed text-slate-400">
+              ORBITAL guides, it does not diagnose. All data shown is simulated.
+            </p>
+          )}
         </div>
       </div>
     </section>

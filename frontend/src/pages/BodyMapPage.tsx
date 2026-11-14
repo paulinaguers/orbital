@@ -17,10 +17,11 @@ import {
 } from '../components/BodySilhouette';
 import { StatusBadge } from '../components/StatusBadge';
 import { LEVEL_STYLES } from '../data/source';
-import type { HealthBlock, OrbitalStatus } from '../types/orbital';
+import type { HealthBlock, OrbitalStatus, UserProfile } from '../types/orbital';
 
 interface BodyMapPageProps {
   status: OrbitalStatus;
+  profile: UserProfile;
   onNavigate: (path: string) => void;
 }
 
@@ -30,7 +31,8 @@ interface ConnectorLine {
   color: string;
 }
 
-export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
+export function BodyMapPage({ status, profile, onNavigate }: BodyMapPageProps) {
+  const isPassenger = profile === 'passenger';
   const [hoveredBlockId, setHoveredBlockId] = useState<string | null>(null);
   const [lines, setLines] = useState<ConnectorLine[]>([]);
 
@@ -183,10 +185,14 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
           </button>
 
           <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            Your systems today
+            {isPassenger ? 'How your body is doing today' : 'Your systems today'}
           </h1>
 
-          <div className="mt-2 flex flex-wrap items-center gap-2.5 text-sm sm:text-base">
+          <div
+            className={`mt-2 flex flex-wrap items-center gap-2.5 ${
+              isPassenger ? 'text-base sm:text-lg' : 'text-sm sm:text-base'
+            }`}
+          >
             <StatusBadge level={status.overall_level} variant="pill" />
             <span className="text-slate-300">{status.overall_message}</span>
           </div>
@@ -196,7 +202,9 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
         <button
           type="button"
           onClick={() => onNavigate('/circle')}
-          className="flex min-h-[48px] items-center gap-3 self-start rounded-2xl border border-slate-700/80 bg-[#10192D] px-4 py-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-500/80 hover:bg-[#131E36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer shrink-0"
+          className={`flex min-h-[48px] items-center gap-3 self-start border border-slate-700/80 bg-[#10192D] px-4 py-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-500/80 hover:bg-[#131E36] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer shrink-0 ${
+            isPassenger ? 'rounded-3xl' : 'rounded-2xl'
+          }`}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-500/15 text-rose-300 shrink-0">
             <Heart className="h-4 w-4" aria-hidden="true" />
@@ -267,6 +275,7 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
               onSelect={openBlock}
               onHoverChange={setHoveredBlockId}
               highlighted={hoveredBlockId === 'mental_health'}
+              simpleMode={isPassenger}
             />
           </div>
         )}
@@ -282,6 +291,7 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
               onSelect={openBlock}
               onHoverChange={setHoveredBlockId}
               highlighted={hoveredBlockId === 'cardio'}
+              simpleMode={isPassenger}
             />
           </div>
         )}
@@ -297,6 +307,7 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
               onSelect={openBlock}
               onHoverChange={setHoveredBlockId}
               highlighted={hoveredBlockId === 'sleep_cognition'}
+              simpleMode={isPassenger}
             />
           </div>
         )}
@@ -312,6 +323,7 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
               onSelect={openBlock}
               onHoverChange={setHoveredBlockId}
               highlighted={hoveredBlockId === 'environment'}
+              simpleMode={isPassenger}
             />
           </div>
         )}
@@ -327,6 +339,7 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
               onSelect={openBlock}
               onHoverChange={setHoveredBlockId}
               highlighted={hoveredBlockId === 'metabolic'}
+              simpleMode={isPassenger}
             />
           </div>
         )}
@@ -335,9 +348,9 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
       {/* Bottom Footnote + How alerts work link */}
       <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
         <span>
-          Physical and environmental data come from onboard sensors and in-app
-          tests based on NASA protocols. Mental health is self-reported and your
-          journal stays private. All data shown is simulated.
+          {isPassenger
+            ? 'ORBITAL guides, it does not diagnose. All data shown is simulated.'
+            : 'Physical and environmental data come from onboard sensors and in-app tests based on NASA protocols. Mental health is self-reported and your journal stays private. All data shown is simulated.'}
         </span>{' '}
         <button
           type="button"

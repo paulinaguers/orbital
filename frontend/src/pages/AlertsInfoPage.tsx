@@ -4,13 +4,14 @@ import { ArrowLeft, Info } from 'lucide-react';
 import { OrbiMascot } from '../components/OrbiMascot';
 import { StatusBadge } from '../components/StatusBadge';
 import { DATA_SOURCE_GROUPS, LEVEL_STYLES } from '../data/source';
-import type { HealthLevel } from '../types/orbital';
+import type { HealthLevel, UserProfile } from '../types/orbital';
 
 interface AlertsInfoPageProps {
+  profile: UserProfile;
   onNavigate: (path: string) => void;
 }
 
-const ALERT_LEVEL_CARDS: Array<{
+const CREW_ALERT_CARDS: Array<{
   level: HealthLevel;
   meaning: string;
   action: string;
@@ -45,7 +46,45 @@ const ALERT_LEVEL_CARDS: Array<{
   },
 ];
 
-export function AlertsInfoPage({ onNavigate }: AlertsInfoPageProps) {
+const PASSENGER_ALERT_CARDS: Array<{
+  level: HealthLevel;
+  meaning: string;
+  action: string;
+  notified: string;
+}> = [
+  {
+    level: 'green',
+    meaning: 'Everything is within your normal range.',
+    action: 'Keep enjoying your flight.',
+    notified: 'No one.',
+  },
+  {
+    level: 'yellow',
+    meaning: 'Something is a bit different from your usual pre-flight values.',
+    action: 'Follow the simple self-care tips.',
+    notified: 'No one. This stays between you and ORBITAL.',
+  },
+  {
+    level: 'orange',
+    meaning: 'A value is out of range or has stayed changed for a bit.',
+    action: 'Let the flight crew know.',
+    notified: 'Flight crew and ground medical team.',
+  },
+  {
+    level: 'red',
+    meaning: 'An urgent health reading.',
+    action: 'Stop what you are doing and get help now.',
+    notified: 'Flight crew and ground medical team – URGENT.',
+  },
+];
+
+export function AlertsInfoPage({ profile, onNavigate }: AlertsInfoPageProps) {
+  const isPassenger = profile === 'passenger';
+  const cards = isPassenger ? PASSENGER_ALERT_CARDS : CREW_ALERT_CARDS;
+  const sourceGroups = isPassenger
+    ? DATA_SOURCE_GROUPS.filter((group) => group.group !== 'In-app tests')
+    : DATA_SOURCE_GROUPS;
+
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 py-6 sm:px-8 sm:py-8">
       {/* Header & Back link to Home */}
@@ -62,22 +101,28 @@ export function AlertsInfoPage({ onNavigate }: AlertsInfoPageProps) {
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
           How ORBITAL alerts work
         </h1>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300">
-          ORBITAL compares every reading with clinical ranges and with your own
-          usual values (your personal baseline), and decides the alert level on
-          board, without needing Earth.
+        <p
+          className={`mt-3 max-w-3xl leading-relaxed text-slate-300 ${
+            isPassenger ? 'text-lg' : 'text-base'
+          }`}
+        >
+          {isPassenger
+            ? 'ORBITAL compares your readings with standard ranges and your normal pre-flight values, and keeps an eye on things right on board.'
+            : 'ORBITAL compares every reading with clinical ranges and with your own usual values (your personal baseline), and decides the alert level on board, without needing Earth.'}
         </p>
       </header>
 
       {/* Four large level cards */}
       <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2">
-        {ALERT_LEVEL_CARDS.map((card) => {
+        {cards.map((card) => {
           const style = LEVEL_STYLES[card.level];
 
           return (
             <article
               key={card.level}
-              className="flex flex-col rounded-2xl bg-[#10192D] p-6 shadow-lg shadow-black/25"
+              className={`flex flex-col bg-[#10192D] p-6 shadow-lg shadow-black/25 ${
+                isPassenger ? 'rounded-3xl' : 'rounded-2xl'
+              }`}
               style={{ border: `1.5px solid ${style.color}` }}
             >
               <div className="flex items-center justify-between gap-4">
@@ -85,7 +130,11 @@ export function AlertsInfoPage({ onNavigate }: AlertsInfoPageProps) {
                 <OrbiMascot level={card.level} size="sm" />
               </div>
 
-              <dl className="mt-4 space-y-3 border-t border-slate-800/80 pt-4 text-sm leading-relaxed">
+              <dl
+                className={`mt-4 space-y-3 border-t border-slate-800/80 pt-4 leading-relaxed ${
+                  isPassenger ? 'text-base' : 'text-sm'
+                }`}
+              >
                 <div>
                   <dt className="text-xs font-semibold tracking-wide text-slate-400 uppercase">
                     What it means
@@ -115,7 +164,11 @@ export function AlertsInfoPage({ onNavigate }: AlertsInfoPageProps) {
       </div>
 
       {/* Timing & Earth delay info box */}
-      <div className="mt-6 flex items-start gap-3 rounded-2xl border border-slate-700/80 bg-[#0D1628] px-5 py-4 text-sm leading-relaxed text-slate-200">
+      <div
+        className={`mt-6 flex items-start gap-3 border border-slate-700/80 bg-[#0D1628] px-5 py-4 leading-relaxed text-slate-200 ${
+          isPassenger ? 'rounded-3xl text-base' : 'rounded-2xl text-sm'
+        }`}
+      >
         <Info
           className="mt-0.5 h-4 w-4 text-sky-300 shrink-0"
           aria-hidden="true"
@@ -132,11 +185,17 @@ export function AlertsInfoPage({ onNavigate }: AlertsInfoPageProps) {
           Where the data comes from
         </h2>
 
-        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {DATA_SOURCE_GROUPS.map((section) => (
+        <div
+          className={`mt-4 grid grid-cols-1 gap-4 ${
+            sourceGroups.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'
+          }`}
+        >
+          {sourceGroups.map((section) => (
             <div
               key={section.group}
-              className="rounded-2xl border border-slate-800/90 bg-[#10192D] p-5"
+              className={`border border-slate-800/90 bg-[#10192D] p-5 ${
+                isPassenger ? 'rounded-3xl' : 'rounded-2xl'
+              }`}
             >
               <h3 className="text-sm font-semibold tracking-wide text-sky-300 uppercase">
                 {section.group}

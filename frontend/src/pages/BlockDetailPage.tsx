@@ -18,10 +18,12 @@ import type {
   IndicatorSeries,
   NumericIndicatorSeries,
   OrbitalStatus,
+  UserProfile,
 } from '../types/orbital';
 
 interface BlockDetailPageProps {
   status: OrbitalStatus;
+  profile: UserProfile;
   blockId: string;
   onNavigate: (path: string) => void;
   onOpenTips: (blockId: string) => void;
@@ -42,6 +44,11 @@ const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
   environment: [{ label: 'Do Amsler grid test', path: '/tests/amsler' }],
 };
 
+const PASSENGER_ALLOWED_ACTION_PATHS = new Set([
+  '/mental/checkin',
+  '/mental/breathing',
+]);
+
 function parseCareerLimit(thresholdSource: string): number | null {
   const match = thresholdSource.match(/(\d+(?:\.\d+)?)\s*mSv/i);
   return match ? Number(match[1]) : null;
@@ -50,17 +57,21 @@ function parseCareerLimit(thresholdSource: string): number | null {
 function IndicatorCard({
   indicator,
   astronautId,
+  profile,
 }: {
   indicator: Indicator;
   astronautId: string;
+  profile: UserProfile;
 }) {
+  const isPassenger = profile === 'passenger';
   const [series, setSeries] = useState<IndicatorSeries | undefined>(() =>
-    getDemoSeries(indicator.id),
+    getDemoSeries(indicator.id, profile),
   );
 
   useEffect(() => {
+    setSeries(getDemoSeries(indicator.id, profile));
     let active = true;
-    getSeries(indicator.id, astronautId)
+    getSeries(indicator.id, profile, astronautId)
       .then((nextSeries) => {
         if (active) {
           setSeries(nextSeries);
@@ -72,13 +83,13 @@ function IndicatorCard({
     return () => {
       active = false;
     };
-  }, [indicator.id, astronautId]);
+  }, [indicator.id, profile, astronautId]);
 
   const indStyle = LEVEL_STYLES[indicator.level];
   const explanation = INDICATOR_EXPLANATIONS[indicator.id];
 
   const renderBaselineText = () => {
-    if (!series || series.indicator === 'vision_amsler') {
+    if (isPassenger || !series || series.indicator === 'vision_amsler') {
       return null;
     }
 
@@ -106,6 +117,32 @@ function IndicatorCard({
       </p>
     );
   };
+
+  if (isPassenger) {
+    return (
+      <article
+        className="rounded-3xl bg-[#10192D] p-6 shadow-lg shadow-black/25 sm:p-7"
+        style={{ border: `1.5px solid ${indStyle.surfaceBorder}` }}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold text-slate-100">
+              {indicator.name}
+            </h2>
+            <p className="font-mono-tabular mt-2 text-4xl font-bold tracking-tight text-slate-50">
+              {formatIndicatorValue(indicator)}
+            </p>
+          </div>
+
+          <StatusBadge level={indicator.level} variant="pill" />
+        </div>
+
+        {series && (
+          <IndicatorChart series={series} unit={indicator.unit} passengerMode />
+        )}
+      </article>
+    );
+  }
 
   const radiationLimit =
     indicator.id === 'radiation_dose'
@@ -206,10 +243,12 @@ function IndicatorCard({
 
 export function BlockDetailPage({
   status,
+  profile,
   blockId,
   onNavigate,
   onOpenTips,
 }: BlockDetailPageProps) {
+  const isPassenger = profile === 'passenger';
   const block: HealthBlock | undefined = status.blocks.find(
     (b) => b.id === blockId,
   );
@@ -238,7 +277,12 @@ export function BlockDetailPage({
   }
 
   const blockStyle = LEVEL_STYLES[block.level];
-  const actions = BLOCK_ACTIONS[block.id] ?? [];
+  const rawActions = BLOCK_ACTIONS[block.id] ?? [];
+  const actions = isPassenger
+    ? rawActions.filter((action) =>
+        PASSENGER_ALLOWED_ACTION_PATHS.has(action.path),
+      )
+    : rawActions;
 
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 py-6 sm:px-8 sm:py-8">
@@ -254,14 +298,18 @@ export function BlockDetailPage({
         </button>
 
         <div className="mt-2 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+          <h1
+            className={`font-semibold tracking-tight text-slate-50 ${
+              isPassenger ? 'text-3xl sm:text-4xl' : 'text-2xl sm:text-3xl'
+            }`}
+          >
             {block.name}
           </h1>
           <StatusBadge level={block.level} variant="pill" />
         </div>
 
-        {/* NASA / CSA risk tags */}
-        {block.nasa_risk.length > 0 && (
+        {/* NASA / CSA risk tags (Crew mode only) */}
+        {!isPassenger && block.nasa_risk.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {block.nasa_risk.map((risk) => (
               <span
@@ -274,17 +322,33 @@ export function BlockDetailPage({
           </div>
         )}
 
-        {/* Recommendation in a highlighted box */}
+        {/* Recommendation / Passenger Simple Explanation Box */}
         <div
-          className="mt-5 flex flex-col gap-3 rounded-2xl px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+          className={`mt-5 flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between ${
+            isPassenger ? 'rounded-3xl p-6' : 'rounded-2xl'
+          }`}
           style={{
             backgroundColor: blockStyle.surfaceBg,
             border: `1.5px solid ${blockStyle.surfaceBorder}`,
           }}
         >
-          <p className="text-base font-medium leading-relaxed text-slate-100">
-            {block.recommendation}
-          </p>
+          {isPassenger ? (
+            <div>
+              <p
+                className="text-xl font-semibold leading-snug"
+                style={{ color: blockStyle.textColor }}
+              >
+                {blockStyle.statusSentence}
+              </p>
+              <p className="mt-1.5 text-lg leading-relaxed text-slate-100">
+                {block.simple_explanation ?? block.recommendation}
+              </p>
+            </div>
+          ) : (
+            <p className="text-base font-medium leading-relaxed text-slate-100">
+              {block.recommendation}
+            </p>
+          )}
 
           {block.level !== 'green' && (
             <button
@@ -298,13 +362,14 @@ export function BlockDetailPage({
         </div>
       </header>
 
-      {/* 2. Indicator cards with 14-day SVG trend chart or Amsler icon history */}
+      {/* 2. Indicator cards with trend chart */}
       <div className="mt-6 space-y-5">
         {block.indicators.map((indicator) => (
           <IndicatorCard
-            key={indicator.id}
+            key={`${profile}:${indicator.id}`}
             indicator={indicator}
             astronautId={status.astronaut.id}
+            profile={profile}
           />
         ))}
       </div>
@@ -324,7 +389,9 @@ export function BlockDetailPage({
                 key={action.label}
                 type="button"
                 onClick={() => onNavigate(action.path)}
-                className="inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-xl border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
+                className={`inline-flex min-h-[46px] items-center justify-center gap-2.5 border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer ${
+                  isPassenger ? 'rounded-2xl text-base' : 'rounded-xl'
+                }`}
               >
                 <span>{action.label}</span>
                 {isDue && (
@@ -350,9 +417,9 @@ export function BlockDetailPage({
       {/* 4. Footer */}
       <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
         <span>
-          Physical and environmental data come from onboard sensors and in-app
-          tests based on NASA protocols. Mental health is self-reported and your
-          journal stays private. All data shown is simulated.
+          {isPassenger
+            ? 'ORBITAL guides, it does not diagnose. All data shown is simulated.'
+            : 'Physical and environmental data come from onboard sensors and in-app tests based on NASA protocols. Mental health is self-reported and your journal stays private. All data shown is simulated.'}
         </span>{' '}
         <button
           type="button"

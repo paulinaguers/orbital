@@ -15,6 +15,7 @@ import { StatusBadge } from './StatusBadge';
 interface IndicatorChartProps {
   series: IndicatorSeries;
   unit: string;
+  passengerMode?: boolean;
 }
 
 const SVG_WIDTH = 660;
@@ -139,9 +140,11 @@ function VisionAmslerHistory({
 function BloodPressureChart({
   series,
   unit,
+  passengerMode = false,
 }: {
   series: BloodPressureIndicatorSeries;
   unit: string;
+  passengerMode?: boolean;
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const points = series.points;
@@ -208,7 +211,9 @@ function BloodPressureChart({
           >
             <div className="flex items-center gap-2">
               <span className="font-mono-tabular font-medium text-slate-300">
-                Flight day {hoveredPoint.flight_day}
+                {hoveredPoint.phase_label
+                  ? `${hoveredPoint.phase_label} (Day ${hoveredPoint.flight_day})`
+                  : `Flight day ${hoveredPoint.flight_day}`}
               </span>
               <StatusBadge level={hoveredPoint.level} variant="pill" />
             </div>
@@ -222,7 +227,7 @@ function BloodPressureChart({
           viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
           className="h-auto w-full overflow-visible select-none"
           role="img"
-          aria-label="14-day blood pressure trend chart for flight days 29 to 42"
+          aria-label="Blood pressure trend chart"
         >
           {/* Y-axis horizontal gridlines and ticks with unit */}
           {yTicks.map((tick, idx) => {
@@ -251,6 +256,51 @@ function BloodPressureChart({
             );
           })}
 
+          {/* Pre-flight shaded region for passenger mode */}
+          {passengerMode &&
+            points.some((p) => p.flight_day < 0) &&
+            points.some((p) => p.flight_day >= 0) && (() => {
+              const lastPreIdx = points.reduce(
+                (acc, pt, idx) => (pt.flight_day < 0 ? idx : acc),
+                -1,
+              );
+              const splitX =
+                (xForIndex(lastPreIdx, points.length) +
+                  xForIndex(lastPreIdx + 1, points.length)) /
+                2;
+              return (
+                <g>
+                  <rect
+                    x={MARGIN.left}
+                    y={MARGIN.top}
+                    width={splitX - MARGIN.left}
+                    height={PLOT_HEIGHT}
+                    fill="#94A3B8"
+                    fillOpacity="0.07"
+                  />
+                  <line
+                    x1={splitX}
+                    y1={MARGIN.top}
+                    x2={splitX}
+                    y2={MARGIN.top + PLOT_HEIGHT}
+                    stroke="#475569"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                  />
+                  <text
+                    x={(MARGIN.left + splitX) / 2}
+                    y={MARGIN.top - 10}
+                    textAnchor="middle"
+                    fill="#CBD5E1"
+                    fontSize="11"
+                    fontWeight="600"
+                  >
+                    Before flight
+                  </text>
+                </g>
+              );
+            })()}
+
           {/* Shaded baseline bands: Systolic & Diastolic */}
           <rect
             x={MARGIN.left}
@@ -268,6 +318,17 @@ function BloodPressureChart({
             fill="#38BDF8"
             fillOpacity="0.11"
           />
+          {passengerMode && (
+            <text
+              x={MARGIN.left + 8}
+              y={sysBandTop + 13}
+              fill="#7DD3FC"
+              fontSize="10.5"
+              fontWeight="600"
+            >
+              Your normal (measured before your flight)
+            </text>
+          )}
 
           {/* Hover vertical guide line */}
           {hoveredIdx !== null && (
@@ -404,7 +465,9 @@ function BloodPressureChart({
 
       {/* Required Legend */}
       <p className="mt-2 text-center text-xs text-slate-400">
-        Shaded area = your usual range · Dots = daily values (color = level)
+        {passengerMode
+          ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
+          : 'Shaded area = your usual range · Dots = daily values (color = level)'}
       </p>
     </div>
   );
@@ -413,9 +476,11 @@ function BloodPressureChart({
 function NumericTrendChart({
   series,
   unit,
+  passengerMode = false,
 }: {
   series: NumericIndicatorSeries;
   unit: string;
+  passengerMode?: boolean;
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const points = series.points;
@@ -458,7 +523,9 @@ function NumericTrendChart({
           >
             <div className="flex items-center gap-2">
               <span className="font-mono-tabular font-medium text-slate-300">
-                Flight day {hoveredPoint.flight_day}
+                {hoveredPoint.phase_label
+                  ? `${hoveredPoint.phase_label} (Day ${hoveredPoint.flight_day})`
+                  : `Flight day ${hoveredPoint.flight_day}`}
               </span>
               <StatusBadge
                 level={hoveredPoint.level as HealthLevel}
@@ -476,7 +543,7 @@ function NumericTrendChart({
           viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
           className="h-auto w-full overflow-visible select-none"
           role="img"
-          aria-label={`14-day trend chart for ${series.indicator} from flight day 29 to 42`}
+          aria-label={`Trend chart for ${series.indicator}`}
         >
           {/* Y-axis horizontal gridlines and ticks with unit */}
           {yTicks.map((tick, idx) => {
@@ -505,6 +572,51 @@ function NumericTrendChart({
             );
           })}
 
+          {/* Pre-flight shaded region for passenger mode */}
+          {passengerMode &&
+            points.some((p) => p.flight_day < 0) &&
+            points.some((p) => p.flight_day >= 0) && (() => {
+              const lastPreIdx = points.reduce(
+                (acc, pt, idx) => (pt.flight_day < 0 ? idx : acc),
+                -1,
+              );
+              const splitX =
+                (xForIndex(lastPreIdx, points.length) +
+                  xForIndex(lastPreIdx + 1, points.length)) /
+                2;
+              return (
+                <g>
+                  <rect
+                    x={MARGIN.left}
+                    y={MARGIN.top}
+                    width={splitX - MARGIN.left}
+                    height={PLOT_HEIGHT}
+                    fill="#94A3B8"
+                    fillOpacity="0.07"
+                  />
+                  <line
+                    x1={splitX}
+                    y1={MARGIN.top}
+                    x2={splitX}
+                    y2={MARGIN.top + PLOT_HEIGHT}
+                    stroke="#475569"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                  />
+                  <text
+                    x={(MARGIN.left + splitX) / 2}
+                    y={MARGIN.top - 10}
+                    textAnchor="middle"
+                    fill="#CBD5E1"
+                    fontSize="11"
+                    fontWeight="600"
+                  >
+                    Before flight
+                  </text>
+                </g>
+              );
+            })()}
+
           {/* Baseline shaded band */}
           <rect
             x={MARGIN.left}
@@ -514,6 +626,17 @@ function NumericTrendChart({
             fill="#38BDF8"
             fillOpacity="0.12"
           />
+          {passengerMode && (
+            <text
+              x={MARGIN.left + 8}
+              y={Math.min(bandTop + 13, MARGIN.top + PLOT_HEIGHT - 6)}
+              fill="#7DD3FC"
+              fontSize="10.5"
+              fontWeight="600"
+            >
+              Your normal (measured before your flight)
+            </text>
+          )}
 
           {/* Hover vertical guide line */}
           {hoveredIdx !== null && (
@@ -625,13 +748,19 @@ function NumericTrendChart({
 
       {/* Required Legend */}
       <p className="mt-2 text-center text-xs text-slate-400">
-        Shaded area = your usual range · Dots = daily values (color = level)
+        {passengerMode
+          ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
+          : 'Shaded area = your usual range · Dots = daily values (color = level)'}
       </p>
     </div>
   );
 }
 
-export function IndicatorChart({ series, unit }: IndicatorChartProps) {
+export function IndicatorChart({
+  series,
+  unit,
+  passengerMode = false,
+}: IndicatorChartProps) {
   if (series.indicator === 'vision_amsler') {
     return (
       <VisionAmslerHistory series={series as VisionAmslerIndicatorSeries} />
@@ -643,6 +772,7 @@ export function IndicatorChart({ series, unit }: IndicatorChartProps) {
       <BloodPressureChart
         series={series as BloodPressureIndicatorSeries}
         unit={unit}
+        passengerMode={passengerMode}
       />
     );
   }
@@ -651,6 +781,7 @@ export function IndicatorChart({ series, unit }: IndicatorChartProps) {
     <NumericTrendChart
       series={series as NumericIndicatorSeries}
       unit={unit}
+      passengerMode={passengerMode}
     />
   );
 }

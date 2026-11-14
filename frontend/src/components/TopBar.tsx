@@ -2,12 +2,14 @@
 
 import { Bell } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { Astronaut, ScheduledTest } from '../types/orbital';
+import type { Astronaut, ScheduledTest, UserProfile } from '../types/orbital';
 
 interface TopBarProps {
   astronaut: Astronaut;
   simulated: boolean;
+  profile: UserProfile;
   tests: ScheduledTest[];
+  onChangeProfile: (profile: UserProfile) => void;
   onNavigateHome: () => void;
   onNavigate: (path: string) => void;
 }
@@ -15,14 +17,20 @@ interface TopBarProps {
 export function TopBar({
   astronaut,
   simulated,
+  profile,
   tests,
+  onChangeProfile,
   onNavigateHome,
   onNavigate,
 }: TopBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const dueTests = tests.filter((test) => test.due);
+  const visibleTests =
+    profile === 'passenger'
+      ? tests.filter((test) => test.id !== 'pvt' && test.id !== 'amsler')
+      : tests;
+  const dueTests = visibleTests.filter((test) => test.due);
   const dueCount = dueTests.length;
 
   useEffect(() => {
@@ -55,8 +63,8 @@ export function TopBar({
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-800/80 bg-[#0A101E]/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
-        <div className="flex items-center gap-4 sm:gap-6">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3.5 sm:px-8">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-5">
           <button
             type="button"
             onClick={onNavigateHome}
@@ -83,7 +91,45 @@ export function TopBar({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+          {/* Profile Segmented Toggle */}
+          <div
+            role="group"
+            aria-label="User profile"
+            className="inline-flex items-center rounded-xl border border-slate-700/85 bg-[#070B14] p-0.5"
+          >
+            <button
+              type="button"
+              aria-pressed={profile === 'crew'}
+              onClick={() => {
+                setMenuOpen(false);
+                onChangeProfile('crew');
+              }}
+              className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-sky-400 ${
+                profile === 'crew'
+                  ? 'bg-sky-500/20 text-sky-200 border border-sky-400/40'
+                  : 'text-slate-400 hover:text-slate-200 border border-transparent'
+              }`}
+            >
+              Crew member
+            </button>
+            <button
+              type="button"
+              aria-pressed={profile === 'passenger'}
+              onClick={() => {
+                setMenuOpen(false);
+                onChangeProfile('passenger');
+              }}
+              className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-sky-400 ${
+                profile === 'passenger'
+                  ? 'bg-sky-500/20 text-sky-200 border border-sky-400/40'
+                  : 'text-slate-400 hover:text-slate-200 border border-transparent'
+              }`}
+            >
+              Space passenger
+            </button>
+          </div>
+
           <span className="font-mono-tabular text-sm font-medium text-slate-200 whitespace-nowrap">
             Flight day {astronaut.flight_day}
           </span>

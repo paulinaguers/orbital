@@ -9,12 +9,18 @@ import type {
   OrbitalStatus,
   PvtSessionPayload,
   SelfReportPayload,
+  UserProfile,
 } from '../types/orbital';
 import { mockCircle } from './mockCircle';
 import { mockSeries } from './mockSeries';
+import { mockSeriesPassenger } from './mockSeriesPassenger';
 import { MOCK_ESCALATION_BY_LEVEL, mockStatus } from './mockStatus';
+import {
+  MOCK_PASSENGER_ESCALATION_BY_LEVEL,
+  mockStatusPassenger,
+} from './mockStatusPassenger';
 
-export { MOCK_ESCALATION_BY_LEVEL };
+export { MOCK_ESCALATION_BY_LEVEL, MOCK_PASSENGER_ESCALATION_BY_LEVEL };
 
 const DEMO_MODE = true;
 const inMemorySelfReports: SelfReportPayload[] = [];
@@ -186,23 +192,25 @@ export const DATA_SOURCE_GROUPS: Array<{
   },
 ];
 
-export function getDemoStatus(): OrbitalStatus {
-  return mockStatus;
+export function getDemoStatus(profile: UserProfile = 'crew'): OrbitalStatus {
+  return profile === 'passenger' ? mockStatusPassenger : mockStatus;
 }
 
 export function getDemoCircleData(): CircleData {
   return mockCircle;
 }
 
-export async function fetchOrbitalStatus(
-  astronautId = 'A1',
+export async function getStatus(
+  profile: UserProfile = 'crew',
+  astronautId?: string,
 ): Promise<OrbitalStatus> {
   if (DEMO_MODE) {
-    return mockStatus;
+    return getDemoStatus(profile);
   }
 
+  const resolvedId = astronautId ?? (profile === 'passenger' ? 'P1' : 'A1');
   const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/status`,
+    `http://localhost:8000/astronauts/${encodeURIComponent(resolvedId)}/status?profile=${encodeURIComponent(profile)}`,
   );
   if (!response.ok) {
     throw new Error(`Status request failed with code ${response.status}`);
@@ -210,26 +218,38 @@ export async function fetchOrbitalStatus(
   return (await response.json()) as OrbitalStatus;
 }
 
+export async function fetchOrbitalStatus(
+  astronautId = 'A1',
+  profile: UserProfile = 'crew',
+): Promise<OrbitalStatus> {
+  return getStatus(profile, astronautId);
+}
+
 export function getDemoSeries(
   indicatorId: string,
+  profile: UserProfile = 'crew',
 ): IndicatorSeries | undefined {
-  return mockSeries[indicatorId];
+  return profile === 'passenger'
+    ? mockSeriesPassenger[indicatorId]
+    : mockSeries[indicatorId];
 }
 
 export async function getSeries(
   indicatorId: string,
-  astronautId = 'A1',
+  profile: UserProfile = 'crew',
+  astronautId?: string,
 ): Promise<IndicatorSeries> {
   if (DEMO_MODE) {
-    const series = mockSeries[indicatorId];
+    const series = getDemoSeries(indicatorId, profile);
     if (!series) {
       throw new Error(`No series data found for indicator "${indicatorId}"`);
     }
     return series;
   }
 
+  const resolvedId = astronautId ?? (profile === 'passenger' ? 'P1' : 'A1');
   const response = await fetch(
-    `http://localhost:8000/astronauts/${encodeURIComponent(astronautId)}/series/${encodeURIComponent(indicatorId)}`,
+    `http://localhost:8000/astronauts/${encodeURIComponent(resolvedId)}/series/${encodeURIComponent(indicatorId)}?profile=${encodeURIComponent(profile)}`,
   );
   if (!response.ok) {
     throw new Error(`Series request failed with code ${response.status}`);

@@ -9,6 +9,7 @@ interface BlockCardProps {
   onSelect: (blockId: string) => void;
   onHoverChange?: (blockId: string | null) => void;
   highlighted?: boolean;
+  simpleMode?: boolean;
 }
 
 export function BlockCard({
@@ -16,8 +17,47 @@ export function BlockCard({
   onSelect,
   onHoverChange,
   highlighted = false,
+  simpleMode = false,
 }: BlockCardProps) {
   const blockStyle = LEVEL_STYLES[block.level];
+
+  if (simpleMode) {
+    return (
+      <button
+        type="button"
+        onClick={() => onSelect(block.id)}
+        onMouseEnter={() => onHoverChange?.(block.id)}
+        onMouseLeave={() => onHoverChange?.(null)}
+        onFocus={() => onHoverChange?.(block.id)}
+        onBlur={() => onHoverChange?.(null)}
+        className={`group w-full rounded-3xl bg-[#10192D] p-5 text-left transition-all duration-150 ease-out hover:-translate-y-1 hover:bg-[#131E36] hover:shadow-xl hover:shadow-black/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer ${
+          highlighted
+            ? '-translate-y-1 bg-[#131E36] shadow-xl shadow-black/35'
+            : 'shadow-lg shadow-black/20'
+        }`}
+        style={{
+          border: `2px solid ${blockStyle.color}`,
+        }}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2.5">
+          <h2 className="text-lg font-semibold leading-snug text-slate-50 group-hover:text-white">
+            {block.name}
+          </h2>
+          <StatusBadge level={block.level} variant="pill" />
+        </div>
+
+        <p className="mt-3 text-base leading-relaxed text-slate-200">
+          {block.simple_explanation ?? block.recommendation}
+        </p>
+
+        <div className="mt-4 flex items-center justify-end border-t border-slate-800/60 pt-3">
+          <span className="inline-flex items-center gap-1 text-sm font-semibold text-sky-400 transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-sky-300">
+            See details →
+          </span>
+        </div>
+      </button>
+    );
+  }
 
   return (
     <button

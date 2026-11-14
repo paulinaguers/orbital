@@ -1,6 +1,7 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
 export type HealthLevel = 'green' | 'yellow' | 'orange' | 'red';
+export type UserProfile = 'crew' | 'passenger';
 
 export interface Astronaut {
   id: string;
@@ -27,6 +28,7 @@ export interface HealthBlock {
   level: HealthLevel;
   nasa_risk: string[];
   recommendation: string;
+  simple_explanation?: string;
   indicators: Indicator[];
 }
 
@@ -46,6 +48,7 @@ export interface ScheduledTest {
 }
 
 export interface OrbitalStatus {
+  profile?: UserProfile;
   simulated: boolean;
   astronaut: Astronaut;
   overall_level: HealthLevel;
@@ -59,6 +62,7 @@ export interface NumericSeriesPoint {
   flight_day: number;
   value: number;
   level: HealthLevel;
+  phase_label?: string;
 }
 
 export interface BloodPressureSeriesPoint {
@@ -66,6 +70,7 @@ export interface BloodPressureSeriesPoint {
   systolic: number;
   diastolic: number;
   level: HealthLevel;
+  phase_label?: string;
 }
 
 export interface VisionAmslerSeriesPoint {

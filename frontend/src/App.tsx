@@ -6,8 +6,8 @@ import { BottomNav } from './components/BottomNav';
 import { TipsDrawer } from './components/TipsDrawer';
 import { TopBar } from './components/TopBar';
 import {
-  fetchOrbitalStatus,
   getDemoStatus,
+  getStatus,
   markTestCompletedInMemory,
 } from './data/source';
 import { AlertsInfoPage } from './pages/AlertsInfoPage';
@@ -20,7 +20,26 @@ import { MentalBreathingPage } from './pages/MentalBreathingPage';
 import { MentalCheckinPage } from './pages/MentalCheckinPage';
 import { MentalJournalPage } from './pages/MentalJournalPage';
 import { PvtTestPage } from './pages/PvtTestPage';
-import type { AppRoute, OrbitalStatus } from './types/orbital';
+import type { AppRoute, OrbitalStatus, UserProfile } from './types/orbital';
+
+const PROFILE_STORAGE_KEY = 'orbital_user_profile_v1';
+
+function readStoredProfile(): UserProfile {
+  try {
+    const raw = window.localStorage.getItem(PROFILE_STORAGE_KEY);
+    return raw === 'passenger' ? 'passenger' : 'crew';
+  } catch {
+    return 'crew';
+  }
+}
+
+function writeStoredProfile(profile: UserProfile): void {
+  try {
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, profile);
+  } catch {
+    // Ignore storage errors in restricted environments
+  }
+}
 
 function parseRoute(pathname: string): AppRoute {
   const cleanPath = pathname.replace(/\/+$/, '') || '/';
@@ -60,8 +79,19 @@ function parseRoute(pathname: string): AppRoute {
   return { page: 'home' };
 }
 
+function isHiddenInPassengerMode(route: AppRoute): boolean {
+  return (
+    route.page === 'mental-journal' ||
+    route.page === 'test-amsler' ||
+    route.page === 'test-pvt'
+  );
+}
+
 export default function App() {
-  const [status, setStatus] = useState<OrbitalStatus>(() => getDemoStatus());
+  const [profile, setProfile] = useState<UserProfile>(() => readStoredProfile());
+  const [status, setStatus] = useState<OrbitalStatus>(() =>
+    getDemoStatus(readStoredProfile()),
+  );
   const [route, setRoute] = useState<AppRoute>(() =>
     parseRoute(window.location.pathname),
   );
@@ -75,8 +105,9 @@ export default function App() {
   >({});
 
   useEffect(() => {
+    setStatus(getDemoStatus(profile));
     let active = true;
-    fetchOrbitalStatus(status.astronaut.id)
+    getStatus(profile)
       .then((nextStatus) => {
         if (active) {
           setStatus(nextStatus);
@@ -88,7 +119,16 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, [status.astronaut.id]);
+  }, [profile]);
+
+  useEffect(() => {
+    if (profile === 'passenger' && isHiddenInPassengerMode(route)) {
+      if (window.location.pathname !== '/') {
+        window.history.replaceState(null, '', '/');
+      }
+      setRoute({ page: 'home' });
+    }
+  }, [profile, route]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -100,11 +140,30 @@ export default function App() {
 
   const navigate = (path: string) => {
     const nextRoute = parseRoute(path);
+    if (profile === 'passenger' && isHiddenInPassengerMode(nextRoute)) {
+      if (window.location.pathname !== '/') {
+        window.history.pushState(null, '', '/');
+      }
+      setRoute({ page: 'home' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (window.location.pathname !== path) {
       window.history.pushState(null, '', path);
     }
     setRoute(nextRoute);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleChangeProfile = (nextProfile: UserProfile) => {
+    if (nextProfile === profile) {
+      return;
+    }
+    writeStoredProfile(nextProfile);
+    setTipsDrawerOpen(false);
+    setTipsFilterBlockId(null);
+    setProfile(nextProfile);
   };
 
   const handleTestCompleted = (testId: string) => {
@@ -123,27 +182,41 @@ export default function App() {
     }));
   };
 
-  const overdueToastTest = !toastDismissed
-    ? status.tests.find((test) => test.due && test.overdue) ?? null
-    : null;
+  const overdueToastTest =
+    !toastDismissed && profile === 'crew'
+      ? status.tests.find((test) => test.due && test.overdue) ?? null
+      : null;
 
   const renderPage = () => {
-    switch (route.page) {
+    const effectiveRoute =
+      profile === 'passenger' && isHiddenInPassengerMode(route)
+        ? ({ page: 'home' } as AppRoute)
+        : route;
+
+    switch (effectiveRoute.page) {
       case 'home':
         return (
           <HomePage
             status={status}
+            profile={profile}
             onNavigate={navigate}
             onOpenTips={handleOpenTips}
           />
         );
       case 'body':
-        return <BodyMapPage status={status} onNavigate={navigate} />;
+        return (
+          <BodyMapPage
+            status={status}
+            profile={profile}
+            onNavigate={navigate}
+          />
+        );
       case 'block':
         return (
           <BlockDetailPage
             status={status}
-            blockId={route.blockId}
+            profile={profile}
+            blockId={effectiveRoute.blockId}
             onNavigate={navigate}
             onOpenTips={handleOpenTips}
           />
@@ -189,7 +262,7 @@ export default function App() {
           />
         );
       case 'alerts-info':
-        return <AlertsInfoPage onNavigate={navigate} />;
+        return <AlertsInfoPage profile={profile} onNavigate={navigate} />;
     }
   };
 
@@ -198,7 +271,9 @@ export default function App() {
       <TopBar
         astronaut={status.astronaut}
         simulated={status.simulated}
+        profile={profile}
         tests={status.tests}
+        onChangeProfile={handleChangeProfile}
         onNavigateHome={() => navigate('/')}
         onNavigate={navigate}
       />
