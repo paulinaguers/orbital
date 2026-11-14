@@ -12,7 +12,9 @@ import type {
 } from '../types/orbital';
 import { mockCircle } from './mockCircle';
 import { mockSeries } from './mockSeries';
-import { mockStatus } from './mockStatus';
+import { MOCK_ESCALATION_BY_LEVEL, mockStatus } from './mockStatus';
+
+export { MOCK_ESCALATION_BY_LEVEL };
 
 const DEMO_MODE = true;
 const inMemorySelfReports: SelfReportPayload[] = [];
@@ -71,54 +73,118 @@ export const LEVEL_STYLES: Record<
 
 export const INDICATOR_EXPLANATIONS: Record<
   string,
-  { measures: string; matters: string }
+  { measures: string; matters: string; measuredWith: string }
 > = {
   blood_pressure: {
     measures: 'Pressure of blood in your arteries.',
     matters:
       'Microgravity shifts fluids toward the head and changes how the heart and vessels work.',
+    measuredWith: 'Wearable biomonitor (simulated)',
   },
   heart_rate: {
     measures: 'Heartbeats per minute at rest.',
     matters:
       'The heart adapts to microgravity; changes from your usual value can be an early sign.',
+    measuredWith: 'Wearable biomonitor (simulated)',
   },
   spo2: {
     measures: 'How much oxygen your blood carries.',
     matters: 'Cabin pressure changes can cause mild hypoxia.',
+    measuredWith: 'Wearable biomonitor (simulated)',
   },
   sleep_hours: {
     measures: 'Hours slept last night.',
     matters:
       'On the ISS astronauts sleep about 6 h on average, less than scheduled; short sleep lowers performance.',
+    measuredWith: 'Wearable sleep tracking (simulated)',
   },
   pvt_lapses: {
     measures: 'Slow reactions (lapses) in a short attention test.',
     matters: 'Fatigue and lack of sleep slow your reactions.',
+    measuredWith: 'In-app reaction test, based on the test used on the ISS',
   },
   glucose: {
     measures: 'Sugar level in your blood.',
     matters: "Spaceflight can reduce the body's response to insulin.",
+    measuredWith: 'Onboard glucometer (simulated)',
   },
   cabin_co2: {
     measures: 'Carbon dioxide in the cabin air.',
     matters:
       'CO₂ builds up in closed habitats; crews reported symptoms at low levels.',
+    measuredWith: 'Habitat air sensor (simulated)',
   },
   radiation_dose: {
     measures: 'Total radiation received so far in your career.',
     matters:
       'Space radiation raises long-term health risks; NASA sets a career limit.',
+    measuredWith: 'Personal dosimeter (simulated)',
   },
   vision_amsler: {
     measures: 'Whether straight lines look wavy or missing.',
     matters: 'Many long-duration astronauts develop eye changes (SANS).',
+    measuredWith:
+      'In-app Amsler grid, one of the vision checks used on the ISS',
   },
   mood_score: {
     measures: 'How you rated your mood from 0 to 10 (10 = worst).',
     matters: 'Isolation and confinement affect mood and wellbeing.',
+    measuredWith: 'Daily self check-in',
   },
 };
+
+export const DATA_SOURCE_GROUPS: Array<{
+  group: 'Sensors' | 'In-app tests' | 'Self-report';
+  items: Array<{ indicator: string; source: string }>;
+}> = [
+  {
+    group: 'Sensors',
+    items: [
+      {
+        indicator: 'Blood pressure, Resting heart rate, SpO₂',
+        source: 'Wearable biomonitor (simulated)',
+      },
+      {
+        indicator: 'Sleep',
+        source: 'Wearable sleep tracking (simulated)',
+      },
+      {
+        indicator: 'Glucose',
+        source: 'Onboard glucometer (simulated)',
+      },
+      {
+        indicator: 'Cabin CO₂',
+        source: 'Habitat air sensor (simulated)',
+      },
+      {
+        indicator: 'Cumulative radiation',
+        source: 'Personal dosimeter (simulated)',
+      },
+    ],
+  },
+  {
+    group: 'In-app tests',
+    items: [
+      {
+        indicator: 'Reaction test (PVT)',
+        source: 'In-app reaction test, based on the test used on the ISS',
+      },
+      {
+        indicator: 'Vision (Amsler grid)',
+        source: 'In-app Amsler grid, one of the vision checks used on the ISS',
+      },
+    ],
+  },
+  {
+    group: 'Self-report',
+    items: [
+      {
+        indicator: 'Mood, Fatigue, Stress, Workload',
+        source: 'Daily self check-in',
+      },
+    ],
+  },
+];
 
 export function getDemoStatus(): OrbitalStatus {
   return mockStatus;

@@ -28,14 +28,11 @@ interface BlockDetailPageProps {
 
 interface BlockAction {
   label: string;
-  path?: string;
+  path: string;
 }
 
 const BLOCK_ACTIONS: Record<string, BlockAction[]> = {
-  sleep_cognition: [
-    { label: 'Take reaction test (PVT)', path: '/tests/pvt' },
-    { label: "Log last night's sleep" },
-  ],
+  sleep_cognition: [{ label: 'Take reaction test (PVT)', path: '/tests/pvt' }],
   mental_health: [
     { label: 'Daily check-in', path: '/mental/checkin' },
     { label: 'Private journal', path: '/mental/journal' },
@@ -150,6 +147,12 @@ function IndicatorCard({
                   Why it matters in space:
                 </span>{' '}
                 {explanation.matters}
+              </p>
+              <p className="text-xs text-slate-400 pt-0.5">
+                <span className="font-medium text-slate-300">
+                  Measured with:
+                </span>{' '}
+                {explanation.measuredWith}
               </p>
             </div>
           )}
@@ -301,12 +304,7 @@ export function BlockDetailPage({
             <button
               key={action.label}
               type="button"
-              onClick={() =>
-                onNavigate(
-                  action.path ??
-                    `/action/${encodeURIComponent(block.id)}/${encodeURIComponent(action.label)}`,
-                )
-              }
+              onClick={() => onNavigate(action.path)}
               className="inline-flex min-h-[46px] items-center justify-center rounded-xl border border-sky-400/40 bg-sky-500/15 px-5 py-2.5 text-sm font-semibold text-sky-200 transition-colors duration-150 hover:border-sky-400/70 hover:bg-sky-500/25 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 cursor-pointer"
             >
               {action.label}
@@ -318,9 +316,9 @@ export function BlockDetailPage({
       {/* 4. Footer */}
       <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
         <span>
-          Physiological data are monitored against NASA HRP risk areas and
-          NASA-STD-3001 limits. Mental health entries stay private. All data
-          shown is simulated.
+          Physical and environmental data come from onboard sensors and in-app
+          tests based on NASA protocols. Mental health is self-reported and your
+          journal stays private. All data shown is simulated.
         </span>{' '}
         <button
           type="button"

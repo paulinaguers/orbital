@@ -155,6 +155,5 @@ export type AppRoute =
   | { page: 'mental-breathing' }
   | { page: 'test-amsler' }
   | { page: 'test-pvt' }
-  | { page: 'action'; blockId: string; actionTitle: string }
   | { page: 'circle' }
   | { page: 'alerts-info' };

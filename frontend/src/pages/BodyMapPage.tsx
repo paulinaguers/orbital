@@ -335,9 +335,9 @@ export function BodyMapPage({ status, onNavigate }: BodyMapPageProps) {
       {/* Bottom Footnote + How alerts work link */}
       <footer className="mt-10 border-t border-slate-800/70 pt-5 text-center text-xs leading-relaxed text-slate-400">
         <span>
-          Physiological data are monitored against NASA HRP risk areas and
-          NASA-STD-3001 limits. Mental health entries stay private. All data
-          shown is simulated.
+          Physical and environmental data come from onboard sensors and in-app
+          tests based on NASA protocols. Mental health is self-reported and your
+          journal stays private. All data shown is simulated.
         </span>{' '}
         <button
           type="button"

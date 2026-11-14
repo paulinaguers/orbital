@@ -5,28 +5,36 @@ import type { HealthLevel } from '../types/orbital';
 
 interface OrbiMascotProps {
   level: HealthLevel;
+  size?: 'sm' | 'md';
 }
 
-export function OrbiMascot({ level }: OrbiMascotProps) {
+export function OrbiMascot({ level, size = 'md' }: OrbiMascotProps) {
   const { color, label } = LEVEL_STYLES[level];
   const isRedAlert = level === 'red';
+  const isSmall = size === 'sm';
 
   return (
     <div
-      className="relative flex items-center justify-center select-none"
+      className="relative flex items-center justify-center select-none shrink-0"
       role="img"
       aria-label={`Orbi companion mascot indicating ${label} status`}
     >
       {/* Subtle orbital halo behind Orbi */}
-      <div
-        aria-hidden="true"
-        className="absolute h-48 w-48 rounded-full opacity-15 blur-2xl transition-colors duration-300"
-        style={{ backgroundColor: color }}
-      />
+      {!isSmall && (
+        <div
+          aria-hidden="true"
+          className="absolute h-48 w-48 rounded-full opacity-15 blur-2xl transition-colors duration-300"
+          style={{ backgroundColor: color }}
+        />
+      )}
 
       <svg
         viewBox="0 0 220 220"
-        className="relative h-52 w-52 sm:h-56 sm:w-56 animate-orbi-float drop-shadow-lg"
+        className={`relative ${
+          isSmall
+            ? 'h-16 w-16'
+            : 'h-52 w-52 sm:h-56 sm:w-56 animate-orbi-float drop-shadow-lg'
+        }`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

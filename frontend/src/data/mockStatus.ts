@@ -1,6 +1,17 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import type { OrbitalStatus } from '../types/orbital';
+import type { HealthLevel, OrbitalStatus } from '../types/orbital';
+
+export const MOCK_ESCALATION_BY_LEVEL: Record<HealthLevel, string[]> = {
+  green: [],
+  yellow: [],
+  orange: ['Onboard doctor', 'Flight surgeon (Earth)'],
+  red: [
+    'Onboard doctor',
+    'Flight surgeon (Earth) – URGENT',
+    'Crewmate on board',
+  ],
+};
 
 export const mockStatus: OrbitalStatus = {
   simulated: true,

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BottomNav } from './components/BottomNav';
 import { TopBar } from './components/TopBar';
 import { fetchOrbitalStatus, getDemoStatus } from './data/source';
+import { AlertsInfoPage } from './pages/AlertsInfoPage';
 import { AmslerTestPage } from './pages/AmslerTestPage';
 import { BlockDetailPage } from './pages/BlockDetailPage';
 import { BodyMapPage } from './pages/BodyMapPage';
@@ -12,7 +13,6 @@ import { HomePage } from './pages/HomePage';
 import { MentalBreathingPage } from './pages/MentalBreathingPage';
 import { MentalCheckinPage } from './pages/MentalCheckinPage';
 import { MentalJournalPage } from './pages/MentalJournalPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
 import { PvtTestPage } from './pages/PvtTestPage';
 import type { AppRoute, OrbitalStatus } from './types/orbital';
 
@@ -43,19 +43,6 @@ function parseRoute(pathname: string): AppRoute {
   if (cleanPath.startsWith('/block/')) {
     const blockId = decodeURIComponent(cleanPath.slice('/block/'.length));
     return { page: 'block', blockId: blockId || 'unknown' };
-  }
-  if (cleanPath.startsWith('/action/')) {
-    const rest = cleanPath.slice('/action/'.length);
-    const slashIdx = rest.indexOf('/');
-    if (slashIdx !== -1) {
-      const blockId = decodeURIComponent(rest.slice(0, slashIdx));
-      const actionTitle = decodeURIComponent(rest.slice(slashIdx + 1));
-      return {
-        page: 'action',
-        blockId: blockId || 'unknown',
-        actionTitle: actionTitle || 'Action',
-      };
-    }
   }
   if (cleanPath === '/circle') {
     return { page: 'circle' };
@@ -144,20 +131,6 @@ export default function App() {
         return (
           <PvtTestPage astronaut={status.astronaut} onNavigate={navigate} />
         );
-      case 'action': {
-        const matchedBlock = status.blocks.find(
-          (block) => block.id === route.blockId,
-        );
-        return (
-          <PlaceholderPage
-            title={route.actionTitle}
-            routeLabel={matchedBlock ? matchedBlock.name : 'Action'}
-            message="Coming soon"
-            backLabel={matchedBlock ? `Back to ${matchedBlock.name}` : 'Back'}
-            onBack={() => navigate(`/block/${route.blockId}`)}
-          />
-        );
-      }
       case 'circle':
         return (
           <CirclePage
@@ -166,13 +139,7 @@ export default function App() {
           />
         );
       case 'alerts-info':
-        return (
-          <PlaceholderPage
-            title="How alerts work"
-            routeLabel="/alerts-info"
-            onBack={() => navigate('/')}
-          />
-        );
+        return <AlertsInfoPage onNavigate={navigate} />;
     }
   };
 
