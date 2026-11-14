@@ -57,6 +57,20 @@ def test_deterioration_ends_yellow_in_sleep_co2_and_pvt():
     assert {m for m, lvl in levels.items() if lvl != "green"} == {"sleep_hours", "cabin_co2", "pvt_lapses"}
 
 
+def test_attention_ends_orange_from_the_personal_baseline():
+    """Heart rate 66-67 is clinically normal (green) but orange against Alex's own
+    baseline: the personal baseline at work.
+    FC 66-67 es normal clínicamente (verde) pero naranja contra la línea base
+    propia de Alex: la línea base personal en acción.
+    """
+    results = evaluate_timeline(demo.build_scenario("attention"))
+    assert results[-1]["clinical"]["heart_rate"] == "green"
+    assert results[-1]["final"]["heart_rate"] == "orange"
+    assert day42("attention")[1] == "orange"
+    status = export_demo.build_demo()["scenarios"]["attention"]["status"]
+    assert status["escalation"]["notified"] == ["Onboard doctor", "Flight surgeon (Earth)"]
+
+
 def test_emergency_ends_red_and_notifies_the_team():
     """SpO2 89 % and two short nights: red, with the red notification list.
     SpO2 89 % y dos noches cortas: rojo, con la lista de aviso rojo.

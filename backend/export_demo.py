@@ -70,7 +70,7 @@ TESTS = [
 
 OVERALL_MESSAGES = {
     "green": "Everything looks good today.",
-    "yellow": "Mostly good today. {n} area(s) need a little attention.",
+    "yellow": "Mostly good today. {areas} a little attention.",
     "orange": "Some values need attention. Your onboard doctor and the flight surgeon have been notified.",
     "red": "Urgent: your onboard doctor and the flight surgeon have been notified. A crewmate is on the way.",
 }
@@ -144,6 +144,13 @@ def rewards_entry(days):
     return {"stars": stars, "streak_days": streak}
 
 
+def areas_text(count):
+    """ "1 area needs" / "2 areas need", for the overall message.
+    "1 area needs" / "2 areas need", para el mensaje general.
+    """
+    return "1 area needs" if count == 1 else f"{count} areas need"
+
+
 def status_entry(days, results, texts):
     """The whole status for the last day (same shape as mockStatus.ts).
     El estado completo del último día (misma forma que mockStatus.ts).
@@ -154,7 +161,7 @@ def status_entry(days, results, texts):
     affected = sum(1 for b in blocks if b["level"] != GREEN)
     astronaut = dict(ASTRONAUT, flight_day=days[-1]["flight_day"])
     return {"profile": "crew", "simulated": True, "astronaut": astronaut, "overall_level": overall,
-            "overall_message": OVERALL_MESSAGES[overall].format(n=affected),
+            "overall_message": OVERALL_MESSAGES[overall].format(areas=areas_text(affected)),
             "escalation": {"notified": escalation_for(overall)}, "blocks": blocks,
             "tests": tests_entry(days), "rewards": rewards_entry(days)}
 

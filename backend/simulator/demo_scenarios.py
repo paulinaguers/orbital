@@ -14,6 +14,10 @@ tengan sentido:
 - deterioration: from day 33 cabin CO2 rises, sleep gets shorter and the
   reaction test worsens (overall yellow on day 42) / desde el día 33 sube el
   CO2, se duerme menos y empeora el test de reacción (amarillo el día 42).
+- attention: deterioration plus a resting heart rate of 66-67 bpm on days
+  40-42: normal for anyone, but far from this astronaut's own baseline
+  (overall orange) / deterioro más FC de 66-67 lpm en los días 40-42:
+  normal para cualquiera, pero lejos de la línea base propia (naranja).
 - emergency: deterioration plus two short nights and SpO2 89 % with a
   headache on day 42 (overall red) / deterioro más dos noches cortas y SpO2
   89 % con dolor de cabeza el día 42 (rojo).
@@ -33,7 +37,7 @@ from pathlib import Path
 
 SEED = 2031
 DAYS = 42
-SCENARIOS = ["healthy", "deterioration", "emergency"]
+SCENARIOS = ["healthy", "deterioration", "attention", "emergency"]
 ASTRONAUT = {"id": "SIM-02", "name": "Alex Rivera", "role": "Flight Engineer",
              "mission": "Mars transit (simulated)"}
 OUTPUT_CSV = Path(__file__).resolve().parents[2] / "data" / "demo_scenarios.csv"
@@ -143,6 +147,16 @@ def apply_deterioration(day):
         day["pvt_lapses"] = 6
 
 
+def apply_attention(day):
+    """Deterioration plus a sustained rise of resting heart rate vs. baseline.
+    Deterioro más una suba sostenida de la FC respecto de la línea base.
+    """
+    apply_deterioration(day)
+    rise = {40: 66, 41: 67, 42: 66}
+    if day["flight_day"] in rise:
+        day["heart_rate"] = rise[day["flight_day"]]
+
+
 def apply_emergency(day):
     """Deterioration plus two nights under 6 h and low SpO2 with headache.
     Deterioro más dos noches de menos de 6 h y SpO2 baja con dolor de cabeza.
@@ -172,7 +186,8 @@ def build_scenario(name):
     rng = random.Random(SEED)
     offsets = {name: rng.sample(BASELINE_OFFSETS, len(BASELINE_OFFSETS)) for name in VITALS}
     days = [normal_day(rng, d, offsets) for d in range(1, DAYS + 1)]
-    changes = {"healthy": None, "deterioration": apply_deterioration, "emergency": apply_emergency}[name]
+    changes = {"healthy": None, "deterioration": apply_deterioration,
+               "attention": apply_attention, "emergency": apply_emergency}[name]
     for day in days:
         if changes:
             changes(day)
