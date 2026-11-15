@@ -351,6 +351,15 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina asked for the whole repo in English. All 56 tests pass; `demo.json` is unchanged (the screen already used the English texts only).
 - Commit: (complete with hash)
 
+### [2026-11-14 23:15] README visual redesign
+- Thread: C
+- Type: task
+- What was done: the README got a new visual layout, keeping all of its content. Added: a banner (`assets/orbital-banner.png`), a centered header with links and badges, a two-column contents table, three app screenshots in §6 (`assets/home.png`, `assets/body-map.png`, `assets/dashboard.png`, each labeled with its scenario), the architecture diagram in Mermaid, a `git clone` step, a team table and a closing block. §13 now lists ChatGPT.
+- Discarded from the ChatGPT proposal: dropping the Source column and the "NASA HRP:" prefixes, shortened sections (PVT, rolling baseline, ML layer, code links, open clinical decisions), invented levels for the PVT/check-in row, an extra "Explainability" metric, LaTeX that GitHub does not render (and broke a table), headings that broke every contents link, a link to a missing `#documentation` anchor, the NASA logo inside a badge (the rules forbid NASA logos) and a placeholder "alerts" screenshot.
+- AI tools: ChatGPT (OpenAI) proposed the layout and generated the banner image; Claude compared it with the previous README section by section, kept the previous content where they disagreed, added an "AI-generated image (ChatGPT, OpenAI)" watermark to the banner, created `assets/` and checked that all internal links resolve.
+- Human review: Paulina provided the proposal and the screenshots and asked that the current content win in any contradiction. To check: that the banner and the Mermaid diagram render on GitHub.
+- Commit: (complete with hash)
+
 ## Sunday 15/11
 
 <!-- -->

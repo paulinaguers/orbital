@@ -1,30 +1,47 @@
-# ORBITAL — *Your health, our mission*
+![ORBITAL — Your health, our mission](assets/orbital-banner.png)
 
-**Onboard health monitoring for long-duration spaceflight.** ORBITAL watches each astronaut's key health indicators, compares them with clinical standards **and with the astronaut's own normal**, and turns every result into a clear color, a plain-language explanation and the right person to notify — on board, without depending on Earth.
+<div align="center">
+
+# ORBITAL
+
+### YOUR HEALTH, OUR MISSION
+
+**Onboard health monitoring for long-duration spaceflight.**
+
+[**LIVE DEMO**](https://orbital-lovat.vercel.app) · [**HOW IT DECIDES**](#4-how-orbital-decides-personal-baseline--clinical-thresholds) · [**ARCHITECTURE**](#9-architecture) · [**RUN IT LOCALLY**](#10-run-it-locally)
+
+![NASA Space Apps](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0B3D91?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
+![React](https://img.shields.io/badge/React-TypeScript-61DAFB?style=flat-square&logo=react&logoColor=black)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-56-2ea44f?style=flat-square)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)
+
+</div>
+
+ORBITAL watches each astronaut's key health indicators, compares them with clinical standards **and with the astronaut's own normal**, and turns every result into a clear color, a plain-language explanation and the right person to notify — on board, without depending on Earth.
 
 > 🚀 **Live demo:** https://orbital-lovat.vercel.app (shows the core's precomputed results for 4 scenarios; live recalculation runs locally, see [§9](#9-architecture))
-> 🧪 **All data in this project is simulated.** ORBITAL guides; it does not diagnose.
-> NASA Space Apps Challenge 2026 · Challenge: *Create Health Monitoring Software for Astronauts on Space Missions* · Team **The Foxhole Court** · UCEL Rosario, Argentina
+>
+> 🧪 **All data in this project is simulated.** ORBITAL guides; it does not diagnose. It is an experimental prototype, not a medical device.
+
+**NASA Space Apps Challenge 2026** · Challenge: *Create Health Monitoring Software for Astronauts on Space Missions*  
+Team **The Foxhole Court** · UCEL Rosario, Argentina
 
 ---
 
 ## Contents
 
-1. [Why ORBITAL](#1-why-orbital)
-2. [What ORBITAL monitors](#2-what-orbital-monitors)
-3. [Built on NASA's standards](#3-built-on-nasas-standards)
-4. [How ORBITAL decides: personal baseline + clinical thresholds](#4-how-orbital-decides-personal-baseline--clinical-thresholds)
-5. [Colors, meaning and who is notified](#5-colors-meaning-and-who-is-notified)
-6. [The experience](#6-the-experience)
-7. [Space passenger mode](#7-space-passenger-mode)
-8. [The demo: one astronaut, four scenarios](#8-the-demo-one-astronaut-four-scenarios)
-9. [Architecture](#9-architecture)
-10. [Run it locally](#10-run-it-locally)
-11. [Verification and tests](#11-verification-and-tests)
-12. [Limitations and future work](#12-limitations-and-future-work)
-13. [Use of AI (SI)](#13-use-of-ai-si)
-14. [References](#14-references)
-15. [Team and license](#15-team-and-license)
+| | |
+| --- | --- |
+| [1 — Why ORBITAL](#1-why-orbital) | [9 — Architecture](#9-architecture) |
+| [2 — What ORBITAL monitors](#2-what-orbital-monitors) | [10 — Run it locally](#10-run-it-locally) |
+| [3 — Built on NASA's standards](#3-built-on-nasas-standards) | [11 — Verification and tests](#11-verification-and-tests) |
+| [4 — How ORBITAL decides](#4-how-orbital-decides-personal-baseline--clinical-thresholds) | [12 — Limitations and future work](#12-limitations-and-future-work) |
+| [5 — Colors, meaning and who is notified](#5-colors-meaning-and-who-is-notified) | [13 — Use of AI (SI)](#13-use-of-ai-si) |
+| [6 — The experience](#6-the-experience) | [14 — References](#14-references) |
+| [7 — Space passenger mode](#7-space-passenger-mode) | [15 — Team and license](#15-team-and-license) |
+| [8 — The demo: one astronaut, four scenarios](#8-the-demo-one-astronaut-four-scenarios) | |
 
 ---
 
@@ -39,6 +56,12 @@ On long missions this risk grows:
 - **Everyone is different:** in microgravity physiology changes, so a value that is "normal" for the population may be a warning sign for one particular astronaut.
 
 **ORBITAL closes that gap:** it analyzes the data **on board**, compares each astronaut **with themselves**, works **offline**, and tells the astronaut, at all times, *what is happening and why*.
+
+<div align="center">
+
+**OBSERVE → ACT → VERIFY → ESCALATE**
+
+</div>
 
 ---
 
@@ -163,6 +186,22 @@ ORBITAL is designed to be **easy, intuitive and informative**: the astronaut sho
 | **My Circle** | Keeps the astronaut close to loved ones on Earth: messages are queued while offline and sent in the next communication window, with the signal delay shown. Designed with end-to-end encryption (not implemented in this prototype). | [`CirclePage.tsx`](frontend/src/pages/CirclePage.tsx) |
 | **How alerts work** | Explains each color, what to do, who is notified and where each data point comes from. | [`AlertsInfoPage.tsx`](frontend/src/pages/AlertsInfoPage.tsx) |
 
+### Screenshots
+
+Captured from the running application with the simulated demo data.
+
+**Home — Orbi** (*Deterioration* scenario, flight day 42)
+
+![ORBITAL Home: Orbi explains the overall status](assets/home.png)
+
+**Body map** (*Deterioration* scenario, flight day 42)
+
+![ORBITAL Body map with the five health blocks](assets/body-map.png)
+
+**Block dashboard — Sleep & Cognition** (*Emergency* scenario, flight day 42)
+
+![ORBITAL Sleep & Cognition dashboard with a 14-day trend](assets/dashboard.png)
+
 ---
 
 ## 7. Space passenger mode
@@ -198,9 +237,14 @@ Switch scenarios from the ⚙️ menu in the top bar. Running locally with the A
 
 ## 9. Architecture
 
-```
- simulator ──creates──▶ data/demo_scenarios.csv ──reads──▶ CORE (Python) ──▶ FastAPI ──live──▶ SCREEN (React)
-                                                                └──▶ demo.json ──backup──┘
+```mermaid
+flowchart LR
+    A["Simulator"] -- creates --> B["data/demo_scenarios.csv"]
+    B -- reads --> C["CORE (Python)"]
+    C --> D["FastAPI"]
+    D -- live --> E["SCREEN (React)"]
+    C --> F["demo.json"]
+    F -- backup --> E
 ```
 
 | Layer | What it does | Files |
@@ -222,6 +266,10 @@ Switch scenarios from the ⚙️ menu in the top bar. Running locally with the A
 **Requirements:** Python 3.11, Node.js 20+.
 
 ```bash
+# 0. Clone the repository
+git clone https://github.com/paulinaguers/orbital.git
+cd orbital
+
 # 1. Backend: install and test
 pip install -r backend/requirements.txt
 python -m pytest                          # 56 tests
@@ -327,6 +375,7 @@ ORBITAL was built with **AI-assisted development with human oversight**. The ide
 | --- | --- |
 | **Claude** (Anthropic, Opus 5.5) — chat, Claude Code, reviewer and coordinator subagents, project skills | Literature search, documents, prompts for the screens, the core, API, simulator, tests, checks and this README |
 | **Google AI Studio** (Gemini) | Generating the React screens from prompts reviewed by the team |
+| **ChatGPT** (OpenAI) | Visual layout of this README and the banner image (watermarked as AI-generated); content checked by the team against the previous README |
 
 - Every code file starts with `# Generated with SI assistance (Claude), reviewed by the ORBITAL team.` (or `//` in TypeScript).
 - Every step, the tool used and what a person reviewed are in the logbook: [`BITACORA.md`](BITACORA.md).
@@ -358,10 +407,30 @@ Full bibliography: [`bibliografia.md`](.claude/skills/fisiologia-espacial/refere
 
 ## 15. Team and license
 
-**The Foxhole Court** — three members, one with a clinical background (kinesiology) and two from data science:
+<div align="center">
 
-- Paulina Guerscovich — [@paulinaguers](https://github.com/paulinaguers)
-- Miguel — [@miguelperpi](https://github.com/miguelperpi)
-- Lola — [@thenostromowarrior](https://github.com/thenostromowarrior)
+### THE FOXHOLE COURT
+
+*Three team members. One mission.*
+
+</div>
+
+One member with a clinical background (kinesiology) and two from data science:
+
+| Team member | GitHub |
+| --- | --- |
+| **Paulina Guerscovich** | [@paulinaguers](https://github.com/paulinaguers) |
+| **Miguel** | [@miguelperpi](https://github.com/miguelperpi) |
+| **Lola** | [@thenostromowarrior](https://github.com/thenostromowarrior) |
 
 Licensed under the [Apache License 2.0](LICENSE). No NASA or partner-agency logos are used. All data is simulated.
+
+---
+
+<div align="center">
+
+**ORBITAL** · *Your health, our mission.*
+
+**Observe. Act. Verify. Escalate.**
+
+</div>
