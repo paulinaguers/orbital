@@ -313,6 +313,28 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina read the review, approved the plan and the two decisions (radiation as exposure tracking; brief PVT presentation). Thread C (Miguel) to confirm the radiation change in alert_texts.md and the answer key, and to review the fallback texts for fatigue, stress and workload in export_demo.py.
 - Commit: (complete with hash)
 
+### [2026-11-14 21:05] Internal study documents for the jury
+- Thread: General (A + C)
+- Type: documentation
+- What was done: three internal documents in Spanish (not part of the submission) so the whole team can explain and defend the project: (1) folder structure, stack and how the parts connect, including the data and the API; (2) the statistical engine: baseline days 4–10, z-score, sustained deviation rules, the two layers, not evaluable, with worked examples from the demo data and a decision diagram; (3) clinical basis: what NASA-STD-3001 sets and does not set, each indicator with its NASA risk, thresholds and source, tests and scales with their limitations, a sourced-vs-proposal table, key facts for the pitch, bibliography with links and likely jury questions.
+- AI tools: Claude (Claude Docs), from the code, the project documents and the fisiologia-espacial skill.
+- Human review: Paulina requested and reads them. To check: the 5 indicator-selection criteria named in document 3, and the radiation rule pending Miguel's confirmation (umbrales.md in the skill still has the old 65–80 % / > 80 % table).
+- Commit: no commit (documents live outside the repo)
+
+### [2026-11-14 21:40] Corrections after a second external review
+- Thread: A + B
+- Type: decision
+- What was done: a second external AI review (ChatGPT) was checked against the code; its main findings were confirmed and fixed:
+  - **PVT omissions:** a stimulus with no answer within 3 s is an omission and counts as a lapse; the screen now sends the number of stimuli shown and says "No answer"; sessions are compared as a lapse rate (scaled to a 15-stimulus reference session, so the stored demo data keeps the same z-scores); fewer than 5 stimuli = not evaluable. Before, a session with no answers was "0 lapses, green".
+  - **API validation:** reaction times must be between 0 and 3,000 ms, no more answers than stimuli, no negative counts or durations, flight day ≥ 1; invalid payloads give 422 with the reason.
+  - **Symptoms:** the check-in now has the four symptom boxes and the API receives them (dizziness and feeling faint feed the low blood pressure rule, headache the CO₂ rule; cold sore or rash is only recorded). The README already promised them.
+  - **Amsler:** new question "This appeared suddenly" makes the red category reachable; a change is confirmed only if the same area is marked again (a distortion elsewhere waits for a retest).
+  - **Consistency:** PVT named "Brief reaction test (PVT-inspired)" everywhere; Amsler source "Compared with your previous test"; sleep and CO₂ chart bands labeled as descriptive reference (they do not trigger alerts); each block reports how many indicators were evaluated; fatigue, stress and workload texts moved into alert_texts.md §5c–5e (pending thread C review); the frontend build now runs the TypeScript check.
+  - **Documented as limitations (not changed):** repeat of red BP / low SpO₂ readings, glucose context, radiation past 100 % and the 250 mSv per-event limit, minimum spread of the baseline, no de-escalation rule, no PVT practice phase, 0–10 scale as a simplified VAS-inspired self-report, SpO₂ source from a pediatric WHO guideline, HR green from 50 as a team adaptation, and a more precise wording of what NASA and CSA measure today.
+- AI tools: ChatGPT (external review); Claude verified each point, changed the core, API, screen, tests and docs. The screen was edited directly in the code (not regenerated in Google AI Studio).
+- Human review: Paulina asked to fix everything tonight. All 56 backend tests pass; TypeScript check and frontend build pass. All four scenarios keep their overall level. To check by the team: the 3 s response window, the 15-stimulus reference and the 5-stimulus minimum (all Proposal); thread C to review the scale texts and the Amsler "same area" rule.
+- Commit: (complete with hash)
+
 ## Sunday 15/11
 
 <!-- -->

@@ -41,7 +41,7 @@ DEVIATION_FIELDS = {
     "fatigue_score": (["fatigue_score"], +1),
     "stress_score": (["stress_score"], +1),
     "workload_score": (["workload_score"], +1),
-    "pvt_lapses": (["pvt_lapses"], +1),
+    "pvt_lapses": (["pvt_lapses_per_reference"], +1),
 }
 # The four check-in scales have no clinical threshold: they are compared only
 # with the personal baseline (escalas-y-protocolos.md §2.1), like the PVT.
@@ -59,10 +59,31 @@ NOTIFIED_BY_LEVEL = {
 }
 
 
+def field_value(day, field):
+    """Value of one day field; the PVT is scaled to a reference session here.
+    Valor de un campo del día; el PVT se escala a una sesión de referencia.
+
+    PVT lapses are compared as a rate: lapses x reference stimuli / stimuli
+    shown, so sessions with a different number of stimuli are comparable.
+    Days without a stimulus count are taken as reference sessions.
+    Los lapsos se comparan como tasa (lapsos x estímulos de referencia /
+    estímulos), así se comparan sesiones con distinta cantidad de estímulos.
+    """
+    if field != "pvt_lapses_per_reference":
+        return day.get(field)
+    if day.get("pvt_lapses") is None or day.get("pvt_session_invalid"):
+        return None
+    reference = THRESHOLDS["pvt_lapses"]["reference_stimuli"]
+    stimuli = day.get("pvt_stimuli") or reference
+    return day["pvt_lapses"] if stimuli == reference else day["pvt_lapses"] * reference / stimuli
+
+
 def is_measured(day, measurement):
     """True if the day has a value for this measurement.
     Verdadero si el día tiene valor para esta medición.
     """
+    if measurement == "pvt_lapses" and day.get("pvt_session_invalid"):
+        return True
     fields = {
         "blood_pressure": "systolic", "cabin_co2": "cabin_co2_7d_avg",
         "radiation_dose": "radiation_dose_cumulative",
@@ -97,8 +118,8 @@ def build_baselines(days):
     baselines = {}
     for fields, _ in DEVIATION_FIELDS.values():
         for field in fields:
-            values = [day.get(field) for day in days if is_baseline_day(day["flight_day"])]
-            minimum = THRESHOLDS["pvt_lapses"]["min_baseline_sessions"] if field == "pvt_lapses" else None
+            values = [field_value(day, field) for day in days if is_baseline_day(day["flight_day"])]
+            minimum = THRESHOLDS["pvt_lapses"]["min_baseline_sessions"] if field == "pvt_lapses_per_reference" else None
             baselines[field] = calculate_baseline(values, minimum)
     return baselines
 
@@ -115,7 +136,7 @@ def effective_z(measurement, day, baselines):
     for field in fields:
         if baselines.get(field) is None:
             return None
-        z = calculate_z_score(day[field], *baselines[field])
+        z = calculate_z_score(field_value(day, field), *baselines[field])
         if z is None:
             return None
         scores.append(abs(z) if direction == 0 else z * direction)
@@ -175,6 +196,11 @@ def evaluate_day(day, state):
     for m in MEASUREMENTS:
         if not is_measured(day, m):
             result["clinical"][m] = result["final"][m] = None
+            continue
+        if m == "pvt_lapses" and day.get("pvt_session_invalid"):
+            # Too few stimuli: not scored and kept out of the z history.
+            # Muy pocos estímulos: no se puntúa ni entra al historial de z.
+            result["clinical"][m], result["final"][m] = None, NOT_EVALUABLE
             continue
         level = clinical_level(m, day, state["previous_sleep"])
         result["clinical"][m] = level

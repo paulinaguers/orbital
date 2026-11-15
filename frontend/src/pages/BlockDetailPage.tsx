@@ -344,6 +344,11 @@ export function BlockDetailPage({
           <StatusBadge level={block.level} variant="pill" />
         </div>
 
+        {block.coverage && block.coverage.evaluated < block.coverage.total && (
+          <p className="mt-2 text-sm text-[#8FA3C7]">
+            {block.coverage.evaluated} of {block.coverage.total} indicators evaluated
+          </p>
+        )}
         {/* NASA / CSA risk tags (Crew mode only) */}
         {!isPassenger && block.nasa_risk.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">

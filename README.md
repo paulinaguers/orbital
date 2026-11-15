@@ -35,7 +35,7 @@ Every astronaut on board is critical to the mission. A health problem that is **
 On long missions this risk grows:
 
 - **Distance:** communication with Earth can take **up to 20 minutes each way**, so crews must solve medical problems with limited help from the ground ([NASA HRP – Distance from Earth](https://www.nasa.gov/hrp/hazard-distance-from-earth/)).
-- **Data that waits:** NASA and the Canadian Space Agency (CSA) already measure many of these signals, but much of the analysis happens on Earth or depends on a connection (e.g., CSA Bio-Monitor and Space Health).
+- **Data spread across systems:** NASA and the Canadian Space Agency (CSA) already collect several of these signals in specific studies and tools (e.g., NASA Standard Measures, CSA Bio-Monitor and Space Health), often reviewed by teams on the ground. ORBITAL is a **proposal** to bring them together in one place and support decisions **on board**.
 - **Everyone is different:** in microgravity physiology changes, so a value that is "normal" for the population may be a warning sign for one particular astronaut.
 
 **ORBITAL closes that gap:** it analyzes the data **on board**, compares each astronaut **with themselves**, works **offline**, and tells the astronaut, at all times, *what is happening and why*.
@@ -62,7 +62,7 @@ Thirteen measurements, grouped in **five health blocks**. Each one watches an of
 | | Stress (0–10) | Self-report | NASA HRP: Behavioral Conditions | Personal baseline |
 | | Workload (0–10) | Self-report | NASA HRP: Behavioral Conditions | Personal baseline |
 
-The four check-in scales (10 = worst) are separate indicators, each compared with the astronaut's own baseline, as the scales protocol asks. The check-in also has four **symptom** boxes (headache, dizziness, feeling faint, cold sore or rash) that change some levels (for example, high CO₂ **with** a headache).
+The four check-in scales are a **simplified 0–10 self-report inspired by the visual analog scales (VAS)** used on the ISS (10 = worst); they are not the same instrument as the 0–100 VAS. Each one is a separate indicator, compared with the astronaut's own baseline. The check-in also has four **symptom** boxes: dizziness and feeling faint feed the low blood pressure rule, headache feeds the CO₂ rule (high CO₂ **with** a headache is orange); cold sore or rash is only recorded, because temperature is not in the MVP.
 
 📄 Rationale per risk: [`riesgos-nasa.md`](.claude/skills/fisiologia-espacial/references/riesgos-nasa.md) · Thresholds: [`umbrales.md`](.claude/skills/fisiologia-espacial/references/umbrales.md) · Scales and protocols: [`escalas-y-protocolos.md`](.claude/skills/fisiologia-espacial/references/escalas-y-protocolos.md)
 
@@ -224,7 +224,7 @@ Switch scenarios from the ⚙️ menu in the top bar. Running locally with the A
 ```bash
 # 1. Backend: install and test
 pip install -r backend/requirements.txt
-python -m pytest                          # 48 tests
+python -m pytest                          # 56 tests
 
 # 2. (Optional) regenerate the demo data and the backup file
 python -m backend.simulator.demo_scenarios
@@ -247,9 +247,9 @@ The ⚙️ menu shows the data source: **Live core (API)**, **Demo file** or **M
 
 - **Clinical answer key:** [`data/clinical_test_cases.csv`](data/clinical_test_cases.csv) — 188 hand-written days covering every level and the main threshold boundaries of the 10 measurements, written from the alert texts and the clinical skill, **independently of the core's code** (case list: [`docs/content/clinical_test_cases.md`](docs/content/clinical_test_cases.md)). The core matches **every non-pending expected level (more than 1,500 comparisons)** → [`test_core_vs_clinical_cases.py`](backend/tests/test_core_vs_clinical_cases.py)
 - **No false alarms:** the healthy scenario stays green for all 42 days → [`test_demo_scenarios.py`](backend/tests/test_demo_scenarios.py)
-- **Live recalculation:** API tests for check-in, PVT and Amsler → [`test_api.py`](backend/tests/test_api.py)
+- **Live recalculation and input checks:** API tests for check-in (including symptoms), PVT (omissions, invalid sessions, impossible values) and Amsler (including the red "sudden change") → [`test_api.py`](backend/tests/test_api.py)
 - **Not evaluable, never green:** unit tests for flat or incomplete baselines, radiation rules and API input checks → [`test_core_units.py`](backend/tests/test_core_units.py)
-- **48 automated tests** in [`backend/tests/`](backend/tests/); the frontend is built on every deploy.
+- **56 automated tests** in [`backend/tests/`](backend/tests/); the frontend build includes a TypeScript type check.
 
 > **What this proves, and what it does not.** These tests show that the code applies the rules the team defined, consistently (internal verification). They do **not** show that the rules are clinically right for astronauts: that needs clinical validation with real data, which is out of the scope of a hackathon.
 
@@ -261,11 +261,15 @@ The ⚙️ menu shows the data source: **Live core (API)**, **Demo file** or **M
 
 - **Simulated data only;** not validated with real astronauts. ORBITAL is not a medical device.
 - **Earth-based clinical thresholds** (AHA, WHO, ADA) are what NASA-STD-3001 points to, but they need clinical review before being applied in microgravity; the personal baseline layer partly addresses this.
-- **Brief PVT:** the 1-minute demo is PVT-inspired and experimental; false starts are recorded but not scored yet. A 3-minute mode would match the validated PVT-B.
-- **Radiation:** dose rate and per-event dose are not modeled yet.
+- **Brief PVT:** the 1-minute demo is PVT-inspired and experimental. Unanswered stimuli (no answer within 3 s) count as lapses, sessions are compared as a lapse rate, and sessions with fewer than 5 stimuli are not evaluable (all Proposal). False starts are recorded but not scored yet. There is no practice phase: the protocol asks for 2–3 practice sessions before the baseline, and the demo data uses calibration sessions every 2 days (days 4–10) and every 4 days afterwards; a real version should add practice sessions excluded from the baseline, or use pre-flight data. A 3-minute mode would match the validated PVT-B.
+- **Radiation:** cumulative dose caps at orange, even past 100 % of the 600 mSv career limit (Proposal); a crossed limit is not yet flagged separately. The 250 mSv per-event limit is not computed: a solar particle event in progress is red. Dose rate is not modeled.
+- **Measurement protocols:** a red blood pressure reading should be repeated after 5 minutes and an isolated low SpO₂ re-checked; the core classifies the reading as entered. Glucose has no fasting/after-meal context.
+- **Sources to read with care:** the WHO SpO₂ reference comes from a guideline on oxygen therapy for children; green heart rate from 50 bpm is a team adaptation for a trained profile, not the general AHA range. All thresholds are an experimental hackathon proposal, not a NASA clinical protocol.
+- **Charts:** for sleep and CO₂ the "usual range" band is descriptive only (alerts use fixed thresholds); the Amsler grid compares each test with the previous one, and a change is confirmed only if the same area is marked again. Each block reports how many of its indicators were evaluated, so a partial result is not read as a complete one.
+- **No de-escalation rule:** a level can drop as soon as one reading falls below the cut (no hysteresis), which may flicker near a threshold.
 - **Demo API:** one shared in-memory session, no authentication; new results are lost on restart; an unknown flight day is rejected.
 - **Simulated communications:** notifications to the onboard doctor, flight surgeon and crewmate are computed but not delivered; My Circle message delivery is simulated; the private journal is stored on the device but not encrypted.
-- **Baseline length:** with only 7 baseline days, the standard deviation can come out too narrow by chance and cause false alarms. Future: a minimum spread, a longer baseline, or a pre-flight baseline.
+- **Baseline length:** with only 7 baseline days, the standard deviation can come out too narrow by chance and give very large z-scores. Future: a minimum spread, a longer or more robust baseline, or a pre-flight baseline.
 - **ML anomaly layer** (multivariate detection with cold start) was designed but left out of the MVP; it is the natural next step once more history exists.
 - **Passenger mode in the core** (thresholds by profile), conditions and age for commercial passengers.
 - **Persistent storage** (SQLite), real device integration, and implemented end-to-end encryption for My Circle.

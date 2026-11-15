@@ -21,12 +21,13 @@ from typing import List, Literal
 
 from fastapi import Body, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 from backend.core.alert_texts import read_texts
 from backend.core.clinical import AMSLER_LEVELS, amsler_level
 from backend.core.levels import LEVELS
-from backend.core.raw_tests import classify_amsler, count_pvt_lapses
+from backend.core.raw_tests import classify_amsler, score_pvt_session
+from backend.core.thresholds import THRESHOLDS
 from backend.export_demo import DEFAULT_SCENARIO, scenario_entry
 from backend.storage import list_scenarios, load_scenario
 
@@ -41,29 +42,75 @@ TEXTS = read_texts()
 SESSION = {}
 
 
+WINDOW_MS = THRESHOLDS["pvt_lapses"]["response_window_ms"]
+
+
+class Symptoms(BaseModel):
+    """Symptom boxes of the check-in (unticked = False).
+    Casillas de síntomas del check-in (sin marcar = False).
+
+    Dizziness and feeling faint feed the low blood pressure rule; headache
+    feeds the CO2 rule. Cold sore or rash is only recorded: it would feed the
+    temperature rule, which is not in the MVP.
+    Mareo y desmayo alimentan la regla de presión baja; dolor de cabeza, la de
+    CO2. Herpes o erupción solo se registra (temperatura no está en el MVP).
+    """
+    dizziness: bool = False
+    lightheaded_or_faint: bool = False
+    headache: bool = False
+    cold_sore_or_rash: bool = False
+
+
 class CheckIn(BaseModel):
-    """Daily check-in, 0-10 (10 = worst). / Check-in diario, 0-10 (10 = peor)."""
-    flight_day: int
+    """Daily check-in, 0-10 (10 = worst), plus symptoms.
+    Check-in diario, 0-10 (10 = peor), más síntomas.
+    """
+    flight_day: int = Field(ge=1)
     mood_score: int = Field(ge=0, le=10)
     fatigue_score: int = Field(ge=0, le=10)
     stress_score: int = Field(ge=0, le=10)
     workload_score: int = Field(ge=0, le=10)
+    symptoms: Symptoms = Symptoms()
 
 
 class PvtSession(BaseModel):
-    """Raw reaction times of one PVT session. / Tiempos crudos de una sesión de PVT."""
-    flight_day: int
-    reaction_times_ms: List[float]
-    false_starts: int = 0
-    duration_s: int = 60
+    """One brief PVT session: answered reaction times plus all stimuli shown.
+    Una sesión breve de PVT: tiempos respondidos más todos los estímulos.
+
+    A stimulus with no answer inside the response window is an omission.
+    Un estímulo sin respuesta dentro de la ventana es una omisión.
+    """
+    flight_day: int = Field(ge=1)
+    reaction_times_ms: List[float] = Field(max_length=500)
+    stimuli_count: int = Field(ge=0, le=500)
+    false_starts: int = Field(0, ge=0, le=500)
+    duration_s: int = Field(60, ge=10, le=600)
+
+    @model_validator(mode="after")
+    def check_times(self):
+        """Times must be positive, inside the window, and not more than the stimuli.
+        Los tiempos deben ser positivos, dentro de la ventana y no más que los estímulos.
+        """
+        if any(rt <= 0 or rt > WINDOW_MS for rt in self.reaction_times_ms):
+            raise ValueError(f"Reaction times must be between 0 and {WINDOW_MS} ms.")
+        if len(self.reaction_times_ms) > self.stimuli_count:
+            raise ValueError("More answers than stimuli shown.")
+        return self
 
 
 class AmslerResult(BaseModel):
-    """Marked cells for one eye. / Celdas marcadas de un ojo."""
-    flight_day: int
+    """Marked cells for one eye, and whether the change appeared suddenly.
+    Celdas marcadas de un ojo, y si el cambio apareció de golpe.
+    """
+    flight_day: int = Field(ge=1)
     eye: Literal["right", "left"]
     distortion: bool
+    sudden_change: bool = False
     cells: List[List[int]] = []
+
+
+# Which model a payload is, by its key field. / Qué modelo es, por su campo clave.
+REPORT_MODELS = [("reaction_times_ms", PvtSession), ("eye", AmslerResult), ("mood_score", CheckIn)]
 
 
 def start_session(scenario):
@@ -91,31 +138,51 @@ def current():
     return scenario_entry(SESSION["days"], TEXTS)
 
 
-def apply_report(payload):
-    """Stores one test result in the right day (check-in, PVT or Amsler).
-    Guarda un resultado de test en el día que corresponde.
+def store_pvt(day, report):
+    """Scores a PVT session in the core and stores it in the day.
+    Puntúa una sesión de PVT en el núcleo y la guarda en el día.
     """
-    for model in (CheckIn, PvtSession, AmslerResult):
-        try:
-            report = model.model_validate(payload)
-        except ValidationError:
-            continue
-        day = today(report.flight_day)
-        if isinstance(report, CheckIn):
-            day.update(report.model_dump(exclude={"flight_day"}))
-        elif isinstance(report, PvtSession):
-            # False starts are stored but not scored yet (future work).
-            # Las anticipaciones se guardan pero todavía no se puntúan.
-            day["pvt_lapses"] = count_pvt_lapses(report.reaction_times_ms)
-            day["pvt_false_starts"] = report.false_starts
-        else:
-            cells = {tuple(c) for c in report.cells} if report.distortion else set()
-            category = classify_amsler(cells, SESSION["amsler_cells"][report.eye])
-            SESSION["amsler_cells"][report.eye] = cells
-            previous = day.get("vision_amsler") if day.get("vision_amsler") in AMSLER_LEVELS else "no_change"
-            day["vision_amsler"] = max(previous, category, key=lambda c: LEVELS.index(amsler_level(c)))
-        return
-    raise HTTPException(status_code=422, detail="Not a check-in, PVT session or Amsler result.")
+    score = score_pvt_session(report.reaction_times_ms, report.stimuli_count)
+    day.update({"pvt_lapses": score["lapses"], "pvt_stimuli": score["stimuli"],
+                "pvt_omissions": score["omissions"], "pvt_session_invalid": not score["valid"],
+                # False starts are stored but not scored yet (future work).
+                # Las anticipaciones se guardan pero todavía no se puntúan.
+                "pvt_false_starts": report.false_starts})
+
+
+def store_amsler(day, report):
+    """Classifies an Amsler result against the last one of that eye.
+    Clasifica un Amsler contra el anterior de ese ojo.
+    """
+    cells = {tuple(c) for c in report.cells} if report.distortion else set()
+    category = classify_amsler(cells, SESSION["amsler_cells"][report.eye], report.sudden_change)
+    SESSION["amsler_cells"][report.eye] = cells
+    previous = day.get("vision_amsler") if day.get("vision_amsler") in AMSLER_LEVELS else "no_change"
+    day["vision_amsler"] = max(previous, category, key=lambda c: LEVELS.index(amsler_level(c)))
+
+
+def apply_report(payload):
+    """Validates one test result and stores it in the right day.
+    Valida un resultado de test y lo guarda en el día que corresponde.
+
+    Invalid values (negative times, more answers than stimuli...) give 422.
+    Valores inválidos (tiempos negativos, más respuestas que estímulos...) dan 422.
+    """
+    model = next((m for key, m in REPORT_MODELS if key in payload), None)
+    if model is None:
+        raise HTTPException(status_code=422, detail="Not a check-in, PVT session or Amsler result.")
+    try:
+        report = model.model_validate(payload)
+    except ValidationError as error:
+        raise HTTPException(status_code=422, detail=error.errors(include_url=False, include_context=False))
+    day = today(report.flight_day)
+    if isinstance(report, CheckIn):
+        day.update(report.model_dump(exclude={"flight_day", "symptoms"}))
+        day["symptoms"] = report.symptoms.model_dump()
+    elif isinstance(report, PvtSession):
+        store_pvt(day, report)
+    else:
+        store_amsler(day, report)
 
 
 def crew_only(profile):

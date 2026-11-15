@@ -29,6 +29,19 @@ OUTPUT_JSON = Path(__file__).resolve().parents[1] / "frontend" / "src" / "data" 
 DEFAULT_SCENARIO = "deterioration"
 SERIES_DAYS = 14
 
+# What the chart band means. Sleep and CO2 have no deviation layer: their band
+# is a descriptive reference only and does not trigger alerts.
+# Qué significa la banda del gráfico. Sueño y CO2 no tienen capa de desvío:
+# su banda es solo una referencia descriptiva y no dispara alertas.
+BAND_TYPES = {"sleep_hours": "descriptive", "cabin_co2": "descriptive",
+              "radiation_dose": "green_zone", "vision_amsler": "none"}
+BAND_LABELS = {
+    "personal_baseline": "Your usual range (flight days 4-10). Used for alerts.",
+    "descriptive": "Your usual range, for reference only. Alerts use fixed clinical thresholds.",
+    "green_zone": "Green zone: under 50 % of the career limit.",
+    "none": "",
+}
+
 # Blocks of the body map (same ids, names and risks as the screen).
 # Bloques del mapa del cuerpo (mismos ids, nombres y riesgos que la pantalla).
 BLOCKS = [
@@ -52,21 +65,19 @@ INDICATORS = {
     "spo2": ("SpO₂", "%", "WHO", "spo2"),
     "glucose": ("Glucose", "mg/dL", "ADA", "glucose"),
     "sleep_hours": ("Sleep", "h", "Sleep 2022 (ISS study)", "sleep_hours"),
-    "pvt_lapses": ("Reaction test (PVT)", "lapses", "Personal baseline", "pvt_lapses"),
+    "pvt_lapses": ("Brief reaction test (PVT-inspired)", "lapses", "Personal baseline (lapse rate)", "pvt_lapses"),
     "cabin_co2": ("Cabin CO₂ (7-day average)", "mmHg", "NASA-STD-3001", "cabin_co2_7d_avg"),
     "radiation_dose": ("Cumulative radiation", "mSv", "NASA-STD-3001 (career limit 600 mSv)",
                        "radiation_dose_cumulative"),
-    "vision_amsler": ("Vision (Amsler grid)", "", "Personal baseline", "vision_amsler"),
+    "vision_amsler": ("Vision (Amsler grid)", "", "Compared with your previous test", "vision_amsler"),
     "mood_score": ("Mood", "/10 (10 = worst)", "Personal baseline", "mood_score"),
     "fatigue_score": ("Fatigue", "/10 (10 = worst)", "Personal baseline", "fatigue_score"),
     "stress_score": ("Stress", "/10 (10 = worst)", "Personal baseline", "stress_score"),
     "workload_score": ("Workload", "/10 (10 = worst)", "Personal baseline", "workload_score"),
 }
 
-# Texts for the three check-in scales that alert_texts.md does not cover yet
-# (thread A, 14/11; thread C to review and move them into alert_texts.md).
-# Textos de las tres escalas que alert_texts.md todavía no cubre (hilo A;
-# el hilo C los revisa y los pasa a alert_texts.md).
+# Fallback only: the scale texts now live in alert_texts.md §5c-5e (14/11).
+# Solo de respaldo: los textos de las escalas ahora están en alert_texts.md.
 SCALE_TEXTS = {
     "yellow": ("Your {name} is higher than your usual.", "Soft warning: monitor. No consultation needed."),
     "orange": ("Your {name} has been much higher than your usual for several days.",
@@ -78,7 +89,7 @@ SCALE_TEXTS = {
 # Tests de la app: frecuencias del documento de escalas.
 TESTS = [
     ("checkin", "Daily check-in", "/mental/checkin", 1, "mood_score"),
-    ("pvt", "Reaction test (PVT)", "/tests/pvt", 4, "pvt_lapses"),
+    ("pvt", "Brief reaction test (PVT-inspired)", "/tests/pvt", 4, "pvt_lapses"),
     ("amsler", "Amsler grid test", "/tests/amsler", 7, "vision_amsler"),
 ]
 
@@ -116,6 +127,11 @@ def indicator_entry(m, days, level, baseline_available):
         entry["value"] = "No distortion" if last_value(days, field)[1] == "no_change" else "Distortion reported"
     else:
         entry["value"] = last_value(days, field)[1]
+    if m == "pvt_lapses":
+        last = next((d for d in reversed(days) if d.get("pvt_lapses") is not None), None)
+        if last and last.get("pvt_stimuli"):
+            entry["stimuli"], entry["omissions"] = last["pvt_stimuli"], last.get("pvt_omissions", 0)
+            entry["session_valid"] = not last.get("pvt_session_invalid", False)
     return entry
 
 
@@ -147,8 +163,12 @@ def block_entry(block, days, levels, available, texts):
     else:
         worst = next(m for m in members if levels.get(m) == level)
         recommendation = recommendation_for(worst, level, texts)
+    evaluated = sum(1 for m in members if levels.get(m) not in (None, NOT_EVALUABLE))
     return {"id": block_id, "name": name, "level": level, "nasa_risk": risks,
             "recommendation": recommendation,
+            # Coverage: a green block with unevaluated indicators is a partial result.
+            # Cobertura: un bloque verde con indicadores sin evaluar es un resultado parcial.
+            "coverage": {"evaluated": evaluated, "total": len(members)},
             "indicators": [indicator_entry(m, days, levels.get(m), available) for m in members]}
 
 
@@ -242,13 +262,14 @@ def series_entry(m, days, results):
     window = list(zip(days, results))[-SERIES_DAYS:]
     field = INDICATORS[m][3]
     measured = [(d, r["final"][m]) for d, r in window if r["final"][m] is not None]
+    band = BAND_TYPES.get(m, "personal_baseline")
     if m == "vision_amsler":
-        return {"indicator": m, "points": [
+        return {"indicator": m, "band_type": band, "band_label": BAND_LABELS[band], "points": [
             {"flight_day": d["flight_day"], "level": lvl,
              "result": "No distortion" if d[field] == "no_change" else "Distortion reported"}
             for d, lvl in measured]}
     if m == "blood_pressure":
-        entry = {"indicator": m, "points": [
+        entry = {"indicator": m, "band_type": band, "band_label": BAND_LABELS[band], "points": [
             {"flight_day": d["flight_day"], "systolic": d["systolic"], "diastolic": d["diastolic"],
              "level": lvl} for d, lvl in measured]}
         for side in ("systolic", "diastolic"):
@@ -257,7 +278,8 @@ def series_entry(m, days, results):
                           f"baseline_high_{side}": high})
         return entry
     mean, low, high = band_for(m, field, days)
-    return {"indicator": m, "baseline_mean": mean, "baseline_low": low, "baseline_high": high,
+    return {"indicator": m, "band_type": band, "band_label": BAND_LABELS[band],
+            "baseline_mean": mean, "baseline_low": low, "baseline_high": high,
             "points": [{"flight_day": d["flight_day"], "value": d[field], "level": lvl}
                        for d, lvl in measured]}
 

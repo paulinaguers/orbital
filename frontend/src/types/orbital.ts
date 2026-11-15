@@ -28,6 +28,10 @@ export interface Indicator {
   level: HealthLevel;
   threshold_source: string;
   baseline_available?: boolean;
+  // PVT only: stimuli shown, unanswered stimuli, and whether the session was valid.
+  stimuli?: number;
+  omissions?: number;
+  session_valid?: boolean;
 }
 
 export interface HealthBlock {
@@ -37,6 +41,8 @@ export interface HealthBlock {
   nasa_risk: string[];
   recommendation: string;
   simple_explanation?: string;
+  // How many indicators of the block could be evaluated.
+  coverage?: { evaluated: number; total: number };
   indicators: Indicator[];
 }
 
@@ -93,8 +99,12 @@ export interface VisionAmslerSeriesPoint {
   level: HealthLevel;
 }
 
+export type BandType = 'personal_baseline' | 'descriptive' | 'green_zone' | 'none';
+
 export interface NumericIndicatorSeries {
   indicator: string;
+  band_type?: BandType;
+  band_label?: string;
   baseline_mean?: number | null;
   baseline_low?: number | null;
   baseline_high?: number | null;
@@ -103,6 +113,8 @@ export interface NumericIndicatorSeries {
 
 export interface BloodPressureIndicatorSeries {
   indicator: 'blood_pressure';
+  band_type?: BandType;
+  band_label?: string;
   baseline_mean_systolic?: number | null;
   baseline_low_systolic?: number | null;
   baseline_high_systolic?: number | null;
@@ -114,6 +126,8 @@ export interface BloodPressureIndicatorSeries {
 
 export interface VisionAmslerIndicatorSeries {
   indicator: 'vision_amsler';
+  band_type?: BandType;
+  band_label?: string;
   points: VisionAmslerSeriesPoint[];
 }
 
@@ -128,18 +142,28 @@ export interface SelfReportPayload {
   fatigue_score: number;
   stress_score: number;
   workload_score: number;
+  symptoms?: SymptomsPayload;
+}
+
+export interface SymptomsPayload {
+  dizziness: boolean;
+  lightheaded_or_faint: boolean;
+  headache: boolean;
+  cold_sore_or_rash: boolean;
 }
 
 export interface AmslerResultPayload {
   flight_day: number;
   eye: 'right' | 'left';
   distortion: boolean;
+  sudden_change?: boolean;
   cells: Array<[number, number]>;
 }
 
 export interface PvtSessionPayload {
   flight_day: number;
   reaction_times_ms: number[];
+  stimuli_count: number;
   false_starts: number;
   duration_s: 60;
 }

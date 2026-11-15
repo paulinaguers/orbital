@@ -221,6 +221,24 @@ THRESHOLDS = {
         # El PVT es cada algunos días: su línea base necesita al menos 3
         # sesiones, después de las 2-3 de práctica del protocolo (Proposal).
         "min_baseline_sessions": 3,
+        # Omissions (review 14/11): a stimulus with no answer inside the
+        # response window is an omission and counts as a lapse (any late
+        # answer would be >= 355 ms anyway). Window length: Proposal.
+        # Omisiones: un estímulo sin respuesta dentro de la ventana es una
+        # omisión y cuenta como lapso. Largo de la ventana: Proposal.
+        "response_window_ms": 3000,  # Proposal
+        # Sessions are compared as a lapse RATE (lapses / stimuli), because
+        # the random interval gives each session a different number of
+        # stimuli. Data without a stimulus count (stored demo days, answer
+        # key) assumes this reference count, so their z-scores do not change.
+        # Las sesiones se comparan como TASA de lapsos (lapsos / estímulos);
+        # los datos sin cantidad de estímulos usan esta referencia. Proposal.
+        # The app's 1-minute test shows about 15 stimuli (1-4 s wait + answer +
+        # 1 s feedback). / El test de 1 minuto muestra unos 15 estímulos.
+        "reference_stimuli": 15,  # Proposal
+        # Fewer stimuli than this = invalid session, not evaluable (Proposal).
+        # Menos estímulos que esto = sesión inválida, no evaluable (Proposal).
+        "min_valid_stimuli": 5,  # Proposal
         # Red: |z| >= 2 sustained, together with symptoms or sleep in red.
         # Proposal. Open decision ("sustained" and "symptoms").
         # Rojo: |z| >= 2 sostenido, junto con síntomas o sueño en rojo.

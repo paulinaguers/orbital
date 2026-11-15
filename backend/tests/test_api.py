@@ -39,17 +39,61 @@ def test_passenger_profile_is_not_served():
     assert client.get("/astronauts/P1/status?profile=passenger").status_code == 404
 
 
-def test_slow_pvt_turns_reaction_yellow_live():
-    """5 slow answers today: the core recalculates and PVT is yellow.
-    5 respuestas lentas hoy: el núcleo recalcula y el PVT queda amarillo.
-    """
-    times = [300] * 15 + [600] * 5
-    body = client.post("/astronauts/SIM-02/self_reports",
-                       json={"flight_day": 42, "reaction_times_ms": times, "false_starts": 0, "duration_s": 60}).json()
+def pvt_indicator(body):
+    """The PVT indicator of a status. / El indicador de PVT de un estado."""
     sleep_block = next(b for b in body["blocks"] if b["id"] == "sleep_cognition")
-    pvt = next(i for i in sleep_block["indicators"] if i["id"] == "pvt_lapses")
-    assert pvt["value"] == 5 and pvt["level"] == "yellow"
+    return next(i for i in sleep_block["indicators"] if i["id"] == "pvt_lapses")
+
+
+def send_pvt(times, stimuli):
+    """Posts one PVT session for day 42. / Envía una sesión de PVT del día 42."""
+    return client.post("/astronauts/SIM-02/self_reports",
+                       json={"flight_day": 42, "reaction_times_ms": times, "stimuli_count": stimuli,
+                             "false_starts": 0, "duration_s": 60})
+
+
+def test_slow_pvt_turns_reaction_yellow_live():
+    """3 slow answers and 2 unanswered stimuli = 5 lapses: PVT is yellow.
+    3 respuestas lentas y 2 estímulos sin respuesta = 5 lapsos: amarillo.
+    """
+    body = send_pvt([300] * 10 + [600] * 3, 15).json()
+    assert pvt_indicator(body)["value"] == 5 and pvt_indicator(body)["level"] == "yellow"
     assert next(t for t in body["tests"] if t["id"] == "pvt")["due"] is False
+
+
+def test_pvt_without_answers_is_not_green():
+    """No answers at all: every stimulus is an omission, never "0 lapses, green".
+    Sin ninguna respuesta: cada estímulo es una omisión, nunca "0 lapsos, verde".
+    """
+    body = send_pvt([], 15).json()
+    assert pvt_indicator(body)["value"] == 15 and pvt_indicator(body)["level"] != "green"
+
+
+def test_pvt_with_too_few_stimuli_is_not_evaluable():
+    """Fewer than 5 stimuli: the session cannot be scored.
+    Menos de 5 estímulos: la sesión no se puede puntuar.
+    """
+    assert pvt_indicator(send_pvt([300, 300], 3).json())["level"] == "not_evaluable"
+
+
+def test_pvt_rejects_impossible_values():
+    """Negative or too long times, or more answers than stimuli, give 422.
+    Tiempos negativos o demasiado largos, o más respuestas que estímulos, dan 422.
+    """
+    assert send_pvt([-5, 300, 300, 300, 300], 10).status_code == 422
+    assert send_pvt([300, 99999, 300, 300, 300], 10).status_code == 422
+    assert send_pvt([300] * 6, 5).status_code == 422
+
+
+def test_checkin_headache_with_high_co2_turns_orange():
+    """A ticked headache changes the CO2 rule (deterioration: CO2 yellow).
+    Un dolor de cabeza marcado cambia la regla de CO2 (deterioro: CO2 amarillo).
+    """
+    body = client.post("/astronauts/SIM-02/self_reports",
+                       json={"flight_day": 42, "mood_score": 2, "fatigue_score": 3, "stress_score": 2,
+                             "workload_score": 3, "symptoms": {"headache": True}}).json()
+    env = next(b for b in body["blocks"] if b["id"] == "environment")
+    assert env["indicators"][0]["level"] == "orange"
 
 
 def test_checkin_updates_mood():
@@ -70,6 +114,15 @@ def test_amsler_distortion_then_confirmed():
     second = client.post("/astronauts/SIM-02/self_reports", json=result).json()
     level = lambda body: next(b for b in body["blocks"] if b["id"] == "environment")["indicators"][2]["level"]
     assert level(first) == "yellow" and level(second) == "orange"
+
+
+def test_amsler_sudden_change_is_red():
+    """"Appeared suddenly" makes the red category reachable.
+    "Apareció de golpe" hace alcanzable la categoría roja.
+    """
+    result = {"flight_day": 42, "eye": "left", "distortion": True, "sudden_change": True, "cells": [[3, 3]]}
+    body = client.post("/astronauts/SIM-02/self_reports", json=result).json()
+    assert next(b for b in body["blocks"] if b["id"] == "environment")["indicators"][2]["level"] == "red"
 
 
 def test_bad_payload_and_reset():

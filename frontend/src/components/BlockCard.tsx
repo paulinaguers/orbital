@@ -42,6 +42,11 @@ export function BlockCard({
           {block.simple_explanation ?? block.recommendation}
         </p>
 
+        {block.coverage && block.coverage.evaluated < block.coverage.total && (
+          <p className="mt-2 text-sm text-[#8FA3C7]">
+            {block.coverage.evaluated} of {block.coverage.total} indicators evaluated
+          </p>
+        )}
         <div className="mt-4 flex items-center justify-end border-t border-[rgba(120,180,255,0.14)] pt-3">
           <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#4FC3F7] transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-[#7DD3FC]">
             See details →

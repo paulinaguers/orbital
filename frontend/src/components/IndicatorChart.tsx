@@ -543,7 +543,9 @@ function BloodPressureChart({
       <p className="mt-2 text-center text-xs text-[#8FA3C7]">
         {passengerMode
           ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
-          : 'Shaded area = your usual range · Dots = daily values (color = level)'}
+          : series.band_label
+            ? `Shaded area: ${series.band_label} · Dots = daily values (color = level)`
+            : 'Shaded area = your usual range · Dots = daily values (color = level)'}
       </p>
     </div>
   );
@@ -862,7 +864,9 @@ function NumericTrendChart({
       <p className="mt-2 text-center text-xs text-[#8FA3C7]">
         {passengerMode
           ? 'Shaded band = Your normal (measured before your flight) · Dots = daily values'
-          : 'Shaded area = your usual range · Dots = daily values (color = level)'}
+          : series.band_label
+            ? `Shaded area: ${series.band_label} · Dots = daily values (color = level)`
+            : 'Shaded area = your usual range · Dots = daily values (color = level)'}
       </p>
     </div>
   );

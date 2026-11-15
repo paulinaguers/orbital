@@ -6,7 +6,8 @@ Tests unitarios de reglas del núcleo que la hoja de respuestas no muestra.
 from backend.core.baseline import baseline_band, calculate_baseline, calculate_z_score
 from backend.core.escalation import NOTIFIED_BY_LEVEL, deviation_level, escalation_for
 from backend.core.levels import highest
-from backend.core.raw_tests import classify_amsler, count_pvt_lapses
+from backend.core.escalation import field_value
+from backend.core.raw_tests import classify_amsler, count_pvt_lapses, score_pvt_session
 
 
 def test_baseline_uses_population_std_dev():
@@ -120,3 +121,29 @@ def test_cumulative_radiation_reaches_orange_at_most():
     assert radiation_level(590.0, False) == "orange"
     assert radiation_level(20.0, True) == "red"
     assert radiation_level(299.9, False) == "green"
+
+
+def test_pvt_omissions_count_as_lapses():
+    """2 slow + 3 unanswered of 10 stimuli = 5 lapses, rate 0.5.
+    2 lentas + 3 sin respuesta de 10 estímulos = 5 lapsos, tasa 0,5.
+    """
+    score = score_pvt_session([300] * 5 + [400, 500], 10)
+    assert (score["lapses"], score["omissions"], score["lapse_rate"], score["valid"]) == (5, 3, 0.5, True)
+    assert score_pvt_session([300, 300], 4)["valid"] is False
+
+
+def test_pvt_is_compared_per_reference_session():
+    """6 lapses in 30 stimuli count like 3 in a 15-stimulus session.
+    6 lapsos en 30 estímulos cuentan como 3 en una sesión de 15.
+    """
+    assert field_value({"pvt_lapses": 6, "pvt_stimuli": 30}, "pvt_lapses_per_reference") == 3
+    assert field_value({"pvt_lapses": 5}, "pvt_lapses_per_reference") == 5
+
+
+def test_amsler_needs_the_same_area_to_confirm():
+    """Distortion in a different area waits for a retest; overlap confirms.
+    Una distorsión en otra zona espera un nuevo test; si se superpone, se confirma.
+    """
+    assert classify_amsler({(1, 1)}, {(9, 9)}) == "change_awaiting_retest"
+    assert classify_amsler({(9, 9)}, {(9, 9)}) == "change_confirmed"
+    assert classify_amsler(set(), set(), sudden_change=True) == "sudden_loss_or_distortion"

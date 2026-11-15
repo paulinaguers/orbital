@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { TestIntroCard } from '../components/TestIntroCard';
 import { saveSelfReport } from '../data/source';
-import type { Astronaut, OrbitalStatus } from '../types/orbital';
+import type { Astronaut, OrbitalStatus, SymptomsPayload } from '../types/orbital';
 
 interface MentalCheckinPageProps {
   astronaut: Astronaut;
@@ -58,6 +58,23 @@ const QUESTIONS: QuestionConfig[] = [
     rightAnchor: 'Overwhelming',
   },
 ];
+
+// Symptom boxes. Dizziness and feeling faint feed the low blood pressure rule,
+// headache feeds the CO2 rule; cold sore or rash is only recorded (no
+// temperature in the MVP). The core decides what they change.
+const SYMPTOMS: Array<{ key: keyof SymptomsPayload; label: string }> = [
+  { key: 'dizziness', label: 'Dizziness or disorientation' },
+  { key: 'lightheaded_or_faint', label: 'Lightheaded or feeling faint' },
+  { key: 'headache', label: 'Headache' },
+  { key: 'cold_sore_or_rash', label: 'Cold sore or rash' },
+];
+
+const NO_SYMPTOMS: SymptomsPayload = {
+  dizziness: false,
+  lightheaded_or_faint: false,
+  headache: false,
+  cold_sore_or_rash: false,
+};
 
 const SCORES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 const FACE_POSITIONS = [0, 2.5, 5, 7.5, 10] as const;
@@ -374,6 +391,7 @@ export function MentalCheckinPage({
     stress_score: null,
     workload_score: null,
   });
+  const [symptoms, setSymptoms] = useState<SymptomsPayload>(NO_SYMPTOMS);
   const [showIntro, setShowIntro] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -410,6 +428,7 @@ export function MentalCheckinPage({
           fatigue_score: scores.fatigue_score!,
           stress_score: scores.stress_score!,
           workload_score: scores.workload_score!,
+          symptoms,
         },
         astronaut.id,
       );
@@ -615,6 +634,31 @@ export function MentalCheckinPage({
               );
             })}
           </div>
+
+          <fieldset className="mt-7 rounded-2xl border border-[rgba(120,180,255,0.14)] bg-[rgba(10,20,46,0.4)] p-5">
+            <legend className="px-2 text-base font-semibold text-[#E8F0FF]">
+              Any symptoms today? (optional)
+            </legend>
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              {SYMPTOMS.map(({ key, label }) => (
+                <label
+                  key={key}
+                  className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl border border-[rgba(120,180,255,0.18)] px-4 py-2.5 text-sm text-[#E2E8F0] hover:border-[#4FC3F7]"
+                >
+                  <input
+                    type="checkbox"
+                    checked={symptoms[key]}
+                    onChange={(e) => {
+                      setSaved(false);
+                      setSymptoms((prev) => ({ ...prev, [key]: e.target.checked }));
+                    }}
+                    className="h-5 w-5 accent-[#4FC3F7]"
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
           {errorMessage && (
             <p className="mt-5 text-sm text-rose-300">{errorMessage}</p>

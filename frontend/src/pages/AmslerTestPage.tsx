@@ -45,6 +45,8 @@ export function AmslerTestPage({
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  // "Did it appear suddenly?" -> the core's red category (sudden loss or distortion).
+  const [suddenChange, setSuddenChange] = useState(false);
 
   const currentEye: 'right' | 'left' =
     step === 'intro-right' || step === 'grid-right' || step === 'mark-right'
@@ -94,12 +96,14 @@ export function AmslerTestPage({
           flight_day: astronaut.flight_day,
           eye: currentEye,
           distortion,
+          sudden_change: distortion && suddenChange,
           cells,
         },
         astronaut.id,
       );
 
       setSelectedCells(new Set());
+      setSuddenChange(false);
       if (currentEye === 'right') {
         setStep('intro-left');
       } else {
@@ -287,6 +291,15 @@ export function AmslerTestPage({
                 <p className="text-base font-medium text-[#E8F0FF] sm:text-lg">
                   Tap the cells where you see it.
                 </p>
+                <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl border border-[rgba(120,180,255,0.18)] px-4 py-2 text-sm text-[#E2E8F0] hover:border-[#4FC3F7]">
+                  <input
+                    type="checkbox"
+                    checked={suddenChange}
+                    onChange={(e) => setSuddenChange(e.target.checked)}
+                    className="h-5 w-5 accent-[#4FC3F7]"
+                  />
+                  This appeared suddenly (since your last test or today)
+                </label>
                 <button
                   type="button"
                   disabled={saving}

@@ -21,6 +21,9 @@ interface PvtTestPageProps {
 
 const DURATION_S = 60;
 const DURATION_MS = DURATION_S * 1000;
+// A stimulus with no answer within this window is an omission (scored as a
+// lapse by the core). Same value as thresholds.py: response_window_ms.
+const RESPONSE_WINDOW_MS = 3000;
 
 type SessionStage = 'intro' | 'running' | 'complete';
 type TrialSubPhase = 'waiting' | 'stimulus' | 'feedback';
@@ -43,6 +46,7 @@ export function PvtTestPage({
   const [remainingSec, setRemainingSec] = useState(DURATION_S);
   const [falseStartNotice, setFalseStartNotice] = useState(false);
   const [recordedCount, setRecordedCount] = useState(0);
+  const [missedCount, setMissedCount] = useState(0);
   const [helpOpen, setHelpOpen] = useState(false);
 
   const subPhaseRef = useRef<TrialSubPhase>('waiting');
@@ -51,6 +55,9 @@ export function PvtTestPage({
   const stimulusStartRef = useRef<number>(0);
   const reactionTimesRef = useRef<number[]>([]);
   const falseStartsRef = useRef<number>(0);
+  const stimuliRef = useRef<number>(0);
+  const omissionTimerRef = useRef<number | null>(null);
+  const [missedNotice, setMissedNotice] = useState(false);
 
   const waitTimerRef = useRef<number | null>(null);
   const feedbackTimerRef = useRef<number | null>(null);
@@ -71,6 +78,10 @@ export function PvtTestPage({
     if (falseStartTimerRef.current !== null) {
       window.clearTimeout(falseStartTimerRef.current);
       falseStartTimerRef.current = null;
+    }
+    if (omissionTimerRef.current !== null) {
+      window.clearTimeout(omissionTimerRef.current);
+      omissionTimerRef.current = null;
     }
     if (sessionTimerRef.current !== null) {
       window.clearTimeout(sessionTimerRef.current);
@@ -104,7 +115,27 @@ export function PvtTestPage({
 
       subPhaseRef.current = 'stimulus';
       setSubPhase('stimulus');
+      setMissedNotice(false);
       stimulusStartRef.current = performance.now();
+      stimuliRef.current += 1;
+
+      // No answer within the window: omission, then the next stimulus.
+      omissionTimerRef.current = window.setTimeout(() => {
+        if (subPhaseRef.current !== 'stimulus') {
+          return;
+        }
+        if (counterRafRef.current !== null) {
+          window.cancelAnimationFrame(counterRafRef.current);
+          counterRafRef.current = null;
+        }
+        subPhaseRef.current = 'feedback';
+        setSubPhase('feedback');
+        setMissedNotice(true);
+        feedbackTimerRef.current = window.setTimeout(() => {
+          setMissedNotice(false);
+          scheduleNextWait();
+        }, 1000);
+      }, RESPONSE_WINDOW_MS);
 
       const updateCounter = () => {
         if (subPhaseRef.current !== 'stimulus') {
@@ -118,11 +149,17 @@ export function PvtTestPage({
   }, []);
 
   const finishSession = useCallback(() => {
+    // A stimulus cut short by the end of the session is not a full chance.
+    if (subPhaseRef.current === 'stimulus') {
+      stimuliRef.current = Math.max(0, stimuliRef.current - 1);
+    }
+    subPhaseRef.current = 'waiting';
     clearAllTimers();
     const recorded = [...reactionTimesRef.current];
     const falseStarts = falseStartsRef.current;
 
     setRecordedCount(recorded.length);
+    setMissedCount(Math.max(0, stimuliRef.current - recorded.length));
     setStage('complete');
     onTestCompleted?.();
 
@@ -130,6 +167,7 @@ export function PvtTestPage({
       {
         flight_day: astronaut.flight_day,
         reaction_times_ms: recorded,
+        stimuli_count: stimuliRef.current,
         false_starts: falseStarts,
         duration_s: 60,
       },
@@ -143,6 +181,8 @@ export function PvtTestPage({
     clearAllTimers();
     reactionTimesRef.current = [];
     falseStartsRef.current = 0;
+    stimuliRef.current = 0;
+    setMissedNotice(false);
     setFalseStartNotice(false);
     setRemainingSec(DURATION_S);
     setStage('running');
@@ -163,6 +203,11 @@ export function PvtTestPage({
   };
 
   const openHelp = () => {
+    // A stimulus interrupted by the help panel is discarded.
+    if (subPhaseRef.current === 'stimulus') {
+      stimuliRef.current = Math.max(0, stimuliRef.current - 1);
+    }
+    subPhaseRef.current = 'waiting';
     pausedRemainingMsRef.current = Math.max(
       0,
       sessionEndAtRef.current - performance.now(),
@@ -200,6 +245,10 @@ export function PvtTestPage({
     }
 
     if (subPhaseRef.current === 'stimulus') {
+      if (omissionTimerRef.current !== null) {
+        window.clearTimeout(omissionTimerRef.current);
+        omissionTimerRef.current = null;
+      }
       if (counterRafRef.current !== null) {
         window.cancelAnimationFrame(counterRafRef.current);
         counterRafRef.current = null;
@@ -348,7 +397,14 @@ export function PvtTestPage({
               </div>
             )}
 
-            {(subPhase === 'stimulus' || subPhase === 'feedback') && (
+            {subPhase === 'feedback' && missedNotice && (
+              <div className="glass-panel-soft border-[#8FA3C7]/50 px-10 py-6 text-center">
+                <p className="text-2xl font-semibold text-[#8FA3C7]">No answer</p>
+                <p className="mt-1 text-sm text-[#8FA3C7]">Counted as a lapse</p>
+              </div>
+            )}
+
+            {(subPhase === 'stimulus' || (subPhase === 'feedback' && !missedNotice)) && (
               <div className="glass-panel-soft border-[#4FC3F7]/70 px-10 py-6 text-center shadow-[0_0_28px_rgba(79,195,247,0.3)]">
                 <p className="font-mono-tabular text-5xl font-bold tracking-tight text-[#4FC3F7] sm:text-6xl">
                   {displayMs}
@@ -376,7 +432,8 @@ export function PvtTestPage({
               </h1>
               <p className="mt-2 text-lg leading-relaxed text-[#8FA3C7]">
                 Test complete: {recordedCount}{' '}
-                {recordedCount === 1 ? 'response' : 'responses'} recorded.
+                {recordedCount === 1 ? 'response' : 'responses'} recorded
+                {missedCount > 0 ? `, ${missedCount} without an answer` : ''}.
                 Results will be compared with your personal baseline.
               </p>
               <button

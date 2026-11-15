@@ -18,6 +18,7 @@ ALERT_TEXTS = Path(__file__).resolve().parents[2] / "docs" / "content" / "alert_
 SECTIONS = {
     "blood_pressure": "1-blood-pressure", "heart_rate": "2a-heart-rate", "spo2": "2b-spo2",
     "glucose": "3-glucose", "sleep_hours": "4-sleep", "mood_score": "5a-mood",
+    "fatigue_score": "5c-fatigue", "stress_score": "5d-stress", "workload_score": "5e-workload",
     "pvt_lapses": "5b-pvt", "vision_amsler": "6-vision", "cabin_co2": "7a-co2",
     "radiation_dose": "7b-radiation",
 }

@@ -52,7 +52,8 @@ Source / Fuente: `fisiologia-espacial` → `linea-base-y-ml.md`, `escalas-y-prot
 | 3 | [Glucose](#3-glucose) | Not an HRP risk on its own (see section) |
 | 4 | [Sleep](#4-sleep) | Inadequate Sleep and Irregular Schedules |
 | 5 | [Mood (VAS)](#5a-mood) | Behavioral Conditions and Psychiatric Disorders |
-| 5 | [Reaction test (PVT)](#5b-pvt) | Inadequate Sleep · Behavioral Conditions |
+| 5 | [Fatigue](#5c-fatigue) · [Stress](#5d-stress) · [Workload](#5e-workload) | Behavioral Conditions and Psychiatric Disorders |
+| 5 | [Brief reaction test (PVT-inspired)](#5b-pvt) | Inadequate Sleep · Behavioral Conditions |
 | 6 | [Vision (Amsler grid)](#6-vision) | SANS |
 | 7 | [Cabin CO₂](#7a-co2) | Hostile closed environments (NASA-STD-3001) |
 | 7 | [Cumulative radiation](#7b-radiation) | Space Radiation |
@@ -173,11 +174,13 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 
 <a id="5b-pvt"></a>
 
-## 5b. Reaction test (PVT) / Test de reacción (PVT)
+## 5b. Brief reaction test (PVT-inspired) / Test de reacción breve (inspirado en el PVT)
 
 **NASA risk / Riesgo NASA:** Risk of Inadequate Sleep and Irregular Schedules; Risk of Behavioral Conditions and Psychiatric Disorders. NASA uses a 10-minute self-test of vigilance; on the ISS it ran every 4 days (Reaction SelfTest). / Riesgo de sueño insuficiente y horarios irregulares; riesgo de condiciones conductuales y trastornos psiquiátricos. NASA usa un autotest de vigilancia de 10 minutos; en la ISS se hacía cada 4 días (Reaction SelfTest). https://www.nasa.gov/hrp/risks/
 
 **Threshold source / Fuente de umbrales:** lapse = reaction time ≥ 355 ms in the 3-min PVT-B (Basner 2011, https://pmc.ncbi.nlm.nih.gov/articles/PMC3197786); > 500 ms in the 10-min PVT (NASA). Level cuts against the personal baseline: *Proposal* (`escalas-y-protocolos.md` §1.1). / Lapso = tiempo de reacción ≥ 355 ms en el PVT-B de 3 min (Basner 2011); > 500 ms en el PVT de 10 min (NASA). Cortes de nivel contra la línea base personal: *Proposal* (`escalas-y-protocolos.md` §1.1).
+
+**App test (14/11):** 1-minute PVT-inspired experimental test, not the validated 3-minute PVT-B. A stimulus with no answer within 3 s is an omission and counts as a lapse; sessions are compared as a lapse rate (lapses per 15 stimuli, about one 1-minute session); fewer than 5 stimuli = not evaluable. All *Proposal*. / **Test de la app:** test experimental de 1 minuto inspirado en el PVT, no el PVT-B validado de 3 minutos. Un estímulo sin respuesta en 3 s es una omisión y cuenta como lapso; las sesiones se comparan como tasa (lapsos cada 15 estímulos, una sesión de 1 minuto); menos de 5 estímulos = no evaluable. Todo *Proposal*.
 
 | Level | Trigger · Source | Astronaut sees / Ve el astronauta | Recommendation / Recomendación |
 | --- | --- | --- | --- |
@@ -188,6 +191,54 @@ The astronaut never sees z-scores; the screen uses words. / El astronauta nunca 
 
 > ⚠ **Team decision needed / Decisión pendiente del equipo:** the PVT red needs a baseline deviation **plus** another signal. With "sleep in red" it crosses a fixed threshold; with "symptoms" it does not (symptoms have no threshold in the MVP). Also, `umbrales.md` describes the PVT levels as "more lapses" while `escalas-y-protocolos.md` uses z-scores; this file follows the more detailed `escalas-y-protocolos.md`. Confirm.
 > El rojo del PVT pide desvío de la línea base **más** otra señal. Con "sueño en rojo" cruza un umbral fijo; con "síntomas", no (en el MVP los síntomas no tienen umbral). Además, `umbrales.md` describe los niveles como "más lapsos" y `escalas-y-protocolos.md` usa z; este archivo sigue a `escalas-y-protocolos.md`, que es más detallado. Confirmar.
+
+---
+
+<a id="5c-fatigue"></a>
+
+## 5c. Fatigue / Fatiga
+
+**NASA risk / Riesgo NASA:** Risk of Behavioral Conditions and Psychiatric Disorders; Inadequate Sleep. Fatigue was one of the visual analog scales taken every 4 days on the ISS (*Sleep* 2022). / Riesgo de condiciones conductuales; sueño insuficiente. La fatiga era una de las escalas visuales de la ISS, cada 4 días (*Sleep* 2022).
+
+**Threshold source / Fuente de umbrales:** no clinical threshold; only the personal baseline (`escalas-y-protocolos.md` §2.1). Simplified 0–10 self-report scale inspired by the VAS (10 = worst). All cuts *Proposal*. Texts written by thread A on 14/11, **pending thread C review**. / Sin umbral clínico; solo línea base personal. Escala simplificada de autorreporte 0–10 inspirada en la VAS (10 = peor). Todo *Proposal*. Textos del hilo A, **pendientes de revisión del hilo C**.
+
+| Level | Trigger · Source | Astronaut sees / Ve el astronauta | Recommendation / Recomendación |
+| --- | --- | --- | --- |
+| 🟢 | Close to baseline · *Proposal*<br>*Cerca de la línea base* | Your fatigue is similar to your usual.<br>*Tu fatiga es parecida a la de siempre.* | Keep your routine.<br>*Seguí con tu rutina.* |
+| 🟡 | \|z\| ≥ 1.5 in 3 entries · *Proposal*<br>*\|z\| ≥ 1,5 en 3 registros* | Your fatigue is higher than your usual.<br>*Tu fatiga está más alta que lo habitual.* | Soft warning: monitor. No consultation needed.<br>*Aviso suave: vigilá. No hace falta consultar.* |
+| 🟠 | \|z\| ≥ 2 in 3 entries · *Proposal*<br>*\|z\| ≥ 2 en 3 registros* | Your fatigue has been much higher than your usual for several days.<br>*Tu fatiga viene mucho más alta que lo habitual hace varios días.* | Contact the crew medical officer.<br>*Consultá al médico de a bordo.* |
+
+---
+
+<a id="5d-stress"></a>
+
+## 5d. Stress / Estrés
+
+**NASA risk / Riesgo NASA:** Risk of Behavioral Conditions and Psychiatric Disorders. Visual analog scale on the ISS every 4 days (*Sleep* 2022). / Riesgo de condiciones conductuales. Escala visual de la ISS cada 4 días.
+
+**Threshold source / Fuente de umbrales:** same rules as fatigue (§5c). All *Proposal*, **pending thread C review**. / Mismas reglas que la fatiga. Todo *Proposal*, **pendiente del hilo C**.
+
+| Level | Trigger · Source | Astronaut sees / Ve el astronauta | Recommendation / Recomendación |
+| --- | --- | --- | --- |
+| 🟢 | Close to baseline · *Proposal*<br>*Cerca de la línea base* | Your stress is similar to your usual.<br>*Tu estrés es parecido al de siempre.* | Keep your routine.<br>*Seguí con tu rutina.* |
+| 🟡 | \|z\| ≥ 1.5 in 3 entries · *Proposal*<br>*\|z\| ≥ 1,5 en 3 registros* | Your stress is higher than your usual.<br>*Tu estrés está más alto que lo habitual.* | Soft warning: monitor. No consultation needed.<br>*Aviso suave: vigilá. No hace falta consultar.* |
+| 🟠 | \|z\| ≥ 2 in 3 entries · *Proposal*<br>*\|z\| ≥ 2 en 3 registros* | Your stress has been much higher than your usual for several days.<br>*Tu estrés viene mucho más alto que lo habitual hace varios días.* | Contact the crew medical officer.<br>*Consultá al médico de a bordo.* |
+
+---
+
+<a id="5e-workload"></a>
+
+## 5e. Workload / Carga de trabajo
+
+**NASA risk / Riesgo NASA:** Risk of Behavioral Conditions; Inadequate Sleep and Irregular Schedules. Visual analog scale on the ISS every 4 days (*Sleep* 2022). / Riesgo de condiciones conductuales; sueño y horarios irregulares.
+
+**Threshold source / Fuente de umbrales:** same rules as fatigue (§5c). All *Proposal*, **pending thread C review**. / Mismas reglas que la fatiga. Todo *Proposal*, **pendiente del hilo C**.
+
+| Level | Trigger · Source | Astronaut sees / Ve el astronauta | Recommendation / Recomendación |
+| --- | --- | --- | --- |
+| 🟢 | Close to baseline · *Proposal*<br>*Cerca de la línea base* | Your workload is similar to your usual.<br>*Tu carga de trabajo es parecida a la de siempre.* | Keep your routine.<br>*Seguí con tu rutina.* |
+| 🟡 | \|z\| ≥ 1.5 in 3 entries · *Proposal*<br>*\|z\| ≥ 1,5 en 3 registros* | Your workload is higher than your usual.<br>*Tu carga de trabajo está más alta que lo habitual.* | Soft warning: monitor. No consultation needed.<br>*Aviso suave: vigilá. No hace falta consultar.* |
+| 🟠 | \|z\| ≥ 2 in 3 entries · *Proposal*<br>*\|z\| ≥ 2 en 3 registros* | Your workload has been much higher than your usual for several days.<br>*Tu carga de trabajo viene mucho más alta que lo habitual hace varios días.* | Contact the crew medical officer.<br>*Consultá al médico de a bordo.* |
 
 ---
 
