@@ -449,3 +449,11 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - AI tools: claude.ai chat (Claude Opus 5.5), which drafted the texts from the project documents and checked links and new facts with web search.
 - Human review: Miguel reviewed the texts before using them in the presentation and in the form.
 - Commit: this commit (`docs: log presentation material (thread C)`)
+
+### [2026-11-15 19:05] Project documentation (EN/ES)
+- Thread: C
+- Type: documentation
+- What was done: updated Rationale, Indicators and Thresholds, and Scales, Tests and Protocols (Nov 14 decisions, AMA superscript citations, SI declaration, English versions), published in `docs/project/` with a bilingual index; Earth–Mars delay aligned to 20 min.
+- AI tools: claude.ai chat (Claude Opus 5.5) drafted and translated the PDFs; Claude Code organized, checked and pushed.
+- Human review: Miguel reviewed the PDFs and approved the structure.
+- Commit: 94188a0
