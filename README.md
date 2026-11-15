@@ -89,6 +89,8 @@ The four check-in scales are a **simplified 0–10 self-report inspired by the v
 
 📄 Rationale per risk: [`riesgos-nasa.md`](.claude/skills/fisiologia-espacial/references/riesgos-nasa.md) · Thresholds: [`umbrales.md`](.claude/skills/fisiologia-espacial/references/umbrales.md) · Scales and protocols: [`escalas-y-protocolos.md`](.claude/skills/fisiologia-espacial/references/escalas-y-protocolos.md)
 
+> **Note on file names:** some files and folders have Spanish names (for example `riesgos-nasa.md`, `umbrales.md`, `BITACORA.md`) because the team works in Spanish. The content of every file is in English.
+
 ---
 
 ## 3. Built on NASA's standards
