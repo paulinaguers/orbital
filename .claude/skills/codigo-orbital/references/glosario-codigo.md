@@ -1,48 +1,51 @@
-# Glosario del código (inglés → español)
+# Code glossary
 
-Nombres que se usan en el código. Si hace falta uno nuevo, se agrega acá.
+Names used in the code. If a new one is needed, it is added here.
 
-| En el código | Significa |
+| In the code | Meaning |
 | --- | --- |
-| `baseline` | línea base personal |
-| `z_score` | puntaje z (cuánto se aleja de lo habitual) |
-| `mean` / `std_dev` | media / desvío estándar |
-| `threshold` | umbral |
-| `clinical_range` | rango clínico |
-| `escalation` | escalamiento |
-| `level`: `green`, `yellow`, `orange`, `red` | nivel: verde, amarillo, naranja, rojo |
-| `alert` | alerta |
-| `reason` / `source` (`rule`, `ml`) | motivo / origen (regla o ML) |
-| `measurement` | medición |
-| `self_report` | autorreporte |
-| `symptom` | síntoma (`dizziness`, `lightheaded_or_faint`, `headache`, `cold_sore_or_rash`); columna `symptom_<nombre>`, por ejemplo `symptom_lightheaded_or_faint` |
-| `indicator` | indicador |
-| `astronaut` | astronauta |
-| `simulator` | simulador |
-| `injected_anomaly` | anomalía inyectada |
-| `flight_day` | día de vuelo |
-| `preflight` | antes del vuelo |
-| `calibrating` | calibrando (ML) |
-| `blood_pressure` (`systolic`, `diastolic`) | presión arterial (sistólica, diastólica) |
-| `heart_rate` | frecuencia cardíaca |
-| `spo2` | saturación de oxígeno |
-| `glucose` | glucosa |
-| `sleep_hours` | horas de sueño |
-| `mood_vas` | escala visual de ánimo |
-| `pvt_lapses` | lapsos del test de reacción (PVT) |
-| `vision_amsler` | rejilla de Amsler |
-| `radiation_dose` | dosis de radiación |
-| `cabin_co2` | CO₂ de cabina |
-| `exercise_minutes` | minutos de ejercicio |
-| `nasa_risk` | riesgo oficial de NASA que vigila el indicador |
+| `baseline` | personal baseline (the astronaut's usual values, flight days 4–10) |
+| `z_score` | z-score (how far a value is from the usual) |
+| `mean` / `std_dev` | mean / standard deviation |
+| `threshold` | clinical threshold |
+| `clinical_range` | clinical range |
+| `escalation` | who is notified for a level |
+| `level`: `green`, `yellow`, `orange`, `red`, `not_evaluable` | alert level; `not_evaluable` = no usable baseline, never shown as green |
+| `alert` | alert |
+| `reason` / `source` (`rule`, `ml`) | reason / origin (rule or ML) |
+| `measurement` | measurement |
+| `self_report` | self-report (check-in) |
+| `symptom` | symptom (`dizziness`, `lightheaded_or_faint`, `headache`, `cold_sore_or_rash`); column `symptom_<name>`, e.g. `symptom_lightheaded_or_faint` |
+| `indicator` | indicator shown on screen |
+| `astronaut` | astronaut |
+| `simulator` | simulator |
+| `injected_anomaly` | injected anomaly |
+| `flight_day` | flight day |
+| `preflight` | before the flight |
+| `calibrating` | calibrating (ML) |
+| `blood_pressure` (`systolic`, `diastolic`) | blood pressure (systolic, diastolic) |
+| `heart_rate` | resting heart rate |
+| `spo2` | oxygen saturation |
+| `glucose` | glucose |
+| `sleep_hours` | hours of sleep |
+| `mood_score`, `fatigue_score`, `stress_score`, `workload_score` | check-in scales, 0–10 (10 = worst) |
+| `mood_vas` | visual analog mood scale, 0–100 (answer key only) |
+| `pvt_lapses` | lapses in the brief reaction test (PVT-inspired) |
+| `pvt_stimuli`, `pvt_omissions` | stimuli shown and stimuli without an answer in a PVT session |
+| `vision_amsler` | Amsler grid result category |
+| `radiation_dose` | radiation dose |
+| `cabin_co2` | cabin CO₂ |
+| `exercise_minutes` | minutes of exercise |
+| `nasa_risk` | official NASA risk the indicator watches |
+| `coverage` | how many indicators of a block were evaluated |
 
-## Tablas de la base (`data/orbital.db`)
+## Data tables (planned)
 
-| Tabla | Antes | Qué guarda |
-| --- | --- | --- |
-| `astronauts` | astronautas | astronautas ficticios |
-| `measurements` | mediciones | cada medición con fecha y `simulated = 1` |
-| `self_reports` | autorreportes | sueño, ánimo, síntomas |
-| `baselines` | lineas_base | media y desvío por indicador y persona |
-| `alerts` | alertas | nivel, motivo y origen |
-| `injected_anomalies` | anomalias_inyectadas | anomalías del simulador con fecha, para evaluar |
+| Table | What it stores |
+| --- | --- |
+| `astronauts` | fictional astronauts |
+| `measurements` | every measurement with its date and `simulated = 1` |
+| `self_reports` | sleep, mood, symptoms |
+| `baselines` | mean and standard deviation per indicator and person |
+| `alerts` | level, reason and origin |
+| `injected_anomalies` | simulator anomalies with their date, for evaluation |

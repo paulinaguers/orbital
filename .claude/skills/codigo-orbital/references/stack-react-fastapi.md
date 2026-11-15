@@ -1,33 +1,33 @@
-# Stack A: React + FastAPI (elegido el 13/11)
+# Stack A: React + FastAPI (chosen on 13/11)
 
-Tres capas: **Motor · Python** calcula (línea base, z, niveles); **API · FastAPI** entrega esos resultados; **Pantalla · React** los muestra. La pantalla nunca calcula.
+Three layers: **Engine · Python** computes (baseline, z-score, levels); **API · FastAPI** serves those results; **Screen · React** shows them. The screen never computes.
 
-## Flujo
+## Flow
 
 ```text
-simulator (Python) → núcleo (backend/core) → API (FastAPI) → pantallas (React)
-                                    └→ demo.json ──────────────→ React (modo demo)
+simulator (Python) → core (backend/core) → API (FastAPI) → screens (React)
+                                  └→ demo.json ──────────────→ React (demo mode)
 ```
 
 ## API (backend/api/)
 
-- `uvicorn backend.api.main:app --reload` para levantarla; documentación automática en `/docs`.
-- Endpoints mínimos sugeridos:
-  - `GET /astronauts/{id}/status?day=N` → nivel por sistema y por indicador
-  - `GET /astronauts/{id}/series/{indicator}` → valores, línea base y z para gráficos
-  - `GET /astronauts/{id}/alerts` → lista de alertas con motivo y origen (regla o ML)
-- La API solo llama funciones del núcleo; no calcula.
-- Habilitar CORS para el origen local de React.
-- Tests con `fastapi.testclient`.
+- Start it with `uvicorn backend.api.main:app --reload`; automatic documentation at `/docs`.
+- Suggested minimum endpoints:
+  - `GET /astronauts/{id}/status?day=N` → level per system and per indicator
+  - `GET /astronauts/{id}/series/{indicator}` → values, baseline and z for the charts
+  - `GET /astronauts/{id}/alerts` → list of alerts with reason and origin (rule or ML)
+- The API only calls core functions; it does not compute.
+- Enable CORS for React's local origin.
+- Tests with `fastapi.testclient`.
 
-## Modo demo
+## Demo mode
 
-- Script `backend/export_demo.py` que llama al núcleo para todos los escenarios y guarda `frontend/public/demo.json`.
-- En React, una constante `DEMO_MODE` hace que lea el JSON en vez de la API. La demo ante el jurado no debe depender de que la API esté levantada.
+- Script `backend/export_demo.py` calls the core for every scenario and writes `frontend/src/data/demo.json`.
+- React reads the JSON when the API is not available. The demo in front of the jury must not depend on the API being up.
 
-## Pantallas (Google AI Studio → React)
+## Screens (Google AI Studio → React)
 
-- Pedir a AI Studio una pantalla por prompt, no la app entera. Guardar cada prompt en `docs/prompts-ai-studio.md` (va a la bitácora y a la declaración de SI).
-- Exportar el código a `frontend/` después de cada paso que funcione.
-- Componentes: figura humana (SVG) con color por sistema, semáforo por indicador, gráfico de evolución con la banda de línea base, panel de alertas y aviso "ML calibrando".
-- React no decide colores por umbral: usa el nivel que devuelve la API.
+- Ask AI Studio for one screen per prompt, not the whole app. Keep every prompt in `docs/prompts-ai-studio.md` (it goes to the logbook and to the AI-use statement).
+- Export the code to `frontend/` after every step that works.
+- Components: human figure (SVG) colored by system, traffic light per indicator, trend chart with the baseline band, alert panel and "ML calibrating" notice.
+- React does not choose colors by threshold: it uses the level returned by the API.

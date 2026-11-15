@@ -1,50 +1,50 @@
-# Plantilla: documento de metodología
+# Template: methodology document
 
-Se escribe primero completo en español y después el mismo documento en inglés. Los títulos en inglés van entre paréntesis como guía.
-
----
-
-## 1. Resumen (Summary)
-Qué es ORBITAL, para quién, qué problema resuelve y qué entregamos, en 5 líneas.
-
-## 2. El desafío y nuestra pregunta (Challenge and guiding question)
-Desafío de NASA y la pregunta del proyecto.
-
-## 3. Fundamentación (Rationale)
-Cinco peligros, brechas del monitoreo actual, autonomía médica (EIMO). Con referencias.
-
-## 4. Equipo y organización (Team and organization)
-- Integrantes y formación (sin roles fijos; los tres supervisan los tres hilos).
-- Hilos de trabajo A, B, C y por qué se organizaron así (continuidad de herramienta y lógica).
-- Cuentas y herramientas: proyecto de Claude por integrante, repo común, cuenta con Claude Code.
-
-## 5. Metodología de trabajo (Working methodology)
-- Desarrollo asistido por IA con supervisión humana.
-- Ciclo de cada tarea: plan → aprobación → ejecución → tests → revisión (subagente revisor) → commit → bitácora.
-- Puntos de control y cortes (coordinador, `/estado`).
-- Reglas: nadie sube código que no entiende; umbrales solo desde la skill clínica; datos simulados declarados.
-
-## 6. Cronología (Timeline)
-Preparación → sábado por bloques → domingo por bloques → entrega. Para cada bloque: qué se planeó, qué se hizo, qué se recortó y por qué. Fuente: bitácora y registro del coordinador.
-
-## 7. Solución técnica (Technical solution)
-- Arquitectura: entrada → núcleo → salidas; stack elegido y por qué.
-- Indicadores del MVP y umbrales (tabla con fuente o "propuesta").
-- Línea base personal y escalamiento.
-- Capa de ML (si se implementó): arranque en frío, modelo, evaluación. Si no: trabajo futuro.
-
-## 8. Uso de SI y plugins (AI and plugin use)
-Resumen; el detalle va en la declaración de SI.
-
-## 9. Validación (Validation)
-Tests, casos clínicos de prueba, evaluación del ML contra anomalías inyectadas.
-
-## 10. Limitaciones y trabajo futuro (Limitations and future work)
-
-## 11. Referencias (References)
+Written in English.
 
 ---
 
-## README (para el repo)
+## 1. Summary
+What ORBITAL is, who it is for, what problem it solves and what we deliver, in 5 lines.
 
-1. Qué es ORBITAL (3 líneas) · 2. Cómo correrlo (pasos exactos) · 3. Modo demo · 4. Estructura del repo · 5. Datos simulados (aclaración) · 6. Uso de IA (link a la declaración) · 7. Equipo · 8. Licencia.
+## 2. Challenge and guiding question
+NASA's challenge and the project's question.
+
+## 3. Rationale
+Five hazards, gaps in current monitoring, medical autonomy (EIMO). With references.
+
+## 4. Team and organization
+- Members and background (no fixed roles; all three supervise the three threads).
+- Work threads A, B, C and why they were organized that way (continuity of tool and logic).
+- Accounts and tools: a Claude project per member, a shared repo, an account with Claude Code.
+
+## 5. Working methodology
+- AI-assisted development with human oversight.
+- Cycle of each task: plan → approval → execution → tests → review (revisor subagent) → commit → logbook.
+- Checkpoints and cuts (coordinator, `/estado`).
+- Rules: nobody commits code they do not understand; thresholds only from the clinical skill; simulated data declared.
+
+## 6. Timeline
+Preparation → Saturday by block → Sunday by block → submission. For each block: what was planned, what was done, what was cut and why. Source: logbook and coordinator log.
+
+## 7. Technical solution
+- Architecture: input → core → outputs; chosen stack and why.
+- MVP indicators and thresholds (table with source or "Proposal").
+- Personal baseline and escalation.
+- ML layer (if implemented): cold start, model, evaluation. If not: future work.
+
+## 8. AI and plugin use
+Summary; details go in the AI-use statement.
+
+## 9. Validation
+Tests, clinical test cases, evaluation of the ML against injected anomalies.
+
+## 10. Limitations and future work
+
+## 11. References
+
+---
+
+## README (for the repo)
+
+1. What ORBITAL is (3 lines) · 2. How to run it (exact steps) · 3. Demo mode · 4. Repo structure · 5. Simulated data (note) · 6. Use of AI (link to the statement) · 7. Team · 8. License.

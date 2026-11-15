@@ -1,21 +1,21 @@
-# Variante B: Streamlit (plan de rescate)
+# Variant B: Streamlit (fallback plan)
 
-Streamlit arma una página web con gráficos y botones escribiendo solo Python. Se usa si React o la conexión con FastAPI se traban, o si el equipo lo elige desde el inicio.
+Streamlit builds a web page with charts and buttons using only Python. It is used if React or the connection to FastAPI get stuck, or if the team chooses it from the start.
 
-## Flujo
+## Flow
 
 ```text
-simulator (Python) → núcleo (backend/core) → app Streamlit (frontend/app.py)
+simulator (Python) → core (backend/core) → Streamlit app (frontend/app.py)
 ```
 
-Un solo proceso, sin API: la app importa el núcleo directamente.
+A single process, no API: the app imports the core directly.
 
-## Reglas
+## Rules
 
-- Levantar con `streamlit run frontend/app.py`.
-- `frontend/app.py` solo arma la interfaz y llama funciones de `backend/core/`.
-- Gráficos con plotly (`st.plotly_chart`), con la banda de línea base y los puntos coloreados por nivel.
-- Figura humana: un SVG embebido con colores por sistema (`st.components.v1.html` o imagen generada), o una grilla de tarjetas por sistema si el tiempo no alcanza.
-- Selector de astronauta, día y escenario de demo en la barra lateral.
-- Cachear la carga de datos con `@st.cache_data`.
-- Para publicar un link para el jurado: Streamlit Community Cloud (gratis) desde el repo.
+- Start it with `streamlit run frontend/app.py`.
+- `frontend/app.py` only builds the interface and calls functions from `backend/core/`.
+- Charts with plotly (`st.plotly_chart`), with the baseline band and the points colored by level.
+- Human figure: an embedded SVG colored by system (`st.components.v1.html` or a generated image), or a grid of cards per system if time runs short.
+- Astronaut, day and demo-scenario selector in the sidebar.
+- Cache data loading with `@st.cache_data`.
+- To publish a link for the jury: Streamlit Community Cloud (free) from the repo.

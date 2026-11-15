@@ -1,32 +1,26 @@
-# Plantilla: declaración de uso de SI
+# Template: AI (SI) use statement
 
-El reglamento permite herramientas de SI (así llama el evento a la IA) y pide describir cómo se usaron. Primero en español, después en inglés. Completar solo con lo registrado en `BITACORA.md`.
+The rules allow AI tools ("SI" in the event's wording) and ask to describe how they were used. Fill it in only with what is recorded in `BITACORA.md`.
 
 ---
 
-## Declaración de uso de SI (español)
+## AI (SI) Use Statement
 
-**Enfoque.** Desarrollamos ORBITAL con desarrollo asistido por IA con supervisión humana: la IA propuso y escribió partes del trabajo, y el equipo definió cada tarea, aprobó cada plan, revisó y probó cada resultado, y tomó todas las decisiones.
+**Approach.** We built ORBITAL with AI-assisted development with human oversight: the AI proposed and wrote parts of the work, and the team defined each task, approved each plan, reviewed and tested each result, and made every decision.
 
-**Herramientas y uso**
+**Tools and use**
 
-| Herramienta | Para qué la usamos | Cómo revisamos el resultado |
+| Tool | What we used it for | How we reviewed the result |
 | --- | --- | --- |
-| Claude (chat, proyecto del equipo) | Investigación bibliográfica, documentos técnicos, metodología | Lectura y validación por el equipo; fuentes verificadas |
-| Claude Code | Escritura de código por tareas chicas | Plan aprobado antes de ejecutar; tests; revisión humana |
-| Subagente revisor (Claude Code) | Revisión de tests y coherencia clínica antes de cada commit | Informe leído por el equipo |
-| Subagente coordinador (Claude Code) | Control de la agenda y registro de decisiones | Decisiones tomadas por el equipo |
-| Skills del equipo | Contexto clínico, convenciones de código, documentación | Contenido escrito y revisado por el equipo |
-| Google AI Studio | Generación de pantallas React a partir de prompts | Revisión visual y funcional |
+| Claude (chat, team project) | Literature research, technical documents, methodology | Read and checked by the team; sources verified |
+| Claude Code | Writing code in small tasks | Plan approved before running; tests; human review |
+| Revisor subagent (Claude Code) | Review of tests and clinical consistency before each commit | Report read by the team |
+| Coordinator subagent (Claude Code) | Schedule tracking and decision log | Decisions made by the team |
+| Team skills | Clinical context, code conventions, documentation | Content written and reviewed by the team |
+| Google AI Studio | Generating React screens from prompts | Visual and functional review |
 
-**Qué hizo el equipo sin IA:** [completar desde la bitácora: decisiones clínicas, elección de umbrales, validación de casos, etc.]
+**What the team did without AI:** [fill in from the logbook: clinical decisions, choice of thresholds, checking the cases, etc.]
 
-**Qué generado por IA se descartó o corrigió:** [ejemplos de la bitácora]
+**What AI-generated work was discarded or corrected:** [examples from the logbook]
 
-**ML en el producto** (si aplica): [modelo, datos simulados o reales, evaluación, límites]. Es distinto del uso de IA para desarrollar.
-
----
-
-## AI (SI) Use Statement (English)
-
-[Same content and structure, in English.]
+**ML in the product** (if it applies): [model, simulated or real data, evaluation, limits]. This is different from using AI to develop.

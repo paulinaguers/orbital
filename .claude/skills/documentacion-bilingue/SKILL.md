@@ -1,48 +1,48 @@
 ---
 name: documentacion-bilingue
-description: Redacta la documentación del proyecto ORBITAL en español e inglés - metodología completa, uso de SI (inteligencia artificial) y plugins, README, descripción para la plataforma de Space Apps, guion del pitch y del video. Usar cuando haya que documentar lo hecho, preparar la entrega, consolidar la bitácora o escribir cualquier texto para el jurado.
+description: Writes the ORBITAL project documentation - full methodology, AI (SI) and plugin use, README, description for the Space Apps platform, pitch and video script. Use it when the work needs to be documented, the submission prepared, the logbook consolidated or any text for the jury written.
 ---
 
-# Documentación bilingüe de ORBITAL
+# ORBITAL documentation
 
-Produce la documentación en **español y en inglés**, con el mismo contenido y la misma estructura en ambos idiomas, en un hilo cronológico de principio a fin.
+Produces the project documentation in a single chronological thread, from start to end. **Everything in the repo and everything linked from the submission is in English** (team decision, 14/11). Spanish versions are only for internal study material kept outside the repo.
 
-## Fuentes (en este orden)
+## Sources (in this order)
 
-1. `BITACORA.md`: qué se hizo, cuándo, con qué IA y qué revisó el equipo. Es la fuente principal.
-2. `CRONOGRAMA.md`: plan, puntos de control, cortes y registro del coordinador.
-3. Skill `fisiologia-espacial`: fundamentos clínicos y bibliografía.
-4. `CLAUDE.md` y la skill `codigo-orbital`: arquitectura y forma de trabajo.
-5. Project Submission Guide y Judging Guide de NASA (en `docs/`), que mandan sobre formato y largo.
+1. `BITACORA.md`: what was done, when, with which AI and what the team reviewed. It is the main source.
+2. `CRONOGRAMA.md`: plan, checkpoints, cuts and coordinator log.
+3. `fisiologia-espacial` skill: clinical basis and bibliography.
+4. `CLAUDE.md` and the `codigo-orbital` skill: architecture and way of working.
+5. NASA's Project Submission Guide and Judging Guide (in `docs/`), which rule on format and length.
 
-## Reglas
+## Rules
 
-1. **No inventes hechos.** Todo lo que se afirma sobre el trabajo tiene que estar en la bitácora o el cronograma. Si falta algo, listalo como pregunta para el equipo.
-2. **Orden cronológico** de principio a fin: preparación → sábado → domingo → entrega.
-3. **Uso de SI completo y honesto**, en dos apartados separados:
-   - IA como herramienta de desarrollo (Claude chat, Claude Code, subagentes, skills, Google AI Studio): para qué se usó cada una y cómo se revisó lo que generó.
-   - ML como parte del producto (si se implementó): modelo, datos, evaluación y límites.
-4. **Nombre del enfoque:** "desarrollo asistido por IA con supervisión humana" / "AI-assisted development with human oversight". No usar "vibe coding".
-5. **Bilingüe paralelo:** para trabajo interno, primero español y después inglés. **Todo lo que se enlaza desde la entrega (README, metodología, declaración de SI, video, formulario) va con el inglés primero**: la guía exige inglés en la página y en todo material enlazado. Usar `references/glosario-es-en.md` para términos técnicos.
-6. **Claro para quien no es especialista:** oraciones cortas, tablas para comparar, sin jerga sin explicar.
-7. Citar fuentes con la bibliografía de la skill clínica.
-8. **Origen de la idea:** la guía prohíbe usar SI para que se le ocurra la solución. Dejar claro que la idea, el criterio clínico y las decisiones son del equipo; la SI se usó para investigar, ordenar, programar y documentar.
-9. **Marcas de SI visibles para el jurado:** código generado → mención en el README y comentario al inicio de cada archivo; imágenes o videos generados (incluido el avatar ficticio) → marca de agua visible. La respuesta del campo "Use of SI" no la ven los jueces; las marcas dentro del proyecto sí.
-10. **Sin logos ni marcas de NASA** ni de agencias socias en ningún material.
-11. **Referencias completas:** datos, fuentes clínicas, librerías (pandas, numpy, scikit-learn, FastAPI, React, Streamlit), Google AI Studio, Claude, imágenes. Aunque sean abiertas.
-12. **Datos de NASA como parte central (criterio Relevance):** en todos los textos, explicar que los umbrales salen del NASA-STD-3001, que cada indicador vigila un riesgo oficial del NASA HRP y que el simulador usa números publicados por NASA. Mencionar la CSA (agencia socia: Bio-Monitor, Space Health, Vascular).
+1. **Do not invent facts.** Everything stated about the work must be in the logbook or the schedule. If something is missing, list it as a question for the team.
+2. **Chronological order** from start to end: preparation → Saturday → Sunday → submission.
+3. **Complete and honest AI use**, in two separate parts:
+   - AI as a development tool (Claude chat, Claude Code, subagents, skills, Google AI Studio): what each one was used for and how its output was reviewed.
+   - ML as part of the product (if implemented): model, data, evaluation and limits.
+4. **Name of the approach:** "AI-assisted development with human oversight". Do not use "vibe coding".
+5. **English in the repo and in everything linked from the submission** (README, methodology, AI-use statement, video, form): the guide requires English on the page and in all linked material. Use `references/glosario-es-en.md` for technical terms.
+6. **Clear for non-specialists:** short sentences, tables to compare, no unexplained jargon.
+7. Cite sources with the clinical skill's bibliography.
+8. **Origin of the idea:** the guide forbids using AI to come up with the solution. Make clear that the idea, the clinical criteria and the decisions are the team's; AI was used to research, organize, code and document.
+9. **AI marks visible to the jury:** generated code → mention in the README and a comment at the top of every file; generated images or videos (including the fictional avatar) → visible watermark. The answer to the "Use of SI" field is not seen by the judges; the marks inside the project are.
+10. **No NASA or partner agency logos or marks** in any material.
+11. **Complete references:** data, clinical sources, libraries (pandas, numpy, scikit-learn, FastAPI, React, Streamlit), Google AI Studio, Claude, images. Even if they are open.
+12. **NASA data as a central part (Relevance criterion):** in every text, explain that the thresholds follow NASA-STD-3001, that each indicator watches an official NASA HRP risk and that the simulator uses numbers published by NASA. Mention the CSA (partner agency: Bio-Monitor, Space Health, Vascular).
 
-## Entregables y plantillas
+## Deliverables and templates
 
-| Entregable | Plantilla | Cuándo |
+| Deliverable | Template | When |
 | --- | --- | --- |
-| Documento de metodología (ES + EN) | `references/plantilla-metodologia.md` | Borrador en cada punto de control; cierre el domingo 12:00–14:30 |
-| Declaración de uso de SI (ES + EN) | `references/plantilla-declaracion-si.md` | Domingo, antes de la carga |
-| README del repo (ES + EN) | Sección "README" de la plantilla de metodología | Domingo antes de las 15:00 |
-| Campos del formulario (en inglés) | `references/campos-formulario.md` | Domingo 15:00–16:00, envío apenas termina el jurado |
-| Guion del video demo (≤ 30 s, subtítulos en inglés) | `references/campos-formulario.md` | Domingo bloque 3 |
+| Methodology document | `references/plantilla-metodologia.md` | Draft at each checkpoint; closed on Sunday 12:00–14:30 |
+| AI-use statement | `references/plantilla-declaracion-si.md` | Sunday, before the upload |
+| Repo README | "README" section of the methodology template | Sunday before 15:00 |
+| Form fields (in English) | `references/campos-formulario.md` | Sunday 15:00–16:00, submitted right after the jury |
+| Demo video script (≤ 30 s, English subtitles) | `references/campos-formulario.md` | Sunday block 3 |
 
-## Trabajo progresivo
+## Progressive work
 
-- En cada `/estado`, actualizar el borrador de metodología con las entradas nuevas de la bitácora (solo español).
-- El domingo, completar, revisar y traducir al inglés.
+- At each `/estado`, update the methodology draft with the new logbook entries.
+- On Sunday, complete and review it.

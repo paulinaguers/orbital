@@ -1,54 +1,54 @@
-# Contexto fisiológico y operativo
+# Physiological and operational context
 
-Fuente: documento del equipo "Fundamentación del proyecto" (1/11/2026). Los números entre corchetes remiten a la lista "Fundamentación" de `bibliografia.md`.
+Source: the team's document "Project rationale" (1/11/2026). Numbers in brackets refer to the "Rationale" list in `bibliografia.md`.
 
-## Pregunta del proyecto
+## Project question
 
-¿Cómo puede un astronauta en una misión de larga duración detectar a tiempo cambios en su salud y decidir qué hacer, con la menor dependencia posible de la Tierra?
+How can an astronaut on a long-duration mission detect changes in their health in time and decide what to do, depending on Earth as little as possible?
 
-## Los cinco peligros (NASA HRP) [3]
+## The five hazards (NASA HRP) [3]
 
-| Peligro | Qué implica |
+| Hazard | What it means |
 | --- | --- |
-| Radiación | Radiación ionizante muy superior a la terrestre; más riesgo de cáncer y efectos a largo plazo [3][13] |
-| Aislamiento y confinamiento | Efectos sobre conducta y ánimo [3] |
-| Distancia de la Tierra | Instrucciones, suministros y atención médica más difíciles [3] |
-| Gravedad | Músculos, huesos, oído interno y órganos se adaptan a cada cambio [3] |
-| Ambiente cerrado | La nave es el único sostén de vida: aire, temperatura, CO₂, ruido [3][12] |
+| Radiation | Ionizing radiation far above Earth's; higher risk of cancer and long-term effects [3][13] |
+| Isolation and confinement | Effects on behavior and mood [3] |
+| Distance from Earth | Instructions, supplies and medical care are harder [3] |
+| Gravity | Muscles, bones, inner ear and organs adapt to every change [3] |
+| Closed environment | The spacecraft is the only life support: air, temperature, CO₂, noise [3][12] |
 
-Los peligros suelen estar acoplados y potenciarse [24]. NASA consolidó unos 30 riesgos del sistema humano [4].
+The hazards are often coupled and amplify each other [24]. NASA consolidated about 30 risks of the human system [4].
 
-## Efectos relevantes para el monitoreo
+## Effects relevant for monitoring
 
-- Cardiovascular: la presión ambulatoria baja 8–10 mmHg en vuelos largos [6].
-- Hueso: −1 a −1,5 % de densidad por mes [7], aun con ~2 h diarias de ejercicio [8].
-- Visión (SANS): se controla con agudeza, Amsler y encuesta [9].
-- Sueño: ~6 h reales contra 8,5 h programadas [10].
-- Nutrición: pérdida de masa constante, a menudo > 5 % [11].
-- Ambiente: dolores de cabeza con CO₂ muy por debajo de límites históricos [12].
-- Radiación: límite de carrera 600 mSv [13].
+- Cardiovascular: ambulatory blood pressure drops 8–10 mmHg on long flights [6].
+- Bone: −1 to −1.5 % density per month [7], even with ~2 h of daily exercise [8].
+- Vision (SANS): checked with visual acuity, Amsler grid and a questionnaire [9].
+- Sleep: ~6 h of actual sleep against 8.5 h scheduled [10].
+- Nutrition: steady loss of mass, often > 5 % [11].
+- Environment: headaches with CO₂ well below historical limits [12].
+- Radiation: career limit 600 mSv [13].
 
-## Etapas de la vida del astronauta [5]
+## Stages of the astronaut's life [5]
 
-1. Selección y entrenamiento (datos de referencia) · 2. Prevuelo (línea base personal) · 3. Lanzamiento y adaptación inicial · **4. Vuelo de larga duración (foco del proyecto)** · 5. Regreso y posvuelo (reporte exportable) · 6. Salud a largo plazo (fuera de alcance).
+1. Selection and training (reference data) · 2. Pre-flight (personal baseline) · 3. Launch and initial adaptation · **4. Long-duration flight (project focus)** · 5. Return and post-flight (exportable report) · 6. Long-term health (out of scope).
 
-## Monitoreo actual en la ISS
+## Current monitoring on the ISS
 
-- Conferencia médica privada semanal con el flight surgeon [15] y conferencia quincenal con psicología/psiquiatría [16].
-- Signos vitales no continuos: la FC es requisito en ejercicio, pruebas de aptitud y caminatas espaciales; los sensores actuales no la registran de forma consistente en otros momentos [14].
-- El Bio-Monitor (Astroskin) busca cubrir ese hueco con medición continua y no invasiva [26].
+- Weekly private medical conference with the flight surgeon [15] and a conference every two weeks with psychology/psychiatry [16].
+- Vital signs are not continuous: heart rate is required during exercise, fitness tests and spacewalks; current sensors do not record it consistently at other times [14].
+- The Bio-Monitor (Astroskin) aims to fill that gap with continuous, non-invasive measurement [26].
 
-## Autonomía médica (EIMO)
+## Medical autonomy (EIMO)
 
-Hacia Marte, la señal tarda hasta 22 min por tramo [17]; una consulta y su respuesta pueden superar 40 min. NASA desarrolla Earth-Independent Medical Operations: transferencia progresiva de la atención y las decisiones de la Tierra a la tripulación y la nave [18][19]. NASA usa el Integrated Medical Model, que simula 100 condiciones médicas [23].
+On the way to Mars, the signal takes up to 22 minutes each way [17]; a consultation and its answer can take more than 40 minutes. NASA is developing Earth-Independent Medical Operations: a progressive transfer of care and decisions from Earth to the crew and the spacecraft [18][19]. NASA uses the Integrated Medical Model, which simulates 100 medical conditions [23].
 
-## Brechas que cubre ORBITAL
+## Gaps ORBITAL covers
 
-1. El monitoreo es intermitente: cambios entre controles pasan inadvertidos.
-2. La interpretación depende de la Tierra.
-3. Los valores normales cambian en el espacio: un rango terrestre puede alarmar sin motivo o pasar por alto un cambio personal.
-4. No se puede suponer que el astronauta sabe evaluar su salud: la app explica qué medir, cómo y qué significa [1].
+1. Monitoring is intermittent: changes between check-ups go unnoticed.
+2. Interpretation depends on Earth.
+3. Normal values change in space: an Earth range can raise false alarms or miss a personal change.
+4. We cannot assume the astronaut knows how to assess their own health: the app explains what to measure, how, and what it means [1].
 
-## Limitaciones a declarar
+## Limitations to declare
 
-No es un dispositivo médico; umbrales de referencia (algunos propuestas del equipo); demo con datos simulados; el método de línea base es una propuesta inspirada en NASA [20][21], no un procedimiento oficial.
+Not a medical device; reference thresholds (some are team proposals); demo with simulated data; the baseline method is a proposal inspired by NASA [20][21], not an official procedure.

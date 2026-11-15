@@ -1,18 +1,18 @@
 ---
-description: Ejecuta una tarea con el ciclo completo del equipo - plan, aprobación, ejecución, tests, revisión, commit y bitácora.
-argument-hint: [Hilo A|B|C] [descripción de la tarea]
+description: Runs a task with the team's full cycle - plan, approval, execution, tests, review, commit and logbook.
+argument-hint: [Thread A|B|C] [task description]
 ---
 
-Tarea: $ARGUMENTS
+Task: $ARGUMENTS
 
-Seguí este ciclo sin saltear pasos:
+Follow this cycle without skipping steps:
 
-1. **Plan.** Explicá en pocas líneas qué vas a hacer, qué archivos vas a crear o tocar y cómo se va a probar. Si la tarea es grande, proponé dividirla. Consultá la skill `codigo-orbital` y, si toca algo clínico, la skill `fisiologia-espacial`.
-2. **Aprobación.** Esperá a que el equipo diga que sí. No escribas código antes.
-3. **Ejecución.** Escribí el código, simple y comentado en español.
-4. **Tests.** Escribí o actualizá los tests y corrélos. Mostrá el resultado.
-5. **Revisión.** Usá el subagente `revisor` y mostrá su veredicto.
-6. **Explicación.** Resumí en 3 líneas qué hace el código, para que el equipo pueda explicarlo al jurado.
-7. **Commit.** Proponé un mensaje de commit corto en español y esperá confirmación.
-8. **Bitácora.** Registrá la tarea con el formato de `BITACORA.md` (o recordá usar `/bitacora`).
-9. Si la tarea figura en `CRONOGRAMA.md`, recordá al equipo marcarla con `[x]`.
+1. **Plan.** Explain in a few lines what you will do, which files you will create or change and how it will be tested. If the task is big, propose how to split it. Check the `codigo-orbital` skill and, if it touches anything clinical, the `fisiologia-espacial` skill.
+2. **Approval.** Wait for the team to say yes. Do not write code before that.
+3. **Execution.** Write the code, simple and commented in English.
+4. **Tests.** Write or update the tests and run them. Show the result.
+5. **Review.** Use the `revisor` subagent and show its verdict.
+6. **Explanation.** Summarize in 3 lines what the code does, so the team can explain it to the jury.
+7. **Commit.** Propose a short commit message in English and wait for confirmation.
+8. **Logbook.** Log the task in the `BITACORA.md` format (or remind the team to use `/bitacora`).
+9. If the task is in `CRONOGRAMA.md`, remind the team to tick it with `[x]`.

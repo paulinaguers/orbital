@@ -1,24 +1,24 @@
-# Libros y fuentes de cabecera para ampliar
+# Core books and sources for further reading
 
-Material de referencia de medicina y fisiología espacial que agencias y programas de formación usan como base. Los libros tienen copyright: acá van fichas para saber qué consultar y dónde, no el contenido. Si alguien del equipo tiene acceso a un libro, puede sumar capítulos puntuales al proyecto de Claude.
+Space medicine and physiology reference material that agencies and training programs use as a basis. The books are copyrighted: these are reference cards to know what to look up and where, not their content. If a team member has access to a book, they can add specific chapters to the Claude project.
 
-## Libros
+## Books
 
-| Obra | Datos | Para qué consultarla |
+| Work | Details | What to look up |
 | --- | --- | --- |
-| *Principles of Clinical Medicine for Space Flight*, 2.ª ed. | Barratt, M. R., Baker, E. S., y Pool, S. L. (eds.). Springer, 2019 (publicado ene. 2020). 30 capítulos, 936 págs. DOI 10.1007/978-1-4939-9889-0 | Referencia clínica de medicina espacial escrita por expertos del NASA JSC; usada en la certificación de medicina aeroespacial. Capítulos clave: 11 evaluaciones y estándares médicos, 12 respuesta humana al vuelo, 13 metabolismo y nutrición, 19 respuesta musculoesquelética, 20 desempeño físico y contramedidas, 22 cardiovascular, 25 salud conductual, 26 sueño y fatiga, 28 oftalmología |
-| *Fundamentals of Aerospace Medicine*, 5.ª ed. | Davis, J. R., Stepanek, J., Fogarty, J. A., y Blue, R. S. (eds.). Wolters Kluwer, 2021. ISBN 978-1-9751-4385-5 | Texto general de medicina aeroespacial (aviación y espacio). Útil para musculoesquelético y desempeño, salud conductual, entrega de atención médica en misiones de exploración y medicina de vuelo espacial comercial |
-| *Space Physiology* | Buckey, J. C. Oxford University Press, 2006 | Introducción didáctica a la fisiología espacial por sistemas, con foco en contramedidas. Buena para entender los mecanismos de hueso, músculo, cardiovascular y fluidos |
+| *Principles of Clinical Medicine for Space Flight*, 2nd ed. | Barratt, M. R., Baker, E. S., & Pool, S. L. (eds.). Springer, 2019 (published Jan. 2020). 30 chapters, 936 pp. DOI 10.1007/978-1-4939-9889-0 | Clinical reference on space medicine written by NASA JSC experts; used in aerospace medicine certification. Key chapters: 11 medical evaluations and standards, 12 human response to spaceflight, 13 metabolism and nutrition, 19 musculoskeletal response, 20 physical performance and countermeasures, 22 cardiovascular, 25 behavioral health, 26 sleep and fatigue, 28 ophthalmology |
+| *Fundamentals of Aerospace Medicine*, 5th ed. | Davis, J. R., Stepanek, J., Fogarty, J. A., & Blue, R. S. (eds.). Wolters Kluwer, 2021. ISBN 978-1-9751-4385-5 | General aerospace medicine text (aviation and space). Useful for musculoskeletal health and performance, behavioral health, delivery of medical care on exploration missions and commercial spaceflight medicine |
+| *Space Physiology* | Buckey, J. C. Oxford University Press, 2006 | Teaching introduction to space physiology by body system, focused on countermeasures. Good for understanding the mechanisms of bone, muscle, cardiovascular system and fluids |
 
-## Fuentes públicas de NASA (se pueden cargar completas)
+## Public NASA sources (can be loaded in full)
 
-- **NASA-STD-3001 Vol. 1 Rev. C** (requisitos de salud de la tripulación) y sus *Technical Briefs* (CO₂, radiación, etc.).
-- **Human Research Program – Evidence Reports y Human Research Roadmap**: un informe de evidencia por cada riesgo del sistema humano, con la bibliografía de base.
-- **Spaceflight Standard Measures** (Zwart 2018): qué se mide a los astronautas y cuándo.
-- **EIMO Concept of Operations** (Parker 2024): autonomía médica en misiones lejanas.
+- **NASA-STD-3001 Vol. 1 Rev. C** (crew health requirements) and its *Technical Briefs* (CO₂, radiation, etc.).
+- **Human Research Program – Evidence Reports and Human Research Roadmap**: one evidence report per human system risk, with its supporting bibliography.
+- **Spaceflight Standard Measures** (Zwart 2018): what is measured in astronauts and when.
+- **EIMO Concept of Operations** (Parker 2024): medical autonomy on distant missions.
 
-## Uso recomendado
+## Recommended use
 
-1. Primero, los documentos del equipo y la bibliografía de `bibliografia.md`.
-2. Para una pregunta clínica concreta del jurado, el capítulo correspondiente de *Principles of Clinical Medicine for Space Flight*.
-3. Para fundamentar un riesgo, el Evidence Report de NASA HRP de ese riesgo.
+1. First, the team's documents and the bibliography in `bibliografia.md`.
+2. For a specific clinical question from the jury, the matching chapter of *Principles of Clinical Medicine for Space Flight*.
+3. To support a risk, the NASA HRP Evidence Report for that risk.

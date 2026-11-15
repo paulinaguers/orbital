@@ -1,14 +1,14 @@
 ---
-description: Registra una entrada en BITACORA.md con el formato del equipo (qué se hizo, IA usada, revisión humana, commit).
-argument-hint: [descripción breve de lo que se hizo o decidió]
+description: Adds an entry to BITACORA.md in the team's format (what was done, AI used, human review, commit).
+argument-hint: [short description of what was done or decided]
 ---
 
-Agregá una entrada al final de la sección del día correspondiente en `BITACORA.md`, siguiendo exactamente el formato definido al principio del archivo.
+Add an entry at the end of the section for the right day in `BITACORA.md`, following exactly the format defined at the top of the file.
 
-Lo que hay que registrar: $ARGUMENTS
+What to log: $ARGUMENTS
 
-Pasos:
-1. Obtené la fecha y hora con `date "+%Y-%m-%d %H:%M"` y el último commit con `git log -1 --pretty=format:"%h %s"`.
-2. Completá cada campo con lo que sabés de esta sesión. Para "Herramientas de IA" sé específico: qué herramienta y para qué (por ejemplo, "Claude Code escribió la función de puntaje z; revisor corrió tests").
-3. Si falta un dato que solo el equipo conoce (sobre todo "Revisión humana": quién revisó y qué), preguntalo antes de escribir. No lo inventes.
-4. Mostrá la entrada antes de guardarla.
+Steps:
+1. Get the date and time with `date "+%Y-%m-%d %H:%M"` and the last commit with `git log -1 --pretty=format:"%h %s"`.
+2. Fill in each field with what you know from this session. For "AI tools" be specific: which tool and what for (for example, "Claude Code wrote the z-score function; revisor ran the tests").
+3. If a piece of information only the team knows is missing (especially "Human review": who reviewed what), ask before writing. Do not make it up.
+4. Show the entry before saving it.

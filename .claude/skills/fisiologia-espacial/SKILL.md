@@ -1,33 +1,33 @@
 ---
 name: fisiologia-espacial
-description: Criterio clínico del proyecto ORBITAL (monitoreo de salud de astronautas). Usar siempre que haya que definir o revisar umbrales, rangos, reglas de alerta o escalamiento, línea de base personal, escalas y tests (PVT, Amsler, VAS, diario de sueño), textos de recomendaciones, la capa de ML, preguntas del jurado sobre validez científica, o cuando se necesite una fuente o referencia bibliográfica de fisiología espacial o medicina aeroespacial.
+description: Clinical criteria of the ORBITAL project (astronaut health monitoring). Use it whenever thresholds, ranges, alert or escalation rules, the personal baseline, scales and tests (PVT, Amsler, VAS, sleep diary), recommendation texts or the ML layer need to be defined or reviewed, for jury questions on scientific validity, or when a source or reference on space physiology or aerospace medicine is needed.
 ---
 
-# Fisiología espacial – criterio clínico de ORBITAL
+# Space physiology – ORBITAL's clinical criteria
 
-Esta skill es la fuente de verdad clínica del proyecto. Todo número que entre al código o a un texto de la app sale de acá, con su fuente.
+This skill is the project's clinical source of truth. Every number that goes into the code or into an app text comes from here, with its source.
 
-## Reglas
+## Rules
 
-1. **No inventes valores.** Si un umbral, rango o dato no está en las referencias, decilo y proponé buscarlo. Nunca completes con memoria.
-2. **Distinguí fuente y propuesta.** Los valores marcados como *Propuesta* son decisiones de diseño del equipo, sin una fuente que fije ese número. Decilo así en textos y ante el jurado.
-3. **Citá la fuente primaria** (NASA-STD-3001, NASA HRP, guías clínicas de OMS, AHA, CDC, ADA, artículos revisados por pares). Las URL están en `references/bibliografia.md`.
-4. **La app orienta, no diagnostica.** No es un dispositivo médico. Las decisiones clínicas son del médico de a bordo y del flight surgeon.
-5. **Datos simulados se declaran como simulados.**
-6. Etapa de foco: **vuelo de larga duración** (etapa 4 de la vida del astronauta).
+1. **Do not invent values.** If a threshold, range or fact is not in the references, say so and propose to look it up. Never fill in from memory.
+2. **Separate source and proposal.** Values marked *Proposal* are design decisions by the team, with no source that fixes that number. Say so in texts and to the jury.
+3. **Cite the primary source** (NASA-STD-3001, NASA HRP, clinical guidelines from WHO, AHA, CDC, ADA, peer-reviewed articles). The URLs are in `references/bibliografia.md`.
+4. **The app guides; it does not diagnose.** It is not a medical device. Clinical decisions belong to the onboard doctor and the flight surgeon.
+5. **Simulated data is declared as simulated.**
+6. Stage in focus: **long-duration flight** (stage 4 of the astronaut's life).
 
-## Mapa de referencias (leer solo lo que haga falta)
+## Reference map (read only what is needed)
 
-| Archivo | Cuándo leerlo |
+| File | When to read it |
 | --- | --- |
-| `references/umbrales.md` | Umbrales de 4 niveles (verde, amarillo, naranja, rojo), matriz de indicadores, MVP de 7 indicadores, límites del NASA-STD-3001 |
-| `references/linea-base-y-ml.md` | Línea base personal, puntaje z, reglas de escalamiento, capa de ML y arranque en frío |
-| `references/escalas-y-protocolos.md` | Cómo se hace y puntúa cada test, escala y medición con dispositivo |
-| `references/contexto-fisiologico.md` | Cinco peligros, efectos en el cuerpo, cómo se monitorea hoy en la ISS, autonomía médica (EIMO) |
-| `references/bibliografia.md` | Todas las referencias citadas en los documentos del proyecto, con URL |
-| `references/riesgos-nasa.md` | Qué riesgo oficial del NASA HRP cubre cada indicador, datos clave, frases de pitch y cómo mide NASA hoy (ARCHeR, Standard Measures) |
-| `references/libros-de-referencia.md` | Libros y fuentes de cabecera de medicina espacial para ampliar |
+| `references/umbrales.md` | 4-level thresholds (green, yellow, orange, red), indicator matrix, 7-indicator MVP, NASA-STD-3001 limits |
+| `references/linea-base-y-ml.md` | Personal baseline, z-score, escalation rules, ML layer and cold start |
+| `references/escalas-y-protocolos.md` | How each test, scale and device measurement is done and scored |
+| `references/contexto-fisiologico.md` | Five hazards, effects on the body, how the ISS monitors today, medical autonomy (EIMO) |
+| `references/bibliografia.md` | Every reference cited in the project documents, with URLs |
+| `references/riesgos-nasa.md` | Which official NASA HRP risk each indicator covers, key facts, pitch lines and how NASA measures today (ARCHeR, Standard Measures) |
+| `references/libros-de-referencia.md` | Core space medicine books and sources for further reading |
 
-## Escalamiento
+## Escalation
 
-Cuatro niveles: Verde = seguir la rutina · Amarillo = aviso suave (vigilar, repetir la medición, autocuidado; **sin consulta**) · Naranja = consultar al médico de a bordo · Rojo = escalar al flight surgeon con un reporte listo para enviar. Un desvío de la línea base por sí solo nunca llega a rojo. Un valor se evalúa con dos capas: **umbral clínico fijo** y **desvío respecto de la línea base personal**. Gana el nivel más alto.
+Four levels: Green = keep the routine · Yellow = soft warning (monitor, repeat the measurement, self-care; **no consultation**) · Orange = contact the onboard doctor · Red = escalate to the flight surgeon with a report ready to send. A deviation from the baseline alone never reaches red. Each value is checked with two layers: a **fixed clinical threshold** and the **deviation from the personal baseline**. The higher level wins.

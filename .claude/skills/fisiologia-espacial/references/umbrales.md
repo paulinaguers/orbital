@@ -1,85 +1,85 @@
-# Indicadores y umbrales
+# Indicators and thresholds
 
-Fuente: documento del equipo "Indicadores y umbrales – Monitoreo de salud de astronautas" (rev. 1/11/2026). Los umbrales son referencias para un prototipo de hackathon, no criterios clínicos. Combinan guías clínicas terrestres con datos publicados de vuelo espacial. Todos aplican a la etapa en vuelo.
+Source: the team's document "Indicators and thresholds – Astronaut health monitoring" (rev. 1/11/2026). The thresholds are references for a hackathon prototype, not clinical criteria. They combine Earth clinical guidelines with published spaceflight data. All apply to the in-flight stage.
 
-## Criterios de selección de indicadores
+## Indicator selection criteria
 
-Un indicador entra si cumple al menos 4 de 5:
+An indicator is included if it meets at least 4 of 5:
 
-1. Vinculado a un riesgo documentado (radiación, aislamiento, distancia, gravedad alterada, ambiente cerrado).
-2. Medible a bordo con equipo existente o con la app.
-3. Lo puede hacer el astronauta solo.
-4. Tiene un umbral claro para el semáforo.
-5. Lleva a una acción concreta.
+1. Linked to a documented risk (radiation, isolation, distance, altered gravity, closed environment).
+2. Measurable on board with existing equipment or with the app.
+3. The astronaut can do it alone.
+4. It has a clear threshold for the traffic light.
+5. It leads to a concrete action.
 
-## Matriz de indicadores (11 candidatos)
+## Indicator matrix (11 candidates)
 
-| Riesgo (peligro) | Indicador | Tipo de dato | Frecuencia | Por qué importa en el espacio |
+| Risk (hazard) | Indicator | Data type | Frequency | Why it matters in space |
 | --- | --- | --- | --- | --- |
-| Cardiovascular (gravedad) | Presión arterial | Dispositivo | Diaria | En vuelos largos la presión ambulatoria de 24 h baja 8–10 mmHg (Norsk 2015) |
-| Cardiovascular (gravedad) | FC y SpO₂ | Dispositivo o wearable | Continua o diaria | La FC y su variabilidad bajan en vuelo (NASA); el Bio-Monitor (Astroskin) las mide en la ISS (CSA) |
-| SANS: visión (gravedad) | Agudeza visual, rejilla de Amsler, síntomas | Test en la app + autorreporte | Semanal | Son las tres pruebas visuales programadas en la ISS (Waisberg 2023) |
-| Hueso y músculo (gravedad) | Minutos de ejercicio con carga | Autorreporte | Diaria | La densidad ósea cae 1–1,5 % por mes (Stavnichuk 2020); la tripulación de la ISS entrena ~1,5 h/día, 6–7 días por semana (NASA HRP, riesgo de capacidad física) |
-| Nutrición (ambiente cerrado) | Masa corporal e ingesta | Dispositivo + autorreporte | Semanal | La pérdida de masa es constante y suele superar el 5 % (Laurens 2019); la ISS usa cuestionario semanal de alimentos (NASA) |
-| Metabolismo | Glucosa | Dispositivo | Según protocolo | En la ISS los astronautas desarrollaron resistencia a la insulina y no procesaron la glucosa con normalidad (CSA, estudio Vascular). También la pide el desafío. Umbrales clínicos (ADA) |
-| Sistema inmune (radiación, ambiente cerrado) | Temperatura y síntomas | Dispositivo + autorreporte | Diaria o ante síntomas | Detección temprana de infecciones en hábitat cerrado |
-| Sueño (aislamiento) | Horas y calidad de sueño | Autorreporte o wearable | Diaria | Duermen ~6 h contra 8,5 h programadas (Barger 2014) |
-| Conductual y cognitivo (aislamiento) | PVT y escala de ánimo | Test en la app + autorreporte | Cada 3–4 días | En la ISS se tomaron PVT y escalas visuales cada 4 días (Sleep 2022) |
-| Ambiente cerrado | CO₂ de cabina y dolor de cabeza | Sensor del hábitat + autorreporte | Continua | Síntomas reportados desde 2,3 mmHg (Law y Alexander, NASA) |
-| Radiación | Dosis acumulada | Dosímetro | Diaria, acumulada | Límite de carrera 600 mSv (NASA) |
+| Cardiovascular (gravity) | Blood pressure | Device | Daily | On long flights, 24-hour ambulatory blood pressure drops 8–10 mmHg (Norsk 2015) |
+| Cardiovascular (gravity) | Heart rate and SpO₂ | Device or wearable | Continuous or daily | Heart rate and its variability drop in flight (NASA); the Bio-Monitor (Astroskin) measures them on the ISS (CSA) |
+| SANS: vision (gravity) | Visual acuity, Amsler grid, symptoms | In-app test + self-report | Weekly | They are the three vision tests scheduled on the ISS (Waisberg 2023) |
+| Bone and muscle (gravity) | Minutes of loaded exercise | Self-report | Daily | Bone density falls 1–1.5 % per month (Stavnichuk 2020); the ISS crew trains ~1.5 h/day, 6–7 days a week (NASA HRP, physical fitness risk) |
+| Nutrition (closed environment) | Body mass and intake | Device + self-report | Weekly | Mass loss is steady and often exceeds 5 % (Laurens 2019); the ISS uses a weekly food questionnaire (NASA) |
+| Metabolism | Glucose | Device | Per protocol | On the ISS, astronauts developed insulin resistance and did not process glucose normally (CSA, Vascular study). The challenge also asks for it. Clinical thresholds (ADA) |
+| Immune system (radiation, closed environment) | Temperature and symptoms | Device + self-report | Daily or when symptoms appear | Early detection of infections in a closed habitat |
+| Sleep (isolation) | Sleep hours and quality | Self-report or wearable | Daily | They sleep ~6 h against 8.5 h scheduled (Barger 2014) |
+| Behavioral and cognitive (isolation) | PVT and mood scale | In-app test + self-report | Every 3–4 days | On the ISS, the PVT and visual scales were taken every 4 days (Sleep 2022) |
+| Closed environment | Cabin CO₂ and headache | Habitat sensor + self-report | Continuous | Symptoms reported from 2.3 mmHg (Law and Alexander, NASA) |
+| Radiation | Cumulative dose | Dosimeter | Daily, cumulative | Career limit 600 mSv (NASA) |
 
-## Umbrales de alerta (4 niveles)
+## Alert thresholds (4 levels)
 
-Verde = seguir la rutina · Amarillo = aviso suave: vigilar, repetir la medición y autocuidado, **sin consulta** · Naranja = consultar al médico de a bordo · Rojo = escalar al flight surgeon. El amarillo cubre sobre todo desvíos de la línea base personal con el valor todavía dentro del rango clínico. *Propuesta* = decisión de diseño del equipo, sin fuente que fije ese número.
+Green = keep the routine · Yellow = soft warning: monitor, repeat the measurement and self-care, **no consultation** · Orange = contact the onboard doctor · Red = escalate to the flight surgeon. Yellow mostly covers deviations from the personal baseline while the value is still inside the clinical range. *Proposal* = a design decision by the team, with no source that fixes that number.
 
-| Indicador | Verde | Amarillo (vigilar) | Naranja (médico de a bordo) | Rojo (flight surgeon) | Base |
+| Indicator | Green | Yellow (monitor) | Orange (onboard doctor) | Red (flight surgeon) | Basis |
 | --- | --- | --- | --- | --- | --- |
-| Presión arterial (mmHg) | < 130 / < 80 | < 130 / < 80 con desvío sostenido de la línea base | 130–180 / 80–120, o < 90/60 con síntomas | > 180 y/o > 120: repetir a los 5 min | AHA; hipotensión < 90/60 (NHLBI; NHS) |
-| Glucosa (mg/dL) | 70–180 | 70–180 con desvío sostenido | 54–69 o 181–250 | < 54 o > 250 | ADA |
-| SpO₂ (%) | ≥ 95 | 94, o ≥ 95 con desvío sostenido | 91–93 | ≤ 90 | OMS: normal 97–99 %, límite inferior 94 %; < 90 % es emergencia (Myatt 2017, Nursing Standard). *Propuesta:* rojo incluye el 90 % exacto, más conservador que la fuente |
-| Temperatura (°C) | 36–37,4 | 37,5–37,9 sin síntomas | 37,5–37,9 con síntomas | ≥ 38 o < 35 | CDC: fiebre ≥ 38 °C; hipotermia < 35 °C. *Propuesta:* corte amarillo/naranja |
-| FC en reposo (lpm) | 50–100 | 50–100 con desvío sostenido | 40–49 o 101–120 | < 40 o > 120 | AHA: normal 60–100; muy entrenados ~40; verde desde 50 por perfil atlético |
-| CO₂ de cabina (mmHg) | < 2,5 (promedio 7 días) | 2,5–3 sin síntomas | 2,5–3 con dolor de cabeza | > 3 (promedio 1 h) | NASA-STD-3001 / OCHMO-TB-004. *Propuesta:* corte amarillo/naranja por síntomas |
-| Sueño (h por noche) | ≥ 7 | 6–7 | < 6 una noche | < 6 en 2 o más noches seguidas | Sleep 2022. *Propuesta:* corte amarillo/naranja |
-| Test de reacción (PVT) | Igual a la línea base | Más lapsos en una sesión | Más lapsos en 3 sesiones seguidas | Aumento marcado y sostenido | Lapso > 500 ms (PVT 10 min, NASA); > 355 ms en versión de 3 min (Basner 2011) |
-| Radiación acumulada | < 50 % del límite | 50–65 % | 65–80 % | > 80 %, o una tormenta solar | *Propuesta*, sobre 600 mSv carrera y 250 mSv por evento solar (NASA-STD-3001) |
-| Masa corporal (variación) | Pérdida < 2 % | 2–3,5 % | 3,5–5 % | > 5 % | *Propuesta*; la pérdida suele superar el 5 % (Laurens 2019) |
-| Ejercicio (min/día) | ≥ 90 | 60–89 | 30–59 | < 30 varios días | *Propuesta*, sobre ~1,5 h/día, 6–7 días por semana (NASA HRP). Cambiado el 14/11 (antes ≥ 120 sobre ~2 h/día) |
-| Visión (Amsler y agudeza) | Sin cambios | Cambio leve que no se repite al medir de nuevo | Cambio confirmado respecto de la línea base | Pérdida súbita o distorsión | *Propuesta* |
+| Blood pressure (mmHg) | < 130 / < 80 | < 130 / < 80 with sustained deviation from the baseline | 130–180 / 80–120, or < 90/60 with symptoms | > 180 and/or > 120: repeat after 5 min | AHA; hypotension < 90/60 (NHLBI; NHS) |
+| Glucose (mg/dL) | 70–180 | 70–180 with sustained deviation | 54–69 or 181–250 | < 54 or > 250 | ADA |
+| SpO₂ (%) | ≥ 95 | 94, or ≥ 95 with sustained deviation | 91–93 | ≤ 90 | WHO: normal 97–99 %, lower limit 94 %; < 90 % is an emergency (Myatt 2017, Nursing Standard). *Proposal:* red includes exactly 90 %, more conservative than the source |
+| Temperature (°C) | 36–37.4 | 37.5–37.9 without symptoms | 37.5–37.9 with symptoms | ≥ 38 or < 35 | CDC: fever ≥ 38 °C; hypothermia < 35 °C. *Proposal:* yellow/orange cut |
+| Resting heart rate (bpm) | 50–100 | 50–100 with sustained deviation | 40–49 or 101–120 | < 40 or > 120 | AHA: normal 60–100; very well trained ~40; green from 50 for an athletic profile |
+| Cabin CO₂ (mmHg) | < 2.5 (7-day average) | 2.5–3 without symptoms | 2.5–3 with headache | > 3 (1-hour average) | NASA-STD-3001 / OCHMO-TB-004. *Proposal:* yellow/orange cut by symptoms |
+| Sleep (h per night) | ≥ 7 | 6–7 | < 6 one night | < 6 on 2 or more nights in a row | Sleep 2022. *Proposal:* yellow/orange cut |
+| Reaction test (PVT) | Same as the baseline | More lapses in one session | More lapses in 3 sessions in a row | Marked and sustained increase | Lapse > 500 ms (10-min PVT, NASA); > 355 ms in the 3-min version (Basner 2011) |
+| Cumulative radiation | < 50 % of the limit | 50–65 % | 65–80 % | > 80 %, or a solar storm | *Proposal*, on 600 mSv career and 250 mSv per solar event (NASA-STD-3001). **Team decision 14/11 (provisional, pending thread C):** the code caps cumulative dose at orange (from 65 %); red only for a solar storm in progress (see `docs/content/alert_texts.md` §7b) |
+| Body mass (change) | Loss < 2 % | 2–3.5 % | 3.5–5 % | > 5 % | *Proposal*; the loss often exceeds 5 % (Laurens 2019) |
+| Exercise (min/day) | ≥ 90 | 60–89 | 30–59 | < 30 on several days | *Proposal*, on ~1.5 h/day, 6–7 days a week (NASA HRP). Changed on 14/11 (before: ≥ 120 on ~2 h/day) |
+| Vision (Amsler and acuity) | No change | Mild change that does not repeat when measured again | Change confirmed against the baseline | Sudden loss or distortion | *Proposal* |
 
-Además de los rangos fijos, cada valor se compara con la línea base del propio astronauta (ver `linea-base-y-ml.md`). En vuelo la presión baja y la FC se reduce: un desvío sostenido respecto de su propio promedio puede ser más informativo que un rango terrestre.
+Besides the fixed ranges, each value is compared with the astronaut's own baseline (see `linea-base-y-ml.md`). In flight, blood pressure drops and heart rate falls: a sustained deviation from their own average can be more informative than an Earth range.
 
-## Qué dice el NASA-STD-3001 (Vol. 1, Rev. C)
+## What NASA-STD-3001 says (Vol. 1, Rev. C)
 
-No fija rangos numéricos para signos vitales. Exige evaluar, registrar, monitorear y analizar la tendencia de los signos vitales en vuelo (V1 3004) y remite a los estándares clínicos vigentes en EE. UU. (V1 3000). Por eso OMS, AHA, CDC y ADA son la fuente correcta para los valores. Sí fija límites como porcentaje del valor previo a la misión:
+It does not set numeric ranges for vital signs. It requires vital signs to be assessed, recorded, monitored and trended in flight (V1 3004) and points to the clinical standards in force in the US (V1 3000). That is why WHO, AHA, CDC and ADA are the right source for the values. It does set limits as a percentage of the pre-mission value:
 
-| Parámetro | Límite en vuelo | Requisito |
+| Parameter | In-flight limit | Requirement |
 | --- | --- | --- |
-| Capacidad aeróbica (VO₂máx) | ≥ 80 % del valor previo; ≥ 32,9 ml/min/kg si hace caminatas espaciales | V1 4003 y V1 4001 |
-| Fuerza muscular | ≥ 80 % de la línea base | V1 4024 |
-| Densidad ósea | ≥ 95 % del valor previo en cadera y columna; ≥ 90 % en cuello femoral | V1 4027 |
-| Nutrición | 100 % de la energía y nutrientes calculados | V1 4020 |
-| Radiación | < 600 mSv en la carrera; < 250 mSv por evento solar | V1 4030 y V1 4031 |
-| Sueño y jornada | Deben tener límites establecidos, sin número fijo | V1 4014 |
+| Aerobic capacity (VO₂max) | ≥ 80 % of the earlier value; ≥ 32.9 ml/min/kg for spacewalks | V1 4003 and V1 4001 |
+| Muscle strength | ≥ 80 % of the baseline | V1 4024 |
+| Bone density | ≥ 95 % of the earlier value at hip and spine; ≥ 90 % at the femoral neck | V1 4027 |
+| Nutrition | 100 % of the calculated energy and nutrients | V1 4020 |
+| Radiation | < 600 mSv over the career; < 250 mSv per solar event | V1 4030 and V1 4031 |
+| Sleep and work shifts | Must have set limits, no fixed number | V1 4014 |
 
-## MVP: 7 indicadores
+## MVP: 7 indicators
 
-1. Presión arterial: carga manual.
-2. FC y SpO₂: wearable simulado.
-3. Glucosa: carga manual.
-   - Síntomas (autorreporte, desde el 14/11): mareo o desorientación, aturdimiento o sensación de desmayo, dolor de cabeza, herpes labial o erupciones. No crean reglas nuevas: alimentan "presión < 90/60 con síntomas", "CO₂ con dolor de cabeza" y "temperatura con síntomas".
-4. Sueño: autorreporte.
-5. Ánimo y test de reacción: test en la app.
-6. Visión con rejilla de Amsler: test en la app.
-7. Radiación y CO₂: datos del hábitat simulados.
+1. Blood pressure: manual entry.
+2. Heart rate and SpO₂: simulated wearable.
+3. Glucose: manual entry.
+   - Symptoms (self-report, since 14/11): dizziness or disorientation, lightheaded or feeling faint, headache, cold sore or rash. They create no new rules: they feed "blood pressure < 90/60 with symptoms", "CO₂ with headache" and "temperature with symptoms".
+4. Sleep: self-report.
+5. Mood and reaction test: in-app test.
+6. Vision with the Amsler grid: in-app test.
+7. Radiation and CO₂: simulated habitat data.
 
-## Escalas de ánimo usadas por NASA
+## Mood scales used by NASA
 
-| Escala | Qué mide | Dónde y con qué frecuencia |
+| Scale | What it measures | Where and how often |
 | --- | --- | --- |
-| Escalas visuales analógicas (VAS) | Ánimo, fatiga, estrés, carga de trabajo | ISS, Reaction SelfTest, cada 4 días (Sleep 2022) |
-| POMS, 37 ítems | Seis estados de ánimo y alteración total | Medidas estándar de NASA (Williams y Cromwell 2017) |
-| BDI-II | Síntomas depresivos | Semanal en análogos (Bell 2026) |
-| Cuestionario de sueño y equipo | Sueño y funcionamiento del equipo | Mensual en la ISS (Zwart 2018) |
+| Visual analog scales (VAS) | Mood, fatigue, stress, workload | ISS, Reaction SelfTest, every 4 days (Sleep 2022) |
+| POMS, 37 items | Six mood states and total disturbance | NASA standard measures (Williams and Cromwell 2017) |
+| BDI-II | Depressive symptoms | Weekly in analogs (Bell 2026) |
+| Sleep and team questionnaire | Sleep and team functioning | Monthly on the ISS (Zwart 2018) |
 
-Para el MVP: VAS (sliders 0–100, segundos, sin licencia). POMS y BDI-II son comerciales: solo se citan.
+For the MVP: VAS (sliders 0–100, seconds, no license). POMS and BDI-II are commercial: they are only cited. (The app uses a simplified 0–10 self-report inspired by the VAS.)

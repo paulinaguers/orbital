@@ -1,10 +1,10 @@
 ---
-description: Punto de control. Llama al coordinador para ver el avance contra el cronograma, atrasos, riesgos y recortes. Opcional: agregá una sugerencia o problema del equipo.
-argument-hint: [sugerencia o problema del equipo, opcional]
+description: Checkpoint. Calls the coordinator to see progress against the schedule, delays, risks and cuts. Optional: add a suggestion or problem from the team.
+argument-hint: [suggestion or problem from the team, optional]
 ---
 
-Usá el subagente `coordinador` para hacer el punto de control ahora.
+Use the `coordinador` subagent to run the checkpoint now.
 
-Comentario del equipo para evaluar y registrar (puede estar vacío): $ARGUMENTS
+Team comment to evaluate and log (may be empty): $ARGUMENTS
 
-Mostrá su respuesta tal cual, en el formato del coordinador.
+Show its answer as is, in the coordinator's format.
