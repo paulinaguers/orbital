@@ -1,8 +1,8 @@
 # docs/
 
-Supporting documentation for the project. Keep here:
+Supporting documentation for the project.
 
-- `guias-nasa/`: Project Submission Guide, Judging Guide and challenge resources (published on 13/11).
-- `documentos-equipo/`: the team's technical documents exported to PDF or Markdown (Indicators and thresholds, Rationale, Scales, tests and protocols, ML layer, Work architecture).
-- `dashboards/`: the dashboard proposals already made.
-- `prompts-ai-studio.md`: every prompt used in Google AI Studio (for the logbook and the AI-use statement).
+- `content/alert_texts.md`: the text of every alert (green, yellow, orange, red) and recommendation per indicator, written by thread C. The core reads these texts through `backend/core/alert_texts.py`.
+- `content/clinical_test_cases.md`: the clinical answer key in readable form, generated from `backend/simulator/clinical_cases.py` (the same cases as `data/clinical_test_cases.csv`).
+
+The clinical reference documents (thresholds, scales and protocols, NASA risks, bibliography) live in [`.claude/skills/fisiologia-espacial/references/`](../.claude/skills/fisiologia-espacial/references/).

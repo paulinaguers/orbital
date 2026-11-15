@@ -378,3 +378,11 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina approved the list of fixes and asked to leave the PVT threshold as it is.
 - Sources: NASA HRP, Risks of Human Spaceflight (https://www.nasa.gov/hrp/risks/); NASA HRP, Hazard: Distance from Earth (https://www.nasa.gov/hrp/hazard-distance-from-earth/).
 - Commit: (complete with hash)
+
+### [2026-11-15 09:30] docs/README.md lists only what exists
+- Thread: C
+- Type: task
+- What was done: `docs/README.md` promised `guias-nasa/`, `documentos-equipo/`, `dashboards/` and `prompts-ai-studio.md`, which are not in the repo. It now describes only `docs/content/` (alert texts and the clinical answer key) and points to the skill folder for the clinical references.
+- AI tools: Claude (chat) found the mismatch while indexing the repo and rewrote the file.
+- Human review: Paulina approved the change.
+- Commit: (complete with hash)
