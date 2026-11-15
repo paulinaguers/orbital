@@ -13,7 +13,7 @@ It is an app that records an astronaut's health indicators on a long-duration fl
 | Orange | Outside the clinical range, or a marked and sustained deviation | Contact the onboard doctor |
 | Red | Critical value | Escalate to the flight surgeon on Earth |
 
-It must work **without a connection to Earth** (from Mars, the signal takes up to 22 minutes each way).
+It must work **without a connection to Earth** (from Mars, the signal takes up to 20 minutes each way).
 
 ## Team and way of working
 

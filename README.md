@@ -39,9 +39,9 @@ Team **The Foxhole Court** · UCEL Rosario, Argentina
 | [3 — Built on NASA's standards](#3-built-on-nasas-standards) | [11 — Verification and tests](#11-verification-and-tests) |
 | [4 — How ORBITAL decides](#4-how-orbital-decides-personal-baseline--clinical-thresholds) | [12 — Limitations and future work](#12-limitations-and-future-work) |
 | [5 — Colors, meaning and who is notified](#5-colors-meaning-and-who-is-notified) | [13 — Use of AI (SI)](#13-use-of-ai-si) |
-| [6 — The experience](#6-the-experience) | [14 — References](#14-references) |
-| [7 — Space passenger mode](#7-space-passenger-mode) | [15 — Team and license](#15-team-and-license) |
-| [8 — The demo: one astronaut, four scenarios](#8-the-demo-one-astronaut-four-scenarios) | |
+| [6 — The experience](#6-the-experience) | [14 — Documentation](#14-documentation) |
+| [7 — Space passenger mode](#7-space-passenger-mode) | [15 — References](#15-references) |
+| [8 — The demo: one astronaut, four scenarios](#8-the-demo-one-astronaut-four-scenarios) | [16 — Team and license](#16-team-and-license) |
 
 ---
 
@@ -384,7 +384,13 @@ ORBITAL was built with **AI-assisted development with human oversight**. The ide
 
 ---
 
-## 14. References
+## 14. Documentation
+
+Project documents (rationale, indicators and thresholds, scales, tests and protocols) in English and Spanish, as PDF: [`docs/project/README.md`](docs/project/README.md).
+
+---
+
+## 15. References
 
 - NASA OCHMO. *NASA-STD-3001 Vol. 1 Rev. C: Crew Health* (2023). https://www.nasa.gov/wp-content/uploads/2023/11/nasa-std-3001-vol-1-rev-c-with-signature.pdf
 - NASA OCHMO. *Carbon Dioxide Technical Brief, OCHMO-TB-004*. https://www.nasa.gov/?p=841628
@@ -407,7 +413,7 @@ Full bibliography: [`bibliografia.md`](.claude/skills/fisiologia-espacial/refere
 
 ---
 
-## 15. Team and license
+## 16. Team and license
 
 <div align="center">
 

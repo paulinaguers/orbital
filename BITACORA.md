@@ -424,6 +424,7 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina approved the list of fixes and asked to leave the PVT threshold as it is.
 - Sources: NASA HRP, Risks of Human Spaceflight (https://www.nasa.gov/hrp/risks/); NASA HRP, Hazard: Distance from Earth (https://www.nasa.gov/hrp/hazard-distance-from-earth/).
 - Commit: (complete with hash)
+- Correction (19:00): the CLAUDE.md fix and the commit hash were missing; CLAUDE.md fixed in this commit; the .claude/ references were replaced in 8f5425d.
 
 ### [2026-11-15 09:30] docs/README.md lists only what exists
 - Thread: C
