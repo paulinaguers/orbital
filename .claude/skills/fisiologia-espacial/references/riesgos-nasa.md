@@ -60,7 +60,7 @@ Evidence reports (one per risk): https://humanresearchroadmap.nasa.gov/evidence/
 ### Physical fitness
 - **NASA:** "Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness". Average loss of ~10–12 %; between 12 % and 38 % of crew members lose more than 20 %. Exercise of ~1.5 h/day, 6–7 days a week.
 - **Artemis II (Orion):** a flywheel device, about 30 minutes a day per astronaut.
-- **Note for thresholds:** our exercise proposal uses ~2 h/day (ISS). If the scenario is Orion or Artemis, the daily target is lower: say so and do not invent a new number.
+- **Note for thresholds:** since 14/11 our exercise proposal uses ~1.5 h/day, 6–7 days a week (this NASA HRP figure; see `umbrales.md`). If the scenario is Orion or Artemis, the daily target is lower: say so and do not invent a new number.
 - HRR page: https://humanresearchroadmap.nasa.gov/risks/?i=180
 
 ### Immune

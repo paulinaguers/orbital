@@ -16,12 +16,12 @@ How can an astronaut on a long-duration mission detect changes in their health i
 | Gravity | Muscles, bones, inner ear and organs adapt to every change [3] |
 | Closed environment | The spacecraft is the only life support: air, temperature, CO₂, noise [3][12] |
 
-The hazards are often coupled and amplify each other [24]. NASA consolidated about 30 risks of the human system [4].
+The hazards are often coupled and amplify each other [24]. NASA HRP currently lists 17 risks of human spaceflight (https://www.nasa.gov/hrp/risks/).
 
 ## Effects relevant for monitoring
 
 - Cardiovascular: ambulatory blood pressure drops 8–10 mmHg on long flights [6].
-- Bone: −1 to −1.5 % density per month [7], even with ~2 h of daily exercise [8].
+- Bone: −1 to −1.5 % density per month [7], even with daily exercise [8] (NASA HRP: ~1.5 h/day, 6–7 days a week; the exercise thresholds in `umbrales.md` use this figure).
 - Vision (SANS): checked with visual acuity, Amsler grid and a questionnaire [9].
 - Sleep: ~6 h of actual sleep against 8.5 h scheduled [10].
 - Nutrition: steady loss of mass, often > 5 % [11].
@@ -40,7 +40,7 @@ The hazards are often coupled and amplify each other [24]. NASA consolidated abo
 
 ## Medical autonomy (EIMO)
 
-On the way to Mars, the signal takes up to 22 minutes each way [17]; a consultation and its answer can take more than 40 minutes. NASA is developing Earth-Independent Medical Operations: a progressive transfer of care and decisions from Earth to the crew and the spacecraft [18][19]. NASA uses the Integrated Medical Model, which simulates 100 medical conditions [23].
+On the way to Mars, the signal takes up to 20 minutes each way (NASA HRP, Distance from Earth: https://www.nasa.gov/hrp/hazard-distance-from-earth/); a consultation and its answer can take more than 40 minutes. NASA is developing Earth-Independent Medical Operations: a progressive transfer of care and decisions from Earth to the crew and the spacecraft [18][19]. NASA uses the Integrated Medical Model, which simulates 100 medical conditions [23].
 
 ## Gaps ORBITAL covers
 

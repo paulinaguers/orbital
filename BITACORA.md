@@ -363,3 +363,17 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 ## Sunday 15/11
 
 <!-- -->
+
+### [2026-11-15 09:15] Consistency fixes across the clinical references
+- Thread: C
+- Type: decision
+- What was done: an index of the 13 files in the team's Claude project found inconsistent figures; the ones present in the repo were unified:
+  - **Communication delay:** "up to 22 minutes each way" changed to **up to 20 minutes each way** (NASA HRP, Distance from Earth) in `CLAUDE.md` and `contexto-fisiologico.md`, to match the README and `riesgos-nasa.md`.
+  - **Number of NASA risks:** "about 30 risks" (Francisco 2016) changed to **17 risks** as NASA HRP lists them today, in `contexto-fisiologico.md`.
+  - **Daily exercise:** `contexto-fisiologico.md` and the note in `riesgos-nasa.md` still said ~2 h/day; both now say ~1.5 h/day, 6–7 days a week (NASA HRP), matching the thresholds changed on 14/11 in `umbrales.md`.
+  - **Not changed on purpose:** the PVT threshold (it would touch the core and the tests before the freeze).
+  - Outside the repo: the duplicate copy of the NASA risks document was removed from the Claude project. The other inconsistencies found (three vs. four levels, Spanish table names, baseline as a Sunday extra, one vs. two live tests) are only in the pre-event project PDFs; the repo already follows the newer decision.
+- AI tools: Claude (chat) compared the project documents with the repo files and edited the three Markdown files; no code, data or tests were touched.
+- Human review: Paulina approved the list of fixes and asked to leave the PVT threshold as it is.
+- Sources: NASA HRP, Risks of Human Spaceflight (https://www.nasa.gov/hrp/risks/); NASA HRP, Hazard: Distance from Earth (https://www.nasa.gov/hrp/hazard-distance-from-earth/).
+- Commit: (complete with hash)
