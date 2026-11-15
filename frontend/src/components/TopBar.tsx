@@ -1,8 +1,10 @@
 // Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 
-import { Bell, Settings } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { Bell, Menu, Settings } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { MobileMenu } from './MobileMenu';
 import type {
+  AppRoute,
   Astronaut,
   DemoScenario,
   ScheduledTest,
@@ -10,6 +12,7 @@ import type {
 } from '../types/orbital';
 
 interface TopBarProps {
+  route: AppRoute;
   astronaut: Astronaut;
   simulated: boolean;
   profile: UserProfile;
@@ -31,6 +34,7 @@ const SCENARIO_OPTIONS: Array<{ id: DemoScenario; label: string }> = [
 ];
 
 export function TopBar({
+  route,
   astronaut,
   simulated,
   profile,
@@ -45,6 +49,8 @@ export function TopBar({
 }: TopBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -94,9 +100,10 @@ export function TopBar({
   }, [menuOpen, settingsOpen]);
 
   return (
+    <>
     <header className="glass-bar sticky top-0 z-20 border-b">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-8">
-        <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+      <div className="mx-auto flex max-w-6xl flex-nowrap items-center justify-between gap-3 px-4 py-3 sm:px-8 md:flex-wrap">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-5 md:flex-wrap">
           <button
             type="button"
             onClick={onNavigateHome}
@@ -146,10 +153,10 @@ export function TopBar({
 
           <span
             aria-hidden="true"
-            className="hidden h-5 w-px bg-[rgba(120,180,255,0.22)] sm:inline-block"
+            className="hidden h-5 w-px bg-[rgba(120,180,255,0.22)] md:inline-block"
           />
 
-          <div className="flex items-center gap-2 text-sm">
+          <div className="hidden items-center gap-2 text-sm md:flex">
             <span className="font-medium text-[#E8F0FF] whitespace-nowrap">
               {astronaut.name}
             </span>
@@ -162,12 +169,12 @@ export function TopBar({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 md:flex-wrap">
           {/* Profile Segmented Toggle */}
           <div
             role="group"
             aria-label="User profile"
-            className="glass-panel-soft inline-flex items-center p-0.5"
+            className="glass-panel-soft hidden items-center p-0.5 md:inline-flex"
           >
             <button
               type="button"
@@ -203,12 +210,12 @@ export function TopBar({
             </button>
           </div>
 
-          <span className="font-mono-tabular text-sm font-medium text-[#E8F0FF] whitespace-nowrap">
+          <span className="font-mono-tabular hidden text-sm font-medium text-[#E8F0FF] whitespace-nowrap md:inline">
             Flight day {astronaut.flight_day}
           </span>
 
           {simulated && (
-            <span className="rounded-lg border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.65)] px-2.5 py-1 text-xs font-semibold tracking-wider text-[#8FA3C7] whitespace-nowrap shrink-0">
+            <span className="hidden rounded-lg border border-[rgba(120,180,255,0.2)] bg-[rgba(20,35,70,0.65)] px-2.5 py-1 text-xs font-semibold tracking-wider text-[#8FA3C7] whitespace-nowrap shrink-0 md:inline">
               SIMULATED DATA
             </span>
           )}
@@ -299,7 +306,7 @@ export function TopBar({
             )}
           </div>
 
-          <div ref={settingsContainerRef} className="relative">
+          <div ref={settingsContainerRef} className="relative hidden md:block">
             <button
               type="button"
               onClick={() => {
@@ -382,8 +389,41 @@ export function TopBar({
               </div>
             )}
           </div>
+
+          {/* Hamburger: phones only */}
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              setSettingsOpen(false);
+              setMobileMenuOpen(true);
+            }}
+            aria-label="Open menu"
+            aria-expanded={mobileMenuOpen}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(20,35,70,0.55)] text-[#E8F0FF] transition-colors hover:border-[#4FC3F7] hover:bg-[rgba(28,48,96,0.7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] cursor-pointer md:hidden"
+          >
+            <Menu className="h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </header>
+
+    {/* Outside the header: its backdrop blur would trap a fixed child. */}
+    <MobileMenu
+      open={mobileMenuOpen}
+      onClose={closeMobileMenu}
+      route={route}
+      astronaut={astronaut}
+      simulated={simulated}
+      profile={profile}
+      dataSourceLabel={dataSourceLabel}
+      scenario={scenario}
+      scenarioLoading={scenarioLoading}
+      scenarioOptions={SCENARIO_OPTIONS}
+      onSelectScenario={onSelectScenario}
+      onChangeProfile={onChangeProfile}
+      onNavigate={onNavigate}
+    />
+    </>
   );
 }

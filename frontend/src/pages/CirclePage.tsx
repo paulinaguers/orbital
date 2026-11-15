@@ -483,7 +483,7 @@ export function CirclePage({
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={`Write a message to ${selectedContact.name}...`}
-                className="min-h-[44px] flex-1 rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(5,11,26,0.65)] px-4 py-2 text-sm text-[#E8F0FF] placeholder-[#8FA3C7]/70 focus:border-[#4FC3F7] focus:outline-none sm:text-base"
+                className="min-h-[44px] min-w-0 flex-1 rounded-xl border border-[rgba(120,180,255,0.22)] bg-[rgba(5,11,26,0.65)] px-4 py-2 text-sm text-[#E8F0FF] placeholder-[#8FA3C7]/70 focus:border-[#4FC3F7] focus:outline-none sm:text-base"
               />
               <button
                 type="submit"

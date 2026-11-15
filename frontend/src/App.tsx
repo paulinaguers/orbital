@@ -453,6 +453,7 @@ export default function App() {
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <TopBar
+          route={route}
           astronaut={status.astronaut}
           simulated={status.simulated}
           profile={profile}

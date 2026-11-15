@@ -386,3 +386,11 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - AI tools: Claude (chat) found the mismatch while indexing the repo and rewrote the file.
 - Human review: Paulina approved the change.
 - Commit: (complete with hash)
+
+### [2026-11-15 13:20] Mobile header: hamburger menu
+- Thread: B
+- Type: task
+- What was done: a judge opened the site in the browser's mobile view and the header did not fit: on a phone the profile toggle, flight day, "SIMULATED DATA", the reminders bell and the settings button overflowed to the right and could not be reached. On screens narrower than 768 px the header now shows only the logo, the bell and a hamburger button; the button opens a side sheet (shadcn "Sheet" pattern, built with Tailwind, no new dependency) with the astronaut, flight day, the simulated-data label, navigation, profile, demo scenario and data source. The bottom bar became compact on phones (icon above a short label), and the My Circle message box no longer pushes the page wider. Desktop layout is unchanged.
+- AI tools: Claude wrote the change and checked it with headless Chrome screenshots at 360 and 390 px wide (page width equal to screen width on Home, Body, My Circle, both tests and How alerts work, crew and passenger) and at 1280 px.
+- Human review: requested by a judge during the event; Paulina reviewed it on her phone.
+- Commit: (complete with hash)

@@ -9,7 +9,8 @@ interface BottomNavProps {
   onNavigate: (path: string) => void;
 }
 
-export function BottomNav({ route, profile, onNavigate }: BottomNavProps) {
+/** Navigation entries shared by the bottom bar and the mobile menu. */
+export function getNavItems(route: AppRoute, profile: UserProfile) {
   const baseItems = [
     {
       id: 'home',
@@ -41,33 +42,37 @@ export function BottomNav({ route, profile, onNavigate }: BottomNavProps) {
     },
   ];
 
-  const items =
-    profile === 'passenger'
-      ? [
-          ...baseItems,
-          {
-            id: 'moments',
-            label: 'Space moments',
-            path: '/moments',
-            active: route.page === 'moments',
-            Icon: Camera,
-          },
-        ]
-      : baseItems;
+  return profile === 'passenger'
+    ? [
+        ...baseItems,
+        {
+          id: 'moments',
+          label: 'Space moments',
+          shortLabel: 'Moments',
+          path: '/moments',
+          active: route.page === 'moments',
+          Icon: Camera,
+        },
+      ]
+    : baseItems;
+}
+
+export function BottomNav({ route, profile, onNavigate }: BottomNavProps) {
+  const items = getNavItems(route, profile);
 
   return (
     <nav
       aria-label="Primary navigation"
       className="glass-bar sticky bottom-0 z-20 border-t"
     >
-      <div className="mx-auto flex max-w-xl items-center justify-around gap-1.5 px-3 py-2">
-        {items.map(({ id, label, path, active, Icon }) => (
+      <div className="mx-auto flex max-w-xl items-center justify-around gap-1 px-2 py-1.5 sm:gap-1.5 sm:px-3 sm:py-2">
+        {items.map(({ id, label, path, active, Icon, ...rest }) => (
           <button
             key={id}
             type="button"
             onClick={() => onNavigate(path)}
             aria-current={active ? 'page' : undefined}
-            className={`flex min-h-[44px] min-w-[78px] items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] sm:px-4 ${
+            className={`flex min-h-[48px] min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1.5 py-1.5 text-[11px] font-medium transition-all duration-150 whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4FC3F7] sm:min-h-[44px] sm:min-w-[78px] sm:flex-none sm:flex-row sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
               active
                 ? 'glass-nav-active'
                 : 'text-[#8FA3C7] hover:bg-white/5 hover:text-[#E8F0FF] border border-transparent'
@@ -77,7 +82,10 @@ export function BottomNav({ route, profile, onNavigate }: BottomNavProps) {
               className={`h-4 w-4 shrink-0 ${active ? 'text-[#4FC3F7]' : ''}`}
               aria-hidden="true"
             />
-            <span>{label}</span>
+            <span className="max-w-full truncate sm:hidden">
+              {'shortLabel' in rest ? rest.shortLabel : label}
+            </span>
+            <span className="hidden sm:inline">{label}</span>
           </button>
         ))}
       </div>
