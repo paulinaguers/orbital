@@ -1,17 +1,12 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Layer 2 (baseline deviation), final level per measurement and escalation.
-Capa 2 (desvío de la línea base), nivel final por medición y escalamiento.
 
 Input: one dict per flight day, in order, with the core names below. A value
 of None means "not measured that day" (e.g. the PVT is every few days).
-Entrada: un diccionario por día de vuelo, en orden, con los nombres de abajo.
-None significa "no se midió ese día" (por ejemplo, el PVT es cada algunos días).
 
 Rules (alert_texts.md, "Two layers"): the higher level wins and a deviation
 alone never reaches red. Mood and PVT have no clinical layer, so they have no
 level until the baseline exists (flight day 11).
-Reglas: gana el nivel más alto y un desvío solo nunca llega a rojo. Ánimo y
-PVT no tienen capa clínica: no tienen nivel hasta que existe la línea base.
 """
 
 from backend.core import clinical
@@ -29,9 +24,6 @@ MEASUREMENTS = [
 # only higher is worse, -1 = only lower is worse, 0 = both sides count.
 # Signed directions for mood, PVT and SpO2 follow their one-sided texts:
 # PROVISIONAL (open ⚠5). Blood pressure uses the worse of its two z (Q5).
-# Mediciones con capa de línea base: (campos, dirección). +1 = solo peor si
-# sube, -1 = solo peor si baja, 0 = cuentan los dos lados. Ánimo, PVT y SpO2
-# con signo según sus textos: PROVISORIO (⚠5). La presión usa el peor z (Q5).
 DEVIATION_FIELDS = {
     "blood_pressure": (["systolic", "diastolic"], 0),
     "heart_rate": (["heart_rate"], 0),
@@ -45,12 +37,9 @@ DEVIATION_FIELDS = {
 }
 # The four check-in scales have no clinical threshold: they are compared only
 # with the personal baseline (escalas-y-protocolos.md §2.1), like the PVT.
-# Las cuatro escalas del check-in no tienen umbral clínico: solo se comparan
-# con la línea base personal, como el PVT.
 NO_CLINICAL_LAYER = ("mood_score", "fatigue_score", "stress_score", "workload_score", "pvt_lapses")
 
 # Who is notified for the overall level (team decision, 14/11/2026).
-# A quién se avisa según el nivel general (decisión del equipo, 14/11/2026).
 NOTIFIED_BY_LEVEL = {
     GREEN: [],
     YELLOW: [],
@@ -61,13 +50,10 @@ NOTIFIED_BY_LEVEL = {
 
 def field_value(day, field):
     """Value of one day field; the PVT is scaled to a reference session here.
-    Valor de un campo del día; el PVT se escala a una sesión de referencia.
 
     PVT lapses are compared as a rate: lapses x reference stimuli / stimuli
     shown, so sessions with a different number of stimuli are comparable.
     Days without a stimulus count are taken as reference sessions.
-    Los lapsos se comparan como tasa (lapsos x estímulos de referencia /
-    estímulos), así se comparan sesiones con distinta cantidad de estímulos.
     """
     if field != "pvt_lapses_per_reference":
         return day.get(field)
@@ -80,7 +66,6 @@ def field_value(day, field):
 
 def is_measured(day, measurement):
     """True if the day has a value for this measurement.
-    Verdadero si el día tiene valor para esta medición.
     """
     if measurement == "pvt_lapses" and day.get("pvt_session_invalid"):
         return True
@@ -93,7 +78,6 @@ def is_measured(day, measurement):
 
 def clinical_level(measurement, day, previous_sleep):
     """Layer 1 for one measurement on one day (None for mood and PVT).
-    Capa 1 de una medición en un día (None para ánimo y PVT).
     """
     symptoms = day.get("symptoms", {})
     rules = {
@@ -113,7 +97,6 @@ def clinical_level(measurement, day, previous_sleep):
 
 def build_baselines(days):
     """(mean, std_dev) per day field, from the baseline days 4-10.
-    (media, desvío) por campo, a partir de los días de línea base 4-10.
     """
     baselines = {}
     for fields, _ in DEVIATION_FIELDS.values():
@@ -126,10 +109,8 @@ def build_baselines(days):
 
 def effective_z(measurement, day, baselines):
     """Signed or absolute z for the deviation rules (worse field for BP).
-    z con signo o absoluto para las reglas de desvío (peor campo en presión).
 
     Returns None if any field has no usable baseline.
-    Devuelve None si algún campo no tiene línea base utilizable.
     """
     fields, direction = DEVIATION_FIELDS[measurement]
     scores = []
@@ -145,7 +126,6 @@ def effective_z(measurement, day, baselines):
 
 def last_n_reach(history, count, cut):
     """True if the last `count` z-scores all reach the cut.
-    Verdadero si los últimos `count` puntajes z llegan todos al corte.
     """
     recent = history[-count:]
     return len(recent) == count and all(z is not None and z >= cut for z in recent)
@@ -153,7 +133,6 @@ def last_n_reach(history, count, cut):
 
 def deviation_level(measurement, history):
     """Layer 2 from the z history of one measurement (never red).
-    Capa 2 a partir del historial de z de una medición (nunca rojo).
     """
     if measurement == "pvt_lapses":
         t = THRESHOLDS["pvt_lapses"]
@@ -170,7 +149,6 @@ def deviation_level(measurement, history):
 
 def final_level(m, clinical, deviation, z, ready):
     """Final level: the higher layer wins; no usable baseline is never green.
-    Nivel final: gana la capa más alta; sin línea base utilizable nunca es verde.
     """
     if m in NO_CLINICAL_LAYER:
         if not ready:
@@ -181,14 +159,10 @@ def final_level(m, clinical, deviation, z, ready):
 
 def evaluate_day(day, state):
     """Clinical, deviation and final level of every measurement on one day.
-    Nivel clínico, de desvío y final de cada medición en un día.
 
     `state` keeps the baselines, the z histories and last night's sleep.
     `baseline_available[m]` is False when the measurement has a baseline layer
     but no usable baseline (only the clinical layer could be applied).
-    `state` guarda las líneas base, los historiales de z y el sueño anterior.
-    `baseline_available[m]` es False si la medición tiene capa de línea base
-    pero no hay una utilizable (solo se pudo aplicar la capa clínica).
     """
     result = {"flight_day": day["flight_day"], "clinical": {}, "final": {}, "z": {},
               "baseline_available": {}}
@@ -199,7 +173,6 @@ def evaluate_day(day, state):
             continue
         if m == "pvt_lapses" and day.get("pvt_session_invalid"):
             # Too few stimuli: not scored and kept out of the z history.
-            # Muy pocos estímulos: no se puntúa ni entra al historial de z.
             result["clinical"][m], result["final"][m] = None, NOT_EVALUABLE
             continue
         level = clinical_level(m, day, state["previous_sleep"])
@@ -219,10 +192,8 @@ def evaluate_day(day, state):
 
 def evaluate_timeline(days):
     """Runs the core over a whole mission, day by day, in order.
-    Corre el núcleo sobre toda una misión, día por día, en orden.
 
     Returns one result per day (see evaluate_day).
-    Devuelve un resultado por día (ver evaluate_day).
     """
     state = {"baselines": build_baselines(days), "previous_sleep": None,
              "history": {m: [] for m in DEVIATION_FIELDS}}
@@ -231,7 +202,6 @@ def evaluate_timeline(days):
 
 def latest_levels(results):
     """Most recent final level of each measurement (its last measured day).
-    Último nivel final de cada medición (su último día medido).
     """
     latest = {}
     for result in results:
@@ -242,5 +212,5 @@ def latest_levels(results):
 
 
 def escalation_for(overall_level):
-    """Who is notified for an overall level. / A quién se avisa según el nivel."""
+    """Who is notified for an overall level."""
     return list(NOTIFIED_BY_LEVEL[overall_level])

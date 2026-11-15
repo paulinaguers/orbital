@@ -143,7 +143,7 @@ On-board alerts are immediate; messages to Earth go out in the next communicatio
 
 **Radiation is tracked as long-term exposure, not as an operational alarm:** the cumulative dose reaches orange at most, and red is reserved for an operational event, a solar particle event in progress (team decision, provisional). Dose rate is future work.
 
-On-screen texts for every measurement and level (English and Spanish) come from one file: [`docs/content/alert_texts.md`](docs/content/alert_texts.md).
+On-screen texts for every measurement and level come from one file: [`docs/content/alert_texts.md`](docs/content/alert_texts.md).
 
 ---
 

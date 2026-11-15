@@ -343,6 +343,14 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina chose to keep it as a proposal and asked for a detailed description.
 - Commit: (complete with hash)
 
+### [2026-11-14 23:30] Whole repo translated to English
+- Thread: General
+- Type: decision
+- What was done: every file with Spanish content was moved to English only. Code (Python): the Spanish half of each bilingual docstring and comment was removed, keeping the English one (no logic changed). Bilingual documents (`docs/content/alert_texts.md`, `data/README.md`, `docs/content/clinical_test_cases.md` and its generator): Spanish columns, lines and labels removed. Spanish-only files translated: `CLAUDE.md`, `CRONOGRAMA.md`, `docs/README.md`, `.gitignore`/`.gitattributes` comments, and everything in `.claude/` (agents, commands, the three skills and their references, including the bibliography). The code rule in `codigo-orbital` and `CLAUDE.md` now asks for English-only docstrings and comments. Kept on purpose: `glosario-es-en.md` (a Spanish–English glossary) and the logbook entries that mention the internal Spanish study documents. While translating, `umbrales.md` got a note on the provisional radiation decision of 14/11, to match the code.
+- AI tools: Claude, with a script that removed the Spanish halves of bilingual lines plus a line-by-line review of every change; Spanish-only files translated by hand.
+- Human review: Paulina asked for the whole repo in English. All 56 tests pass; `demo.json` is unchanged (the screen already used the English texts only).
+- Commit: (complete with hash)
+
 ## Sunday 15/11
 
 <!-- -->

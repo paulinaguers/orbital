@@ -1,85 +1,85 @@
-# ORBITAL – Contexto para Claude Code
+# ORBITAL – Context for Claude Code
 
-## Qué es este proyecto
+## What this project is
 
-ORBITAL es el proyecto del equipo **The Foxhole Court** en el **NASA Space Apps Challenge 2026** (sede UCEL Rosario, 14 y 15 de noviembre de 2026), desafío *"Create Health Monitoring Software for Astronauts on Space Missions"*.
+ORBITAL is the project of team **The Foxhole Court** at the **NASA Space Apps Challenge 2026** (UCEL Rosario site, 14–15 November 2026), challenge *"Create Health Monitoring Software for Astronauts on Space Missions"*.
 
-Es una app que registra indicadores de salud de un astronauta en un vuelo de larga duración, calcula su **línea de base personal** y escala alertas en cuatro niveles:
+It is an app that records an astronaut's health indicators on a long-duration flight, computes their **personal baseline** and escalates alerts on four levels:
 
-| Nivel | Significado | Acción |
+| Level | Meaning | Action |
 | --- | --- | --- |
-| Verde | Dentro de lo esperado | Seguir la rutina |
-| Amarillo | Desvío de la línea base personal con el valor dentro del rango clínico | Aviso suave: vigilar, repetir, autocuidado (sin consulta) |
-| Naranja | Fuera de rango clínico o desvío marcado y sostenido | Consultar al médico de a bordo |
-| Rojo | Valor crítico | Escalar al flight surgeon en Tierra |
+| Green | Within what is expected | Keep the routine |
+| Yellow | Deviation from the personal baseline with the value inside the clinical range | Soft warning: monitor, repeat, self-care (no consultation) |
+| Orange | Outside the clinical range, or a marked and sustained deviation | Contact the onboard doctor |
+| Red | Critical value | Escalate to the flight surgeon on Earth |
 
-Tiene que funcionar **sin conexión con la Tierra** (en Marte la señal tarda hasta 22 min por tramo).
+It must work **without a connection to Earth** (from Mars, the signal takes up to 22 minutes each way).
 
-## Equipo y forma de trabajo
+## Team and way of working
 
-- 3 integrantes, todos con nivel inicial de Python. Los tres supervisan los tres hilos; la IA ejecuta y el equipo dirige, revisa y decide.
-- Hilos de trabajo: **A** datos y motor (Python), **B** pantallas y conexión, **C** contenido clínico y documentación. Ver `CRONOGRAMA.md`.
-- Cada tarea sigue el ciclo: **plan → aprobación humana → ejecución → tests → revisión (subagente `revisor`) → commit chico → entrada en `BITACORA.md`**. El comando `/tarea` guía este ciclo.
-- Desarrollo asistido por IA con supervisión humana. **Nadie sube código que no puede explicar al jurado.**
+- 3 members, all at a beginner Python level. All three supervise the three threads; the AI executes and the team directs, reviews and decides.
+- Work threads: **A** data and engine (Python), **B** screens and connection, **C** clinical content and documentation. See `CRONOGRAMA.md`.
+- Every task follows the cycle: **plan → human approval → execution → tests → review (`revisor` subagent) → small commit → entry in `BITACORA.md`**. The `/tarea` command guides this cycle.
+- AI-assisted development with human oversight. **Nobody commits code they cannot explain to the jury.**
 
-## Reglas para Claude Code
+## Rules for Claude Code
 
-1. **Una tarea chica por pedido.** Si el pedido es grande ("hacé la app"), proponé cómo dividirlo y esperá aprobación.
-2. **Siempre plan primero.** Antes de escribir código, mostrá los pasos y los archivos que vas a tocar.
-3. **Código para juniors:** simple, comentado en español, sin dependencias nuevas sin avisar. Seguí la skill `codigo-orbital`.
-4. **Valores clínicos solo desde la skill `fisiologia-espacial`.** No inventes umbrales, rangos ni fuentes. Si un valor no está, decilo.
-5. **El núcleo de cálculo va separado de la interfaz** (`backend/core/`), con tests propios. La interfaz nunca calcula umbrales.
-6. **Datos simulados y declarados como tales.** Nunca presentes datos simulados como reales.
-7. Al terminar cada tarea, recordá registrarla con `/bitacora`.
+1. **One small task per request.** If the request is big ("build the app"), propose how to split it and wait for approval.
+2. **Always plan first.** Before writing code, show the steps and the files you will touch.
+3. **Code for juniors:** simple, commented in English, no new dependencies without warning. Follow the `codigo-orbital` skill.
+4. **Clinical values only from the `fisiologia-espacial` skill.** Do not invent thresholds, ranges or sources. If a value is not there, say so.
+5. **The computing core is separate from the interface** (`backend/core/`), with its own tests. The interface never computes thresholds.
+6. **Simulated data, declared as such.** Never present simulated data as real.
+7. When a task is done, remember to log it with `/bitacora`.
 
 ## Stack
 
-> **Decidido el 13/11: Stack A**, con Streamlit como rescate (B). Detalle en la skill `codigo-orbital`.
+> **Decided on 13/11: Stack A**, with Streamlit as a fallback (B). Details in the `codigo-orbital` skill.
 
-- **Stack A (elegido):** núcleo Python → API FastAPI → pantallas React generadas con Google AI Studio. Modo demo: el núcleo exporta `demo.json` y React lo lee si la API falla.
-- **Stack B (rescate):** el mismo núcleo Python mostrado con Streamlit.
+- **Stack A (chosen):** Python core → FastAPI API → React screens generated with Google AI Studio. Demo mode: the core exports `demo.json` and React reads it if the API fails.
+- **Stack B (fallback):** the same Python core shown with Streamlit.
 
-## Estructura del repo (prevista)
+## Repo structure
 
 ```text
 backend/
-  core/          # núcleo: línea de base, z, umbrales, escalamiento (sin interfaz)
-  simulator/     # datos simulados de astronautas + anomalías inyectadas
-  api/           # FastAPI (opción A)
+  core/          # core: baseline, z-score, thresholds, escalation (no interface)
+  simulator/     # simulated astronaut data + injected anomalies
+  api/           # FastAPI (option A)
   tests/
-frontend/        # React de AI Studio (opción A) o app Streamlit (opción B)
-docs/            # documentos del proyecto, dashboards propuestos, guías NASA
-CRONOGRAMA.md    # agenda del evento (la lee el coordinador)
-BITACORA.md      # registro cronológico de trabajo y uso de IA
-.claude/         # skills, agentes y comandos del equipo
+frontend/        # React from AI Studio (option A) or Streamlit app (option B)
+docs/            # project documents, proposed dashboards, NASA guides
+CRONOGRAMA.md    # event schedule (read by the coordinator)
+BITACORA.md      # chronological log of the work and of AI use
+.claude/         # the team's skills, agents and commands
 ```
 
-## Comandos y agentes disponibles
+## Available commands and agents
 
-| Nombre | Tipo | Para qué |
+| Name | Type | What for |
 | --- | --- | --- |
-| `/tarea` | Comando | Guía el ciclo completo de una tarea |
-| `/estado` | Comando | Llama al coordinador: avance contra el cronograma, atrasos, recortes |
-| `/bitacora` | Comando | Registra una entrada en `BITACORA.md` |
-| `revisor` | Subagente | Corre tests y revisa coherencia clínica antes del commit |
-| `coordinador` | Subagente | Controla la agenda, registra sugerencias del equipo |
-| `fisiologia-espacial` | Skill | Criterio clínico, umbrales, escalas y bibliografía |
-| `codigo-orbital` | Skill | Convenciones de código y estructura |
-| `documentacion-bilingue` | Skill | Metodología, README y declaración de SI en ES/EN |
+| `/tarea` | Command | Guides the full cycle of a task |
+| `/estado` | Command | Calls the coordinator: progress against the schedule, delays, cuts |
+| `/bitacora` | Command | Adds an entry to `BITACORA.md` |
+| `revisor` | Subagent | Runs the tests and checks clinical consistency before a commit |
+| `coordinador` | Subagent | Tracks the schedule and logs the team's suggestions |
+| `fisiologia-espacial` | Skill | Clinical criteria, thresholds, scales and bibliography |
+| `codigo-orbital` | Skill | Code conventions and structure |
+| `documentacion-bilingue` | Skill | Methodology, README and AI-use statement |
 
-## Reglas del evento que no se pueden romper
+## Event rules that cannot be broken
 
-- No se trabaja en la solución antes del hackathon: el código se escribe del 14/11 en adelante.
-- El uso de herramientas de SI (así llama el evento a la IA) está permitido, pero la entrega debe explicar cómo se usaron → todo queda en `BITACORA.md`.
-- Repo congelado el **domingo 15:00**. Jurado **16:00**. Carga en la plataforma hasta **23:59**.
+- No work on the solution before the hackathon: code is written from 14/11 on.
+- AI tools ("SI" in the event's wording) are allowed, but the submission must explain how they were used → everything goes in `BITACORA.md`.
+- Repo frozen on **Sunday 15:00**. Jury at **16:00**. Upload to the platform until **23:59**.
 
-## Reglas de entrega (guías oficiales del 13/11/2026)
+## Submission rules (official guides of 13/11/2026)
 
-- Todo lo enlazado desde la entrega va en inglés (README con el inglés primero).
-- Demo: video de 30 s como máximo, con subtítulos en inglés. Pasarse descalifica para el juicio global.
-- Repo público al enviar (lo cambia paulinaguers el dom 15:00). Licencia Apache 2.0.
-- SI declarada y marcada: comentario al inicio de cada archivo de código; marca de agua en imágenes o videos generados. La idea y el criterio son del equipo.
-- Sin logos de NASA ni de agencias socias.
-- Datos de NASA como parte central: cada indicador muestra su riesgo oficial de NASA y sus umbrales con fuente.
-- Detalle: skill `documentacion-bilingue`, `references/campos-formulario.md`.
-- Código: nombres en inglés, docstrings y comentarios en los dos idiomas (inglés primero), commits en inglés. Glosario en la skill `codigo-orbital`, `references/glosario-codigo.md`. `BITACORA.md` y `CRONOGRAMA.md` siguen en español: son registros internos.
+- Everything linked from the submission is in English.
+- Demo: video of 30 s at most, with English subtitles. Going over disqualifies the project from global judging.
+- Public repo when submitting (paulinaguers changes it on Sunday 15:00). Apache 2.0 license.
+- AI declared and marked: a comment at the top of every code file; a watermark on generated images or videos. The idea and the criteria are the team's.
+- No NASA or partner agency logos.
+- NASA data as a central part: every indicator shows its official NASA risk and its thresholds with their source.
+- Details: `documentacion-bilingue` skill, `references/campos-formulario.md`.
+- Code: names, docstrings, comments and commits in English (team decision 14/11: the whole repo is in English). Glossary in the `codigo-orbital` skill, `references/glosario-codigo.md`.

@@ -1,121 +1,121 @@
-# Cronograma – ORBITAL · NASA Space Apps 2026
+# Schedule – ORBITAL · NASA Space Apps 2026
 
-Agenda de trabajo del evento. La lee el agente `coordinador` (comando `/estado`). Se marca cada tarea con `[x]` al terminarla y se anota el hash del commit.
+Work plan for the event. It is read by the `coordinador` agent (`/estado` command). Each task is ticked with `[x]` when done, with the commit hash.
 
-**Cómo leerlo**
+**How to read it**
 
-- Tres hilos, uno por cuenta de Claude, pero los tres integrantes supervisan todos: la IA ejecuta y el equipo dirige, revisa y decide.
-- Cada hilo mantiene la misma herramienta y lógica de punta a punta, para no cambiar de contexto.
-- Los **puntos de control** (`/estado`) son fijos. Los **cortes** deciden qué se deja afuera para proteger el MVP.
-- Horarios del evento: sáb 10:00–13:00 y 14:00–19:00 · dom 09:30–15:00 (mentoría 11:30) · repo congelado dom 15:00 · jurado dom 16:00 · carga en plataforma hasta dom 23:59.
-- **Reglas de entrega (guías oficiales del 13/11):** todo en inglés · demo = video ≤ 30 s con subtítulos en inglés (pasarse descalifica para el juicio global) · repo y video públicos sin login · datos de NASA como parte central · SI declarada y marcada · sin logos de NASA ni de agencias socias · licencia Apache 2.0.
+- Three threads, one per Claude account, but all three members supervise all of them: the AI executes and the team directs, reviews and decides.
+- Each thread keeps the same tool and logic from start to end, so nobody switches context.
+- The **checkpoints** (`/estado`) are fixed. The **cuts** decide what is left out to protect the MVP.
+- Event hours: Sat 10:00–13:00 and 14:00–19:00 · Sun 09:30–15:00 (mentoring 11:30) · repo frozen Sun 15:00 · jury Sun 16:00 · platform upload until Sun 23:59.
+- **Submission rules (official guides of 13/11):** everything in English · demo = video ≤ 30 s with English subtitles (going over disqualifies the project from global judging) · repo and video public, no login · NASA data as a central part · AI declared and marked · no NASA or partner agency logos · Apache 2.0 license.
 
-**Ya hecho antes del evento**
+**Done before the event**
 
-- [x] Repo creado en GitHub. **Queda vacío hasta el sáb 10:00 por decisión del equipo**: es normal que no tenga commits ni remoto antes de esa hora
-- [x] Propuestas de dashboards (imágenes), guardadas fuera del repo; se copian a `docs/dashboards/` el sáb 10:00
-- [x] Documentos técnicos: indicadores, fundamentación, escalas, capa de ML
-- [x] Estructura `.claude/` (skills, agentes, comandos), `CLAUDE.md`, este cronograma y la bitácora
-
----
-
-## Viernes 13/11 (preparación, sin código)
-
-- [ ] Cada integrante: proyecto de Claude con instrucciones y documentos
-- [ ] Cada integrante: subir las 3 skills a claude.ai
-- [ ] Instalar Claude Code (al menos cuenta del Hilo A) y probarlo
-- [x] Leer Project Submission Guide, Judging Guide y recursos del desafío (revisión completa del 14/11, 01:00)
-- [x] Pasada única de ajuste a documentos y skill clínica según las guías
-- [ ] Subir los PDF de las dos guías al proyecto de Claude de cada integrante
+- [x] Repo created on GitHub. **It stays empty until Sat 10:00 by team decision**: it is normal that it has no commits or remote before then
+- [x] Dashboard proposals (images), kept outside the repo; copied to `docs/dashboards/` on Sat 10:00
+- [x] Technical documents: indicators, rationale, scales, ML layer
+- [x] `.claude/` structure (skills, agents, commands), `CLAUDE.md`, this schedule and the logbook
 
 ---
 
-## Sábado 14/11
+## Friday 13/11 (preparation, no code)
 
-### 10:00–10:30 · Arranque (los tres juntos)
+- [ ] Each member: Claude project with instructions and documents
+- [ ] Each member: upload the 3 skills to claude.ai
+- [ ] Install Claude Code (at least thread A's account) and test it
+- [x] Read the Project Submission Guide, Judging Guide and challenge resources (full review on 14/11, 01:00)
+- [x] Single pass adjusting the documents and the clinical skill to the guides
+- [ ] Upload the PDFs of both guides to each member's Claude project
 
-- [ ] Una persona clona el repo, copia la carpeta de configuración (`.claude/`, `CLAUDE.md`, `CRONOGRAMA.md`, `BITACORA.md`, `docs/`) más dashboards, documentos y guías NASA en `docs/`, hace commit y push; los otros dos clonan y verifican que ven las skills y los agentes
-- [x] Stack A decidido el 13/11 (Streamlit como rescate)
-- [ ] Agregar `LICENSE` (Apache 2.0) desde GitHub: Add file → Create new file → `LICENSE` → Choose a license template → Apache License 2.0 → commit
-- [ ] Copiar los PDF de las guías de NASA a `docs/guias-nasa/`
-- [ ] Confirmar los 7 indicadores del MVP y el alcance (revisar contra las guías de NASA)
-- [ ] Elegir el dashboard base entre las propuestas existentes
-- [ ] Entrada en bitácora: decisiones de arranque
+---
 
-### 10:30–13:00 · Bloque 1
+## Saturday 14/11
 
-| Hilo | Tareas | Entregable |
+### 10:00–10:30 · Kick-off (all three together)
+
+- [ ] One person clones the repo, copies the setup folder (`.claude/`, `CLAUDE.md`, `CRONOGRAMA.md`, `BITACORA.md`, `docs/`) plus dashboards, documents and NASA guides into `docs/`, commits and pushes; the other two clone and check that they see the skills and agents
+- [x] Stack A decided on 13/11 (Streamlit as a fallback)
+- [ ] Add `LICENSE` (Apache 2.0) from GitHub: Add file → Create new file → `LICENSE` → Choose a license template → Apache License 2.0 → commit
+- [ ] Copy the NASA guide PDFs to `docs/guias-nasa/`
+- [ ] Confirm the 7 MVP indicators and the scope (check against the NASA guides)
+- [ ] Choose the base dashboard among the existing proposals
+- [ ] Logbook entry: kick-off decisions
+
+### 10:30–13:00 · Block 1
+
+| Thread | Tasks | Deliverable |
 | --- | --- | --- |
-| A · Datos y motor | Estructura `backend/`; formato de datos (tablas `measurements`, `self_reports`, `baselines`, `alerts`, `injected_anomalies`; nombres en inglés); simulador con ruido realista, ritmo día/noche y **anomalías inyectadas con fecha** | Simulador que genera un CSV/SQLite de un astronauta de 60+ días, con test |
-| B · Pantallas | Maqueta de la pantalla principal desde el dashboard elegido (artifact de diseño); prompts para Google AI Studio. **Cada tarjeta muestra el riesgo oficial de NASA que vigila** (ej. "NASA HRP risk: SANS") y su umbral con fuente. **Sin logos de NASA ni de la CSA.** Textos de la app en inglés | Maqueta aprobada por el equipo |
-| C · Contenido | Textos de cada alerta (verde/amarillo/naranja/rojo) y recomendación por indicador, desde la skill clínica; criterios de los casos de prueba clínicos | [x] Archivo de textos de alertas (`docs/content/alert_texts.md`, `5ab5c33`) · [x] Lista de casos de prueba (`data/clinical_test_cases.csv`, `f223c75`) (13 open team decisions) |
+| A · Data and engine | `backend/` structure; data format (tables `measurements`, `self_reports`, `baselines`, `alerts`, `injected_anomalies`; English names); simulator with realistic noise, day/night rhythm and **dated injected anomalies** | Simulator that generates a CSV/SQLite of one astronaut over 60+ days, with a test |
+| B · Screens | Mockup of the main screen from the chosen dashboard (design artifact); prompts for Google AI Studio. **Every card shows the official NASA risk it watches** (e.g. "NASA HRP risk: SANS") and its threshold with its source. **No NASA or CSA logos.** App texts in English | Mockup approved by the team |
+| C · Content | Texts for each alert (green/yellow/orange/red) and recommendation per indicator, from the clinical skill; criteria for the clinical test cases | [x] Alert texts file (`docs/content/alert_texts.md`, `5ab5c33`) · [x] Test case list (`data/clinical_test_cases.csv`, `f223c75`) (13 open team decisions) |
 
 - [ ] **11:00 · `/estado`**
-- [ ] **13:00 · `/estado`** (antes del almuerzo)
+- [ ] **13:00 · `/estado`** (before lunch)
 
-### 13:00–14:00 · Almuerzo
+### 13:00–14:00 · Lunch
 
-### 14:00–19:00 · Bloque 2
+### 14:00–19:00 · Block 2
 
-| Hilo | Tareas | Entregable |
+| Thread | Tasks | Deliverable |
 | --- | --- | --- |
-| A · Datos y motor | Núcleo: umbrales clínicos, línea de base (prevuelo o días 4–10), puntaje z, escalamiento; tests por regla; **API básica** (opción A) o funciones listas para Streamlit (opción B) | Núcleo con tests verdes + API mínima |
-| B · Pantallas | Pantallas con datos de ejemplo: figura humana con colores por sistema, semáforo, detalle por indicador | Pantallas navegables con datos fijos |
-| C · Contenido | Validar resultados del núcleo contra los casos clínicos; arrancar README (ES) | Casos validados + borrador README |
+| A · Data and engine | Core: clinical thresholds, baseline (pre-flight or days 4–10), z-score, escalation; tests per rule; **basic API** (option A) or functions ready for Streamlit (option B) | Core with green tests + minimal API |
+| B · Screens | Screens with sample data: human figure colored by system, traffic light, detail per indicator | Navigable screens with fixed data |
+| C · Content | Check the core's results against the clinical cases; start the README | Checked cases + README draft |
 
 - [ ] **16:00 · `/estado`**
-- [ ] **19:00 · `/estado` + CORTE 1**: ¿núcleo y API básica pasan sus tests? Si no, la capa de ML queda afuera y el domingo se usa para cerrar el MVP. Revisión completa del núcleo con el subagente `revisor`.
-- [ ] Entrada en bitácora: estado de cierre del sábado
+- [ ] **19:00 · `/estado` + CUT 1**: do the core and the basic API pass their tests? If not, the ML layer is left out and Sunday is used to close the MVP. Full review of the core with the `revisor` subagent.
+- [ ] Logbook entry: status at the end of Saturday
 
 ---
 
-## Domingo 15/11
+## Sunday 15/11
 
-### 09:30–11:30 · Bloque 3
+### 09:30–11:30 · Block 3
 
-| Hilo | Tareas | Entregable |
+| Thread | Tasks | Deliverable |
 | --- | --- | --- |
-| A · Datos y motor | **Si pasó el corte 1:** capa de ML con arranque en frío (etapas 0/1/2, aviso "ML calibrando"), Mahalanobis o Isolation Forest según datos, evaluación contra anomalías inyectadas. **Si no:** terminar núcleo y API | Tabla de evaluación reglas vs. reglas + ML, o núcleo cerrado |
-| B · Pantallas | Gráficos de evolución; conexión con la API | App conectada |
-| C · Contenido | Guion del pitch (jurado local) y del **video demo de 30 s** con subtítulos en inglés (pauta de la Submission Guide: 0:00 equipo · 0:02 desafío · 0:05 nombre y lema · 0:10 cómo funciona y datos de NASA/CSA · 0:20–0:30 futuro); validar textos en pantalla | Guion v1 |
+| A · Data and engine | **If cut 1 was passed:** ML layer with cold start (stages 0/1/2, "ML calibrating" notice), Mahalanobis or Isolation Forest depending on the data, evaluation against injected anomalies. **If not:** finish the core and the API | Evaluation table rules vs. rules + ML, or a closed core |
+| B · Screens | Trend charts; connection to the API | Connected app |
+| C · Content | Script for the pitch (local jury) and for the **30-second demo video** with English subtitles (Submission Guide outline: 0:00 team · 0:02 challenge · 0:05 name and tagline · 0:10 how it works and NASA/CSA data · 0:20–0:30 future); check on-screen texts | Script v1 |
 
-- [ ] **11:30 · Mentoría + CORTE 2**: ¿el ML detecta mejor que las reglas sin más falsas alarmas? ¿El Hilo B está al día? Si no, el ML se apaga y queda como trabajo futuro (rama aparte).
+- [ ] **11:30 · Mentoring + CUT 2**: does the ML detect better than the rules without more false alarms? Is thread B up to date? If not, the ML is switched off and stays as future work (separate branch).
 
-### 11:30–15:00 · Bloque 4
+### 11:30–15:00 · Block 4
 
-| Hilo | Tareas | Entregable |
+| Thread | Tasks | Deliverable |
 | --- | --- | --- |
-| A · Datos y motor | Escenarios de demo (sano, deterioro, emergencia, y calibración del ML si aplica); `demo.json` | Escenarios listos |
-| B · Pantallas | Modo demo; alerta ML en pantalla si aplica; pulido visual | Demo estable sin depender de la API |
-| C · Contenido | README final **inglés primero**, metodología y declaración de SI con la skill `documentacion-bilingue`; textos del formulario en inglés; lista completa de referencias; grabar y subtitular el video de 30 s (sin pasarse); ensayo del pitch | Documentación y video listos |
+| A · Data and engine | Demo scenarios (healthy, deterioration, emergency, and ML calibration if it applies); `demo.json` | Scenarios ready |
+| B · Screens | Demo mode; ML alert on screen if it applies; visual polish | Stable demo that does not depend on the API |
+| C · Content | Final README, methodology and AI-use statement with the `documentacion-bilingue` skill; form texts in English; full list of references; record and subtitle the 30-second video (without going over); pitch rehearsal | Documentation and video ready |
 
-- [ ] **13:30 · `/estado`** (última revisión antes del congelado)
-- [ ] **14:30 · Prueba completa de la demo de punta a punta**
-- [ ] **15:00 · REPO CONGELADO**
-- [ ] **15:00 · paulinaguers** (dueña del repo) lo pasa a público: Settings → General → Danger Zone → Change visibility → Make public
-- [ ] Otro integrante prueba en ventana de incógnito: link del repo y link del video (YouTube o Drive, público, sin login)
+- [ ] **13:30 · `/estado`** (last check before the freeze)
+- [ ] **14:30 · Full end-to-end test of the demo**
+- [ ] **15:00 · REPO FROZEN**
+- [ ] **15:00 · paulinaguers** (repo owner) makes it public: Settings → General → Danger Zone → Change visibility → Make public
+- [ ] Another member tests in an incognito window: repo link and video link (YouTube or Drive, public, no login)
 
-### 15:00–16:00 · Preparación del jurado
+### 15:00–16:00 · Jury preparation
 
-- [ ] Ensayo final del pitch; cada integrante puede explicar su hilo
+- [ ] Final pitch rehearsal; each member can explain their thread
 
-### 16:00 · Jurado
+### 16:00 · Jury
 
-### Desde las 16:00 · Carga en la plataforma (cierra 23:59, hora de Rosario)
+### From 16:00 · Upload to the platform (closes 23:59, Rosario time)
 
-- [ ] **Primer envío completo apenas termina el jurado** (se puede reenviar hasta las 23:59; vale el último)
-- [ ] Campos en inglés: Project Name · High-Level Summary · Link to Demo · Link to Final Project · Detailed Description · Use of SI · NASA Data · Partner Data and References
-- [ ] Tildar Terms and Conditions y Confirm All Work is Original; verificar el banner de confirmación
-- [ ] Entrada final en bitácora
+- [ ] **First complete submission right after the jury** (it can be resubmitted until 23:59; the last one counts)
+- [ ] Fields in English: Project Name · High-Level Summary · Link to Demo · Link to Final Project · Detailed Description · Use of SI · NASA Data · Partner Data and References
+- [ ] Tick Terms and Conditions and Confirm All Work is Original; check the confirmation banner
+- [ ] Final logbook entry
 
 ---
 
-## Registro del coordinador
+## Coordinator log
 
-<!-- El agente coordinador agrega aquí un resumen breve en cada punto de control -->
+<!-- The coordinator agent adds a short summary here at each checkpoint -->
 
-**[sáb 12:41] Control (Bloque 1, faltan 19 min; el control de las 11:00 no se hizo)**
-- Arranque a medias: la configuración se subió a las 11:31 (unos 60 min tarde) y el contexto NASA a las 12:25. Faltan `LICENSE`, `docs/guias-nasa/`, dashboards, los 7 indicadores, el dashboard base y la entrada de bitácora.
-- A: no hay `backend/` ni simulador (unos 130 min de atraso). B y C: no hay nada en el repo; no se puede verificar.
-- Riesgo alto para el CORTE 1 (19:00). Recortes propuestos: solo CSV (sin SQLite), sin `self_reports` en el simulador, y ML afuera si a las 17:00 el núcleo no tiene los tests en verde.
-- Acción: cerrar el arranque antes de las 13:00, A define el formato de datos para B y todo se sube al repo. Próximo control: 13:00.
+**[Sat 12:41] Checkpoint (Block 1, 19 min left; the 11:00 checkpoint was not done)**
+- Kick-off half done: the setup was pushed at 11:31 (about 60 min late) and the NASA context at 12:25. Missing: `LICENSE`, `docs/guias-nasa/`, dashboards, the 7 indicators, the base dashboard and the logbook entry.
+- A: no `backend/` and no simulator yet (about 130 min behind). B and C: nothing in the repo; cannot be checked.
+- High risk for CUT 1 (19:00). Proposed cuts: CSV only (no SQLite), no `self_reports` in the simulator, and ML out if the core does not have green tests by 17:00.
+- Action: close the kick-off before 13:00, A defines the data format for B and everything is pushed to the repo. Next checkpoint: 13:00.

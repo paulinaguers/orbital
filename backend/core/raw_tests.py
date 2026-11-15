@@ -1,10 +1,8 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Turns the raw results of the in-app tests into the values the core uses.
-Convierte los resultados crudos de los tests de la app en valores del núcleo.
 
 The screen only records raw data (reaction times, marked cells); the core
-scores them here. / La pantalla solo guarda datos crudos; el núcleo los
-puntúa acá.
+scores them here.
 """
 
 from backend.core.thresholds import THRESHOLDS
@@ -12,19 +10,13 @@ from backend.core.thresholds import THRESHOLDS
 
 def count_pvt_lapses(reaction_times_ms):
     """Counts lapses in a brief PVT session (Basner 2011: 355 ms).
-    Cuenta los lapsos de una sesión de PVT breve (Basner 2011: 355 ms).
 
     The 355 ms cut is validated for the 3-minute PVT-B. The app's 1-minute
     demo is a brief PVT-inspired test: its lapse counts are only comparable
     with the astronaut's own sessions of the same length (experimental).
-    El corte de 355 ms está validado para el PVT-B de 3 minutos. La demo de
-    1 minuto es un test breve inspirado en el PVT: sus lapsos solo se
-    comparan con sesiones propias de la misma duración (experimental).
 
     A response of exactly 355 ms counts as a lapse (">=", as in
     escalas-y-protocolos.md): PROVISIONAL, open decision PVT-355.
-    Una respuesta de 355 ms exactos cuenta como lapso (">="): PROVISORIO,
-    decisión PVT-355 abierta.
     """
     cut = THRESHOLDS["pvt_lapses"]["lapse_ms_3min"]
     return sum(1 for rt in reaction_times_ms if rt >= cut)
@@ -32,13 +24,10 @@ def count_pvt_lapses(reaction_times_ms):
 
 def score_pvt_session(reaction_times_ms, stimuli_count):
     """Scores one brief PVT session, counting unanswered stimuli as lapses.
-    Puntúa una sesión breve de PVT; los estímulos sin respuesta son lapsos.
 
     reaction_times_ms: answered stimuli only; stimuli_count: all stimuli shown.
     Returns lapses (slow + omissions), omissions, lapse_rate and `valid`
     (False if too few stimuli were shown: the session is not evaluable).
-    Devuelve lapsos (lentos + omisiones), omisiones, tasa y `valid` (False si
-    hubo muy pocos estímulos: la sesión no se puede evaluar).
     """
     t = THRESHOLDS["pvt_lapses"]
     omissions = stimuli_count - len(reaction_times_ms)
@@ -51,7 +40,6 @@ def score_pvt_session(reaction_times_ms, stimuli_count):
 
 def classify_amsler(today_cells, previous_cells, sudden_change=False):
     """Category of an Amsler result for one eye, compared with the last test.
-    Categoría de un resultado de Amsler de un ojo, comparado con el anterior.
 
     today_cells / previous_cells: sets of (row, col) marked as distorted;
     previous_cells is None if there is no earlier test. `sudden_change` is the
@@ -59,9 +47,6 @@ def classify_amsler(today_cells, previous_cells, sudden_change=False):
     A change is "confirmed" only if today's cells overlap the previous ones
     (the same area persists); a distortion somewhere else waits for a retest.
     Returns a category of alert_texts.md §6 (all Proposal).
-    `sudden_change` es la respuesta a "¿apareció de golpe?" (rojo). El cambio
-    se confirma solo si las celdas de hoy se superponen con las anteriores; una
-    distorsión en otro lugar espera un nuevo test. Todo Proposal.
     """
     if sudden_change:
         return "sudden_loss_or_distortion"

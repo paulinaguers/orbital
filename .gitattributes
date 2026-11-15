@@ -2,6 +2,5 @@
 
 # The simulated test dataset keeps LF line endings on every system, so a fresh
 # run of the generator gives exactly the same file (same hash) on Windows too.
-# El set de datos de prueba mantiene finales de línea LF en todos los sistemas.
 data/*.csv text eol=lf
 docs/content/clinical_test_cases.md text eol=lf

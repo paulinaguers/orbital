@@ -1,16 +1,12 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Runs the core over the demo database and writes frontend/src/data/demo.json.
-Corre el núcleo sobre la base de la demo y escribe demo.json.
 
 Data in: data/demo_scenarios.csv (read through backend/storage.py).
-Datos de entrada: data/demo_scenarios.csv (leído con backend/storage.py).
 
 The JSON has the same shape as the screen's mock data (mockStatus.ts and
 mockSeries.ts), so the demo does not depend on the API being up.
-El JSON tiene la misma forma que los datos de prueba de la pantalla, así la
-demo no depende de que la API esté levantada.
 
-Run from the repo root / Correr desde la raíz del repo:
+Run from the repo root
     python -m backend.export_demo
 """
 
@@ -31,8 +27,6 @@ SERIES_DAYS = 14
 
 # What the chart band means. Sleep and CO2 have no deviation layer: their band
 # is a descriptive reference only and does not trigger alerts.
-# Qué significa la banda del gráfico. Sueño y CO2 no tienen capa de desvío:
-# su banda es solo una referencia descriptiva y no dispara alertas.
 BAND_TYPES = {"sleep_hours": "descriptive", "cabin_co2": "descriptive",
               "radiation_dose": "green_zone", "vision_amsler": "none"}
 BAND_LABELS = {
@@ -43,7 +37,6 @@ BAND_LABELS = {
 }
 
 # Blocks of the body map (same ids, names and risks as the screen).
-# Bloques del mapa del cuerpo (mismos ids, nombres y riesgos que la pantalla).
 BLOCKS = [
     ("cardio", "Cardiorespiratory & Oxygenation", ["blood_pressure", "heart_rate", "spo2"],
      ["NASA HRP: Cardiovascular Adaptations", "NASA HRP: Hypoxia"]),
@@ -58,7 +51,6 @@ BLOCKS = [
 ]
 
 # Display name, unit, source label and the day field shown on screen.
-# Nombre, unidad, fuente y campo del día que se muestra en pantalla.
 INDICATORS = {
     "blood_pressure": ("Blood pressure", "mmHg", "AHA", None),
     "heart_rate": ("Resting heart rate", "bpm", "AHA", "heart_rate"),
@@ -77,7 +69,6 @@ INDICATORS = {
 }
 
 # Fallback only: the scale texts now live in alert_texts.md §5c-5e (14/11).
-# Solo de respaldo: los textos de las escalas ahora están en alert_texts.md.
 SCALE_TEXTS = {
     "yellow": ("Your {name} is higher than your usual.", "Soft warning: monitor. No consultation needed."),
     "orange": ("Your {name} has been much higher than your usual for several days.",
@@ -86,7 +77,6 @@ SCALE_TEXTS = {
 
 # In-app tests: (id, name, route, frequency in days, day field). Frequencies
 # from escalas-y-protocolos.md (PVT every 4 days as on the ISS; Amsler weekly).
-# Tests de la app: frecuencias del documento de escalas.
 TESTS = [
     ("checkin", "Daily check-in", "/mental/checkin", 1, "mood_score"),
     ("pvt", "Brief reaction test (PVT-inspired)", "/tests/pvt", 4, "pvt_lapses"),
@@ -104,7 +94,6 @@ OVERALL_MESSAGES = {
 
 def last_value(days, field):
     """(flight_day, value) of the last day that has this field.
-    (día, valor) del último día que tiene este campo.
     """
     for day in reversed(days):
         if day.get(field) is not None:
@@ -113,10 +102,9 @@ def last_value(days, field):
 
 
 def indicator_entry(m, days, level, baseline_available):
-    """One indicator as the screen expects it. / Un indicador como lo espera la pantalla.
+    """One indicator as the screen expects it.
 
     `baseline_available` is False when the personal baseline could not be used.
-    `baseline_available` es False si no se pudo usar la línea base personal.
     """
     name, unit, source, field = INDICATORS[m]
     entry = {"id": m, "name": name, "unit": unit, "level": level or NOT_EVALUABLE,
@@ -137,7 +125,6 @@ def indicator_entry(m, days, level, baseline_available):
 
 def recommendation_for(m, level, texts):
     """Astronaut text + action for one indicator and level (alert_texts.md).
-    Texto y acción para un indicador y nivel (alert_texts.md).
     """
     if m in texts and level in texts[m]:
         sees, action = texts[m][level]
@@ -149,10 +136,8 @@ def recommendation_for(m, level, texts):
 
 def block_entry(block, days, levels, available, texts):
     """One body-map block: level = worst indicator; texts from alert_texts.md.
-    Un bloque: nivel = peor indicador; textos desde alert_texts.md.
 
     If no indicator of the block could be evaluated, the block is "not_evaluable".
-    Si ningún indicador del bloque se pudo evaluar, el bloque es "not_evaluable".
     """
     block_id, name, members, risks = block
     level = highest(*(levels.get(m) for m in members))
@@ -167,14 +152,12 @@ def block_entry(block, days, levels, available, texts):
     return {"id": block_id, "name": name, "level": level, "nasa_risk": risks,
             "recommendation": recommendation,
             # Coverage: a green block with unevaluated indicators is a partial result.
-            # Cobertura: un bloque verde con indicadores sin evaluar es un resultado parcial.
             "coverage": {"evaluated": evaluated, "total": len(members)},
             "indicators": [indicator_entry(m, days, levels.get(m), available) for m in members]}
 
 
 def tests_entry(days):
     """Due and overdue flags for each in-app test (computed here, not on screen).
-    Si toca o está vencido cada test (se calcula acá, no en la pantalla).
     """
     today = days[-1]["flight_day"]
     entries = []
@@ -189,7 +172,6 @@ def tests_entry(days):
 
 def rewards_entry(days):
     """Stars = tests completed; streak = days in a row with a check-in.
-    Estrellas = tests hechos; racha = días seguidos con check-in.
     """
     stars = sum(1 for day in days for _, _, _, _, f in TESTS if day.get(f) is not None)
     streak = 0
@@ -202,14 +184,13 @@ def rewards_entry(days):
 
 def areas_text(count):
     """ "1 area needs" / "2 areas need", for the overall message.
-    "1 area needs" / "2 areas need", para el mensaje general.
+    "1 area needs"
     """
     return "1 area needs" if count == 1 else f"{count} areas need"
 
 
 def latest_baseline_flags(results):
     """Whether the baseline could be used on each measurement's last day.
-    Si la línea base se pudo usar en el último día de cada medición.
     """
     flags = {}
     for result in results:
@@ -219,7 +200,6 @@ def latest_baseline_flags(results):
 
 def status_entry(days, results, texts):
     """The whole status for the last day (same shape as mockStatus.ts).
-    El estado completo del último día (misma forma que mockStatus.ts).
     """
     levels = latest_levels(results)
     available = latest_baseline_flags(results)
@@ -236,12 +216,9 @@ def status_entry(days, results, texts):
 
 def band_for(m, field, days):
     """(mean, low, high) shown as "your usual range" on the chart.
-    (media, bajo, alto) que el gráfico muestra como "tu rango habitual".
 
     Radiation is cumulative, so its band is the green zone (under 50 % of the
     career limit) instead of a personal baseline.
-    La radiación es acumulada: su banda es la zona verde (menos del 50 % del
-    límite de carrera) en lugar de una línea base personal.
     """
     if m == "radiation_dose":
         t = THRESHOLDS["radiation_dose"]
@@ -257,7 +234,6 @@ def band_for(m, field, days):
 
 def series_entry(m, days, results):
     """Last 14 days of one indicator (same shape as mockSeries.ts).
-    Últimos 14 días de un indicador (misma forma que mockSeries.ts).
     """
     window = list(zip(days, results))[-SERIES_DAYS:]
     field = INDICATORS[m][3]
@@ -286,7 +262,6 @@ def series_entry(m, days, results):
 
 def scenario_entry(days, texts):
     """Status and series of one list of days (used by the API too).
-    Estado y series de una lista de días (también lo usa la API).
     """
     results = evaluate_timeline(days)
     return {"status": status_entry(days, results, texts),
@@ -295,7 +270,6 @@ def scenario_entry(days, texts):
 
 def build_demo():
     """Status and series for every scenario of the demo database.
-    Estado y series de cada escenario de la base de la demo.
     """
     texts = read_texts()
     scenarios = {name: scenario_entry(load_scenario(name), texts) for name in list_scenarios()}
@@ -304,7 +278,7 @@ def build_demo():
 
 
 def write_demo(path=OUTPUT_JSON):
-    """Writes demo.json (UTF-8, LF). / Escribe demo.json."""
+    """Writes demo.json (UTF-8, LF)."""
     path.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(build_demo(), ensure_ascii=False, indent=2) + "\n"
     path.write_text(text, encoding="utf-8", newline="\n")

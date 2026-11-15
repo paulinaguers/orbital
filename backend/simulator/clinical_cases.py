@@ -1,37 +1,26 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Hand-written clinical test cases for the simulated test dataset.
-Casos de prueba clínicos escritos a mano para el set de datos simulado.
 
 Every value and every expected level here is written by hand from
 docs/content/alert_texts.md and the team's `fisiologia-espacial` skill.
 Nothing is computed from backend/core/thresholds.py, so this file can be
 used to test the core without repeating the core's own logic.
-Cada valor y cada nivel esperado se escribe a mano desde alert_texts.md y la
-skill. Nada se calcula desde thresholds.py: así este archivo sirve para
-probar el núcleo sin repetir su lógica.
 
 SIMULATED DATA - NOT REAL ASTRONAUT DATA.
-DATOS SIMULADOS - NO SON DATOS REALES DE ASTRONAUTAS.
 
-Expected levels / Niveles esperados:
+Expected levels
 - (clinical, final) for each measurement under test.
-  (clínico, final) para cada medición que se prueba.
 - clinical = level of the fixed clinical layer only; "n/a" for mood and PVT,
   which have no fixed clinical threshold.
-  clínico = nivel de la capa clínica fija; "n/a" para ánimo y PVT.
 - final = level after the baseline layer too (the higher one wins).
-  final = nivel después de sumar la capa de línea base (gana el más alto).
 - "PENDING" = depends on an open team decision; the note names it.
-  "PENDING" = depende de una decisión pendiente; la nota la nombra.
 """
 
 # ----------------------------------------------------------------------
-# Open decisions named in the notes / Decisiones pendientes de las notas
+# Open decisions named in the notes
 # ----------------------------------------------------------------------
 # The ⚠ numbers are the team's list of open decisions, not the numbers inside
 # alert_texts.md; the section where each one appears is given in brackets.
-# Los números ⚠ son la lista de decisiones del equipo, no la numeración de
-# alert_texts.md; entre corchetes, la sección donde aparece cada una.
 DECISIONS = {
     "⚠1": "Mood red ('worst 10 % on several days') is not a clinical threshold; this set counts 'several days' inside the current episode, so day 1 of an episode stays firm [alert_texts 5a]",
     "⚠2": "PVT: which skill file rules (umbrales 'more lapses' vs escalas z) and red with symptoms [5b]",
@@ -47,18 +36,14 @@ DECISIONS = {
     "RAD-LIMITS": "Radiation: how the 600 mSv career and 250 mSv solar-event limits combine [thresholds.py, radiation]",
     # Q4 (systolic/diastolic AND or OR) was resolved on 14/11 with the ACC/AHA
     # 2017 guideline (and its 2025 AHA/ACC update): the higher category wins.
-    # Q4 se resolvió el 14/11 con la guía ACC/AHA 2017 (y su actualización
-    # AHA/ACC 2025): gana la categoría más alta.
     "SLEEP-7H": "Sleep at exactly 7 h is both green and yellow",
     # RAD-65 resolved on 14/11 (team decision, provisional): orange from 65 %;
     # the cumulative dose reaches orange at most, red only for a solar storm.
-    # RAD-65 resuelta el 14/11: naranja desde 65 %; la dosis acumulada llega
-    # como máximo a naranja, rojo solo por tormenta solar.
     "PVT-355": "PVT: whether exactly 355 ms is a lapse (>= or >)",
 }
 
 # ----------------------------------------------------------------------
-# Measurements and their CSV columns / Mediciones y sus columnas
+# Measurements and their CSV columns
 # ----------------------------------------------------------------------
 MEASUREMENT_COLUMNS = {
     "blood_pressure": ["blood_pressure_systolic_mmhg", "blood_pressure_diastolic_mmhg"],
@@ -74,7 +59,6 @@ MEASUREMENT_COLUMNS = {
 }
 
 # Mood and PVT have no fixed clinical threshold: clinical level is "n/a".
-# Ánimo y PVT no tienen umbral clínico fijo: su nivel clínico es "n/a".
 NO_CLINICAL_LAYER = ["mood_vas", "pvt_lapses"]
 
 SYMPTOM_COLUMNS = [
@@ -88,19 +72,13 @@ SYMPTOM_COLUMNS = [
 # alert_texts.md. Sleep, CO2 and Amsler stay constant on baseline days
 # (standard deviation 0); radiation rises every day. Thread A's baseline.py
 # must not divide by a standard deviation of 0.
-# Sueño, CO2, Amsler y radiación no tienen capa de línea base en alert_texts.md.
-# Sueño, CO2 y Amsler quedan constantes en la línea base (desvío 0); la
-# radiación sube cada día. El baseline.py del hilo A no tiene que dividir por 0.
 
 # First flight day with a baseline (days 4-10 are the baseline days). Before
 # it, mood and PVT have no level at all: final level "n/a".
-# Primer día con línea base. Antes, ánimo y PVT no tienen nivel: final "n/a".
 FIRST_DAY_WITH_BASELINE = 11
 
 # Value of every column when it is NOT under test: the baseline mean.
-# Valor de cada columna cuando NO se prueba: la media de la línea base.
 # Radiation is cumulative, so it uses a daily rise instead (see below).
-# La radiación es acumulada: usa una suba diaria (ver abajo).
 NORMAL_VALUES = {
     "blood_pressure_systolic_mmhg": 110,
     "blood_pressure_diastolic_mmhg": 70,
@@ -121,15 +99,12 @@ NORMAL_VALUES = {
 }
 
 # Radiation on days that do not test radiation: arbitrary simulated rate,
-# not a clinical value. / Radiación en los días que no la prueban: ritmo
-# simulado arbitrario, no es un valor clínico.
+# not a clinical value.
 RADIATION_START_MSV = 10.0
 RADIATION_DAILY_MSV = 0.5
 
 # Baseline days 4-10 (7 values each). The seed only shuffles their order.
 # Chosen so mean and statistics.pstdev are round numbers (see BASELINE_DESIGN).
-# Días de línea base 4-10 (7 valores cada uno). La semilla solo mezcla el
-# orden. Elegidos para que la media y statistics.pstdev den números redondos.
 BASELINE_DAY_VALUES = {
     "blood_pressure_systolic_mmhg": [104, 106, 108, 110, 112, 114, 116],
     "blood_pressure_diastolic_mmhg": [67, 68, 69, 70, 71, 72, 73],
@@ -141,7 +116,6 @@ BASELINE_DAY_VALUES = {
 }
 
 # (mean, pstdev) that BASELINE_DAY_VALUES must give. Checked by a test.
-# (media, pstdev) que tienen que dar los valores de línea base. Lo controla un test.
 BASELINE_DESIGN = {
     "blood_pressure_systolic_mmhg": (110, 4),
     "blood_pressure_diastolic_mmhg": (70, 2),
@@ -154,19 +128,16 @@ BASELINE_DESIGN = {
 
 
 def single(case_id, values, expected, note):
-    """Builds a one-day case. / Arma un caso de un día.
+    """Builds a one-day case.
 
     values: columns that change that day, e.g. {"heart_rate_bpm": 39}.
     expected: {measurement: (clinical, final)} for the measurement(s) under test.
-    values: columnas que cambian ese día, por ejemplo {"heart_rate_bpm": 39}.
-    expected: {medición: (clínico, final)} de la(s) medición(es) que se prueban.
     """
     return {"case_id": case_id, "days": [{"values": values, "expected": expected, "note": note}]}
 
 
 def sequence(case_id, days):
     """Builds a multi-day case from a list of (values, expected, note).
-    Arma un caso de varios días a partir de una lista de (valores, esperado, nota).
     """
     return {
         "case_id": case_id,
@@ -176,7 +147,6 @@ def sequence(case_id, days):
 
 def bp(systolic, diastolic, **symptoms):
     """Blood pressure values plus optional symptom boxes (set to 1).
-    Valores de presión más casillas de síntomas opcionales (en 1).
     """
     values = {"blood_pressure_systolic_mmhg": systolic, "blood_pressure_diastolic_mmhg": diastolic}
     for name, ticked in symptoms.items():
@@ -186,7 +156,7 @@ def bp(systolic, diastolic, **symptoms):
 
 
 # ----------------------------------------------------------------------
-# Flight days 1-3: no baseline yet / Días 1-3: todavía sin línea base
+# Flight days 1-3: no baseline yet
 # ----------------------------------------------------------------------
 NO_BASELINE_CASES = [
     single("NB-01", {"heart_rate_bpm": 75}, {"heart_rate": ("green", "green")},
@@ -198,7 +168,7 @@ NO_BASELINE_CASES = [
 ]
 
 # ----------------------------------------------------------------------
-# Single-day cases, grouped by measurement / Casos de un día por medición
+# Single-day cases, grouped by measurement
 # ----------------------------------------------------------------------
 P = "PENDING"
 
@@ -364,20 +334,18 @@ SINGLE_CASES = {
 }
 
 # ----------------------------------------------------------------------
-# Multi-day sequences, grouped by measurement / Secuencias por medición
+# Multi-day sequences, grouped by measurement
 # ----------------------------------------------------------------------
 
 
 def three_days(column, value, measurement, levels, note):
     """Three days with the same value; levels = 3 (clinical, final) pairs.
-    Tres días con el mismo valor; levels = 3 pares (clínico, final).
     """
     return [({column: value}, {measurement: level}, note) for level in levels]
 
 
 SYS = "blood_pressure_systolic_mmhg"
 # Short names for (clinical, final) pairs used below.
-# Nombres cortos para pares (clínico, final) que se usan abajo.
 G = ("green", "green")    # clinical green, final green
 Y = ("green", "yellow")   # clinical green, final yellow (from the baseline layer)
 O = ("orange", "orange")  # clinical orange, final orange (letter O, not zero)
@@ -505,13 +473,11 @@ SEQUENCE_CASES = {
 }
 
 # ----------------------------------------------------------------------
-# Radiation (last: the dose can only go up) / Radiación (al final: solo sube)
+# Radiation (last: the dose can only go up)
 # Percent of the 600 mSv career limit (NASA-STD-3001 V1 4030). Cuts: Proposal.
 # Since 14/11 the cumulative dose reaches orange at most; red = solar storm.
 # This set has no per-event dose, so the 250 mSv solar-event limit is not
 # tested (how the two limits combine is open: RAD-LIMITS).
-# Porcentaje del límite de carrera de 600 mSv. Cortes: Proposal. Este set no
-# tiene dosis por evento, así que el límite de 250 mSv no se prueba.
 # ----------------------------------------------------------------------
 RAD = "radiation_dose_cumulative_msv"
 

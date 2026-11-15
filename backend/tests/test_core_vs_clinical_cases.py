@@ -1,12 +1,9 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Checks the core against the hand-written answer key (clinical_test_cases.csv).
-Controla el núcleo contra la hoja de respuestas escrita a mano.
 
 Rows marked PENDING (open team decision) or n/a are skipped, as the CSV's
 README says. The answer key still uses the 0-100 mood scale (mood_vas_score);
 z-scores are the same on any scale, so it is read as the core's mood_score.
-Se saltean las filas PENDING o n/a. La hoja de respuestas todavía usa el ánimo
-0-100; el puntaje z no depende de la escala, así que se lee como mood_score.
 """
 
 import csv
@@ -15,7 +12,6 @@ from backend.core.escalation import evaluate_timeline
 from backend.simulator import generate_clinical_test_data as generator
 
 # CSV measurement name -> core measurement name.
-# Nombre de medición del CSV -> nombre del núcleo.
 CSV_TO_CORE = {m: m for m in generator.MEASUREMENTS}
 CSV_TO_CORE["mood_vas"] = "mood_score"
 
@@ -23,12 +19,12 @@ SKIP = {"PENDING", "n/a"}
 
 
 def number(text):
-    """Text from the CSV to int or float. / Texto del CSV a int o float."""
+    """Text from the CSV to int or float."""
     return float(text) if "." in text else int(text)
 
 
 def row_to_day(row):
-    """One CSV row to the core's day dict. / Una fila del CSV al día del núcleo."""
+    """One CSV row to the core's day dict."""
     return {
         "flight_day": int(row["flight_day"]),
         "systolic": number(row["blood_pressure_systolic_mmhg"]),
@@ -55,7 +51,6 @@ def row_to_day(row):
 
 def compare(layer, prefix):
     """List of mismatches between the core and the answer key for one layer.
-    Lista de diferencias entre el núcleo y la hoja de respuestas en una capa.
     """
     with open(generator.OUTPUT_CSV, encoding="utf-8", newline="") as file:
         rows = list(csv.DictReader(file))
@@ -75,7 +70,6 @@ def compare(layer, prefix):
 
 def test_final_levels_match_the_answer_key():
     """Final level (both layers) matches every non-pending expected value.
-    El nivel final coincide con cada valor esperado no pendiente.
     """
     mismatches, checked = compare("final", "expected_level_")
     assert checked > 1500
@@ -84,7 +78,6 @@ def test_final_levels_match_the_answer_key():
 
 def test_clinical_layer_matches_the_answer_key():
     """Clinical layer alone matches every non-pending expected value.
-    La capa clínica sola coincide con cada valor esperado no pendiente.
     """
     mismatches, checked = compare("clinical", "expected_clinical_level_")
     assert checked > 1400

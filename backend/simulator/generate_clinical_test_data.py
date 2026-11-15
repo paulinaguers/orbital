@@ -1,15 +1,13 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Writes data/clinical_test_cases.csv and docs/content/clinical_test_cases.md
 from the hand-written clinical cases.
-Escribe el CSV y el .md de casos a partir de los casos clínicos escritos a mano.
 
 SIMULATED DATA - NOT REAL ASTRONAUT DATA.
-DATOS SIMULADOS - NO SON DATOS REALES DE ASTRONAUTAS.
 
-Run from the repo root / Correr desde la raíz del repo:
+Run from the repo root
     python -m backend.simulator.generate_clinical_test_data
 
-Layout of the 188 rows / Orden de las 188 filas:
+Layout of the 188 rows
     days 1-3     no baseline yet (3 cases)
     days 4-10    baseline days (order shuffled with a fixed seed)
     day 11       separator (every measurement at its baseline mean)
@@ -28,10 +26,9 @@ from backend.simulator import clinical_cases as cases
 from backend.simulator.clinical_cases_markdown import OUTPUT_MD, write_markdown
 
 # Fixed seed: the same seed always gives the same CSV.
-# Semilla fija: la misma semilla siempre da el mismo CSV.
 SEED = 2026
-ASTRONAUT_ID = "SIM-01"  # fictional / ficticio
-MISSION_START = datetime(2031, 1, 1, 7, 0, tzinfo=timezone.utc)  # fictional / ficticio
+ASTRONAUT_ID = "SIM-01"  # fictional
+MISSION_START = datetime(2031, 1, 1, 7, 0, tzinfo=timezone.utc)  # fictional
 OUTPUT_CSV = Path(__file__).resolve().parents[2] / "data" / "clinical_test_cases.csv"
 
 MEASUREMENTS = list(cases.MEASUREMENT_COLUMNS)
@@ -49,7 +46,6 @@ COLUMNS = (
 
 def radiation_on_day(flight_day):
     """Cumulative dose on a day that does not test radiation (simulated rate).
-    Dosis acumulada en un día que no prueba radiación (ritmo simulado).
     """
     return round(cases.RADIATION_START_MSV + cases.RADIATION_DAILY_MSV * (flight_day - 1), 1)
 
@@ -58,9 +54,6 @@ def default_expected(flight_day):
     """Expected levels when nothing is under test: green, or "n/a" for the
     clinical layer of mood and PVT. Before the baseline exists, mood and PVT
     have no level at all, so their final level is "n/a" too.
-    Niveles esperados cuando no se prueba nada: verde, o "n/a" en la capa
-    clínica de ánimo y PVT. Antes de que exista la línea base, ánimo y PVT no
-    tienen nivel, así que su nivel final también es "n/a".
     """
     expected = {}
     for m in MEASUREMENTS:
@@ -74,13 +67,12 @@ def default_expected(flight_day):
 
 
 def make_spec(case_id, values, expected, note):
-    """One row before it gets its flight day. / Una fila antes de tener su día."""
+    """One row before it gets its flight day."""
     return {"case_id": case_id, "values": values, "expected": expected, "note": note}
 
 
 def case_to_specs(case):
     """Turns a case (one or more days) into row specs.
-    Convierte un caso (uno o más días) en filas.
     """
     return [make_spec(case["case_id"], d["values"], d["expected"], d["note"]) for d in case["days"]]
 
@@ -88,8 +80,6 @@ def case_to_specs(case):
 def separator_spec():
     """A normal day between cases, so no case leaks into the next one. It gets
     its number later (see number_separators).
-    Un día normal entre casos, para que ningún caso se mezcle con el siguiente.
-    Recibe su número después (ver number_separators).
     """
     note = "Separator: every measurement at its baseline mean."
     return make_spec("SEP", {}, {}, note)
@@ -97,7 +87,6 @@ def separator_spec():
 
 def number_separators(specs):
     """Names the separators SEP-01, SEP-02, ... in order.
-    Nombra los separadores SEP-01, SEP-02, ... en orden.
     """
     number = 0
     for spec in specs:
@@ -109,7 +98,6 @@ def number_separators(specs):
 
 def baseline_specs(rng):
     """Days 4-10: the baseline values, each column shuffled with the seed.
-    Días 4-10: los valores de línea base, cada columna mezclada con la semilla.
     """
     shuffled = {}
     for column, values in cases.BASELINE_DAY_VALUES.items():
@@ -127,8 +115,6 @@ def baseline_specs(rng):
 def interleave(groups):
     """Takes one case from each group in turn (round robin). If two cases of
     the same group would touch, puts a separator between them.
-    Toma un caso de cada grupo por turno. Si dos casos del mismo grupo
-    quedarían pegados, pone un separador entre ellos.
     """
     specs, last_group = [], None
     longest = max(len(group_cases) for group_cases in groups.values())
@@ -145,7 +131,6 @@ def interleave(groups):
 
 def build_specs():
     """All rows in order, without flight days yet.
-    Todas las filas en orden, todavía sin día de vuelo.
     """
     rng = random.Random(SEED)
     specs = [spec for case in cases.NO_BASELINE_CASES for spec in case_to_specs(case)]
@@ -160,7 +145,6 @@ def build_specs():
 
 def spec_to_row(flight_day, spec):
     """Fills one CSV row: normal values first, then the case's own values.
-    Llena una fila: primero los valores normales, después los del caso.
     """
     row = {
         "flight_day": flight_day,
@@ -181,12 +165,12 @@ def spec_to_row(flight_day, spec):
 
 
 def build_rows():
-    """All 188 rows, numbered by flight day. / Las 188 filas, numeradas por día."""
+    """All 188 rows, numbered by flight day."""
     return [spec_to_row(day, spec) for day, spec in enumerate(build_specs(), start=1)]
 
 
 def write_csv(rows, path=OUTPUT_CSV):
-    """Writes the rows as UTF-8 CSV. / Escribe las filas como CSV UTF-8."""
+    """Writes the rows as UTF-8 CSV."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=COLUMNS, lineterminator="\n")

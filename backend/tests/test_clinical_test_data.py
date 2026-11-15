@@ -1,9 +1,7 @@
 # Generated with SI assistance (Claude), reviewed by the ORBITAL team.
 """Checks for the simulated clinical test dataset (data/clinical_test_cases.csv).
-Controles del set de datos clínico simulado (data/clinical_test_cases.csv).
 
 These tests check the dataset itself, not the core: the core does not exist yet.
-Estos tests controlan el set de datos, no el núcleo: el núcleo todavía no existe.
 """
 
 import csv
@@ -15,10 +13,9 @@ from backend.simulator import generate_clinical_test_data as generator
 
 LEVELS = {"green", "yellow", "orange", "red", "PENDING"}
 CLINICAL_LEVELS = LEVELS | {"n/a"}
-FIRST_TEST_DAY = 11  # after the baseline days 4-10 / después de la línea base
+FIRST_TEST_DAY = 11  # after the baseline days 4-10
 
 # Measurements with a baseline (z-score) layer, and their columns.
-# Mediciones con capa de línea base (puntaje z) y sus columnas.
 DEVIATION_COLUMNS = {
     "blood_pressure": ["blood_pressure_systolic_mmhg", "blood_pressure_diastolic_mmhg"],
     "heart_rate": ["heart_rate_bpm"],
@@ -31,7 +28,6 @@ DEVIATION_COLUMNS = {
 
 def read_committed_rows():
     """Reads the committed CSV as a list of dicts (all values are text).
-    Lee el CSV commiteado como lista de diccionarios (todo es texto).
     """
     with open(generator.OUTPUT_CSV, encoding="utf-8", newline="") as file:
         return list(csv.DictReader(file))
@@ -39,14 +35,12 @@ def read_committed_rows():
 
 def as_text(rows):
     """Turns generated rows into text, like the CSV reader does.
-    Pasa las filas generadas a texto, como hace el lector de CSV.
     """
     return [{key: str(value) for key, value in row.items()} for row in rows]
 
 
 def changed_columns(case_id):
     """Columns that a case changes on any of its days.
-    Columnas que un caso cambia en alguno de sus días.
     """
     for case in all_cases():
         if case["case_id"] == case_id:
@@ -55,7 +49,7 @@ def changed_columns(case_id):
 
 
 def all_cases():
-    """Every hand-written case in one list. / Todos los casos en una lista."""
+    """Every hand-written case in one list."""
     found = list(cases.NO_BASELINE_CASES) + list(cases.RADIATION_CASES)
     for group in list(cases.SINGLE_CASES.values()) + list(cases.SEQUENCE_CASES.values()):
         found.extend(group)
@@ -64,7 +58,6 @@ def all_cases():
 
 def test_csv_is_up_to_date_and_reproducible():
     """The committed CSV equals a fresh run, and two runs are equal.
-    El CSV commiteado es igual a una corrida nueva, y dos corridas son iguales.
     """
     first_run, second_run = generator.build_rows(), generator.build_rows()
     assert first_run == second_run
@@ -73,7 +66,6 @@ def test_csv_is_up_to_date_and_reproducible():
 
 def test_markdown_is_up_to_date_and_lists_every_case():
     """The committed .md equals a fresh run, and it lists every case of the CSV.
-    El .md commiteado es igual a una corrida nueva y lista todos los casos del CSV.
     """
     committed = markdown.OUTPUT_MD.read_text(encoding="utf-8")
     assert committed == markdown.build_markdown(generator.build_rows())
@@ -84,7 +76,6 @@ def test_markdown_is_up_to_date_and_lists_every_case():
 
 def test_size_identity_and_simulated_flag():
     """188 rows, 43 columns, one fictional astronaut, all marked simulated.
-    188 filas, 43 columnas, un astronauta ficticio, todo marcado simulado.
     """
     rows = read_committed_rows()
     assert len(rows) == 188
@@ -96,7 +87,6 @@ def test_size_identity_and_simulated_flag():
 
 def test_case_ids_are_unique_and_contiguous():
     """Each case_id is used by one case only, on consecutive rows.
-    Cada case_id es de un solo caso y ocupa filas seguidas.
     """
     ids = [case["case_id"] for case in all_cases()]
     assert len(ids) == len(set(ids))
@@ -111,7 +101,6 @@ def test_case_ids_are_unique_and_contiguous():
 
 def test_expected_levels_are_valid_and_pending_names_a_decision():
     """Only known levels; every PENDING row names an open decision in its note.
-    Solo niveles conocidos; cada fila PENDING nombra una decisión en la nota.
     """
     for row in read_committed_rows():
         finals = [row["expected_level_" + m] for m in generator.MEASUREMENTS]
@@ -124,7 +113,6 @@ def test_expected_levels_are_valid_and_pending_names_a_decision():
 def test_final_na_only_for_mood_and_pvt_before_the_baseline():
     """A final level of "n/a" appears only for mood and PVT before day 11,
     because they have no clinical layer and no baseline yet.
-    Un nivel final "n/a" aparece solo en ánimo y PVT antes del día 11.
     """
     for row in read_committed_rows():
         for m in generator.MEASUREMENTS:
@@ -136,8 +124,6 @@ def test_final_na_only_for_mood_and_pvt_before_the_baseline():
 def test_final_level_never_below_clinical_and_red_needs_clinical_red():
     """The higher layer wins, so final >= clinical; and a baseline deviation
     alone never reaches red, so final red needs clinical red.
-    Gana la capa más alta: final >= clínico; y un desvío solo nunca llega a
-    rojo: final rojo pide clínico rojo.
     """
     rank = {"green": 0, "yellow": 1, "orange": 2, "red": 3}
     for row in read_committed_rows():
@@ -152,7 +138,6 @@ def test_final_level_never_below_clinical_and_red_needs_clinical_red():
 
 def test_baseline_days_give_the_designed_mean_and_pstdev():
     """Days 4-10 give the planned mean and statistics.pstdev for each column.
-    Los días 4-10 dan la media y el pstdev planeados para cada columna.
     """
     rows = read_committed_rows()[3:10]
     assert [row["flight_day"] for row in rows] == [str(day) for day in range(4, 11)]
@@ -163,14 +148,13 @@ def test_baseline_days_give_the_designed_mean_and_pstdev():
 
 
 def test_radiation_never_goes_down():
-    """The cumulative dose never decreases. / La dosis acumulada nunca baja."""
+    """The cumulative dose never decreases."""
     doses = [float(row["radiation_dose_cumulative_msv"]) for row in read_committed_rows()]
     assert doses == sorted(doses)
 
 
 def test_columns_not_under_test_stay_at_baseline_mean():
     """From day 11 on, every column a case does not change is at its normal value.
-    Desde el día 11, toda columna que el caso no cambia está en su valor normal.
     """
     for row in read_committed_rows()[FIRST_TEST_DAY - 1:]:
         changed = changed_columns(row["case_id"])
@@ -182,8 +166,6 @@ def test_columns_not_under_test_stay_at_baseline_mean():
 def test_cases_do_not_touch_another_reading_of_the_same_measurement():
     """The rows just before and after a case have its columns at normal values,
     so no case adds to another one's streak (radiation excluded: it only goes up).
-    Las filas justo antes y después de un caso tienen sus columnas en valores
-    normales, para que ningún caso sume a la racha de otro.
     """
     rows = read_committed_rows()
     for case in all_cases():
@@ -199,15 +181,12 @@ def test_cases_do_not_touch_another_reading_of_the_same_measurement():
 def test_extreme_readings_on_green_or_yellow_are_pending():
     """From day 11 on, a reading with |z| >= 2 whose clinical level is green,
     yellow or n/a must have a PENDING final level (⚠7 or Q1).
-    Desde el día 11, una lectura con |z| >= 2 y nivel clínico verde, amarillo
-    o n/a tiene que tener nivel final PENDING (⚠7 o Q1).
     """
     for row in read_committed_rows()[FIRST_TEST_DAY - 1:]:
         for measurement, columns in DEVIATION_COLUMNS.items():
             # For blood pressure we take the larger of the two |z| (systolic or
             # diastolic). How they combine is open (Q5); taking the larger one
-            # is the strictest check. / En presión tomamos el mayor |z|; cómo
-            # se combinan está abierto (Q5) y el mayor es el control más estricto.
+            # is the strictest check.
             z_values = []
             for column in columns:
                 mean, std_dev = cases.BASELINE_DESIGN[column]
