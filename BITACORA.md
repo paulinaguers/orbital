@@ -335,6 +335,14 @@ Threads: **A** data and core (Python) · **B** screens and connection · **C** c
 - Human review: Paulina asked to fix everything tonight. All 56 backend tests pass; TypeScript check and frontend build pass. All four scenarios keep their overall level. To check by the team: the 3 s response window, the 15-stimulus reference and the 5-stimulus minimum (all Proposal); thread C to review the scale texts and the Amsler "same area" rule.
 - Commit: (complete with hash)
 
+### [2026-11-14 22:30] Machine learning layer kept as a documented proposal
+- Thread: A + C
+- Type: decision
+- What was done: the team decided not to implement the ML layer and to present it as future work. README §12 now has a detailed proposal: purpose (combinations of small changes), what it would never do (yellow at most, never replaces the rules, unsupervised, explains its drivers), input (daily z-scores), cold start by stages (0 rules only; 1 combined chi-square score of squared z-scores; 2 Mahalanobis with shrinkage covariance; 2b Isolation Forest with dense wearable data), pre-flight data as a way to skip the cold start, evaluation against injected anomalies with the "cut 2" acceptance rule, where it would live in the code, and why it is not in the MVP (7 baseline days are too few).
+- AI tools: Claude explained the statistical limits (Isolation Forest needs hundreds of readings; Mahalanobis covariance is near-singular with 9 measurements and 7 days) and wrote the README section, based on the team's ML proposal document.
+- Human review: Paulina chose to keep it as a proposal and asked for a detailed description.
+- Commit: (complete with hash)
+
 ## Sunday 15/11
 
 <!-- -->

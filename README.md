@@ -270,11 +270,51 @@ The ⚙️ menu shows the data source: **Live core (API)**, **Demo file** or **M
 - **Demo API:** one shared in-memory session, no authentication; new results are lost on restart; an unknown flight day is rejected.
 - **Simulated communications:** notifications to the onboard doctor, flight surgeon and crewmate are computed but not delivered; My Circle message delivery is simulated; the private journal is stored on the device but not encrypted.
 - **Baseline length:** with only 7 baseline days, the standard deviation can come out too narrow by chance and give very large z-scores. Future: a minimum spread, a longer or more robust baseline, or a pre-flight baseline.
-- **ML anomaly layer** (multivariate detection with cold start) was designed but left out of the MVP; it is the natural next step once more history exists.
+- **Machine learning layer:** designed but left out of the MVP on purpose. See the proposal below.
 - **Passenger mode in the core** (thresholds by profile), conditions and age for commercial passengers.
 - **Persistent storage** (SQLite), real device integration, and implemented end-to-end encryption for My Circle.
 - **Exercise, body mass, temperature and immune signals** are documented as next indicators.
 - **Frontend tests and CI** (GitHub Actions running the tests on every push).
+
+### Proposal: anomaly-detection layer (future work, not implemented)
+
+> **Status: Proposal.** Nothing in this section runs in the current app. It describes how a machine learning layer would be added on top of the rules engine, and why we did not build it for the hackathon.
+
+**Why it would help.** The current core looks at **one measurement at a time**: each value is compared with clinical thresholds and with the astronaut's own baseline (z-score). It cannot see a **combination** of small changes. Example: heart rate a little higher, sleep a little shorter, fatigue a little higher and SpO₂ a little lower on the same days. Each one stays green on its own, but together they can be the first sign of a problem (poor sleep, a CO₂ build-up, an early infection). The layer would flag that kind of pattern.
+
+**What it would never do.** It would not replace the rules, would not diagnose and would not escalate to Earth on its own:
+
+- It runs **next to** the two layers already in place (clinical thresholds and personal baseline). The final level is still the higher one.
+- Its alert is **yellow at most** ("Several of your values are changing together. Keep an eye on them."). Like a baseline deviation, it never reaches red.
+- It always says **which measurements** pushed the score up, so the astronaut and the onboard doctor can check them.
+- It is **unsupervised**: it learns what is normal for each astronaut, not a disease. A supervised risk model would need real astronaut data with clinical outcomes, which does not exist publicly; trained on our simulated data, it would only learn back the rules we wrote (a circular result).
+
+**Input.** One row per astronaut per day with the z-scores the core already computes: systolic and diastolic blood pressure, resting heart rate, SpO₂, glucose, sleep hours, and the four check-in scales. Missing values (a test not done that day) are left out of that day's score, not filled in.
+
+**Cold start: the layer switches on in stages.** The app starts being used in flight, with no history. A model that learns "normal" for one person cannot work on day 1, so it activates step by step and the rules always keep protecting the astronaut:
+
+| Stage | Data available for this astronaut | What runs | Screen |
+| --- | --- | --- | --- |
+| **0 · No data** | Flight days 1–3 | Clinical thresholds only | — |
+| **1 · Little data** | Baseline days 4–10 (7 days) | **Combined deviation score**: sum of the day's squared z-scores, compared with a chi-square distribution with *k* degrees of freedom (*k* = measurements that day). Score above the 99th percentile on 2 days in a row → yellow. It needs no covariance, so it works with 7 days. | "Pattern check: learning your usual values" until day 10 |
+| **2 · Enough data** | About 30+ days of readings | **Mahalanobis distance** on the z-scores, with a shrinkage covariance estimate (Ledoit-Wolf) so it stays stable with few days. It also learns which measurements usually move together for this person (e.g., short sleep and higher fatigue). | "Pattern check: active" |
+| **2b · Dense data** | Hundreds of readings (continuous wearable, e.g. CSA Bio-Monitor) | **Isolation Forest** trained on that astronaut's own normal periods; useful when there are many readings per day | "Pattern check: active" |
+
+**Pre-flight data would remove the cold start.** Astronauts have months of medical checks before flight (NASA Standard Measures collects data about 270 and 180 days before launch; Zwart 2018). If the app could load them, stage 2 would start on flight day 1. We present this as a possibility, without claiming which data NASA would make available.
+
+**How we would know it works.** Before turning it on, the engine would run twice on the same simulated missions, with and without the layer, against anomalies injected on known days:
+
+| Metric | Question |
+| --- | --- |
+| Detection day | Does it flag the injected pattern **earlier** than the rules alone? |
+| False alarms | Does the healthy scenario stay green for all 42 days? |
+| Added alerts | How many extra yellow days does it add, and are they explainable? |
+
+Acceptance rule (the team's "cut 2"): the layer is kept only if it detects earlier **without** more false alarms than the rules. Otherwise it stays off and remains future work. Any result on simulated data shows internal consistency only; clinical value needs validation with real astronaut data.
+
+**Where it would live in the code.** `backend/core/ml/` (no interface imports, like the rest of the core), in a separate `ml` branch until it passes the evaluation. Libraries: numpy and scikit-learn (open source). It would add one field per day to the API and to `demo.json` (`pattern_score`, `pattern_level`, `pattern_drivers`) and one card in the Sleep & Cognition and Mental Health views.
+
+**Why it is not in the MVP.** With 7 baseline days per astronaut, a model has almost nothing to learn from: an Isolation Forest needs hundreds of readings per person, and a full Mahalanobis covariance with 9 measurements and 7 days is close to singular. We preferred a rules engine we can explain and verify, plus an honest plan for the model.
 
 ---
 
